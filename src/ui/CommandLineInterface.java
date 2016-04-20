@@ -1,5 +1,6 @@
 package ui;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -36,30 +37,52 @@ public class CommandLineInterface {
 
     private void listAllComputers(int firstRow) {
         try {
+            for (int clear = 0; clear < 1000; clear++) {
+                System.out.println("\n");
+            }
             System.out.println("+-----+-----------------+---------------------+--------------+------------+");
             System.out.println("| id  | name            | introduced          | discontinued | company_id |");
             System.out.println("+-----+-----------------+---------------------+--------------+------------+");
             ArrayList<Computer> computers = computerDAO.findAll(firstRow, 15);
-            for(Computer computer: computers){
-                computer.toString();
+            computers.toString();
+            for (Computer computer : computers) {
+                System.out.println(computer.toString());
             }
+
+            System.out.println("-----------------------------------------------------------------------\n");
+
             System.out.println("0/ Main menu");
-            System.out.println("1/ Next page");
-            System.out.println("2/ Previous page");
+            if (computers.size() == 15) {
+                System.out.println("1/ Next page");
+            }
+            if (firstRow - 15 >= 0) {
+                System.out.println("2/ Previous page");
+            }
             System.out.println("-1/ Leave Program");
             input = scan.nextInt();
-            
-            switch(input){
-            case 0 :
+
+            switch (input) {
+            case 0:
                 mainMenu();
                 break;
             case 1:
+                if (!(computers.size() == 15)) {
+                    listAllComputers(firstRow + 15);
+                } else {
+                    listAllComputers(firstRow);
+                }
                 break;
+            case 2 :
+                if (!(firstRow - 15 >= 0)) {
+                    listAllComputers(firstRow - 15);
+                } else {
+                    listAllComputers(firstRow);
+                }
             case -1:
                 isRunning = false;
                 break;
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -78,6 +101,7 @@ public class CommandLineInterface {
             listAllComputers(0);
             break;
         case 2:
+
             break;
         case 3:
             break;
