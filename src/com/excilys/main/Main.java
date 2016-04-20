@@ -1,6 +1,7 @@
 package com.excilys.main;
 
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
@@ -8,17 +9,13 @@ import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.Database;
 
+import sun.tools.jar.CommandLine;
+import ui.CommandLineInterface;
+
 public class Main {
 
     public static void main(String[] args) {
-        try{
-            ComputerDAO computerDAO = new ComputerDAO();
-            CompanyDAO companyDAO = new CompanyDAO();   
-            computerDAO.findAll();
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        
+        new CommandLineInterface().run();
     }
 
 }

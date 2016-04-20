@@ -1,7 +1,7 @@
 package com.excilys.persistence;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 
 public interface DAO<T> {
 
@@ -34,5 +34,5 @@ public interface DAO<T> {
      */
     public T find(T entity) throws SQLException;
     
-    public List<T> findAll() throws SQLException;
+    public ArrayList<T> findAll(int firstRow, int countRow) throws SQLException;
 }

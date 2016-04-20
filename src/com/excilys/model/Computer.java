@@ -10,7 +10,7 @@ public class Computer {
     private Long company;
 
     public Computer() {
-        name =null;
+        name = null;
         introduced = null;
         discontinued = null;
         company = (Long) null;
@@ -19,6 +19,7 @@ public class Computer {
     public Computer(Long id) {
         this.id = id;
     }
+
     public Computer(Long id, Long company) {
         this.id = id;
         this.company = company;
@@ -66,8 +67,7 @@ public class Computer {
 
     @Override
     public String toString() {
-        return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-                + ", company=" + company + "]";
+        return id + "   " + name + "     " + introduced + "     " + discontinued + "     " + company;
     }
 
 }

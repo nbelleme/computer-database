@@ -1,7 +1,7 @@
 package com.excilys.persistence;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.excilys.model.Company;
 
@@ -30,7 +30,7 @@ public class CompanyDAO implements DAO<Company> {
     }
 
     @Override
-    public List<Company> findAll() throws SQLException {
+    public ArrayList<Company> findAll(int firstRow, int countRow) throws SQLException {
         // TODO Auto-generated method stub
         return null;
     }

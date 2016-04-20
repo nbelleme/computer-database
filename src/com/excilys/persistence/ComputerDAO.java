@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.excilys.model.Computer;
 
@@ -56,10 +55,15 @@ public class ComputerDAO implements DAO<Computer> {
     }
 
     @Override
-    public List<Computer> findAll() throws SQLException {
+    public ArrayList<Computer> findAll(int firstRow, int countRow) throws SQLException {
         try (Connection connection = Database.getConnection()) {
-            String query = "SELECT * FROM " + TABLE;
+            String query = "SELECT * "
+                    + "FROM " + TABLE
+                    +" LIMIT ?,?";
+            
             PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, firstRow);
+            stmt.setInt(2, countRow);
             ResultSet rs = stmt.executeQuery();
             ArrayList<Computer> computers = new ArrayList<Computer>();
             while(rs.next()){
