@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
@@ -28,11 +29,60 @@ public class CommandLineInterface {
         }
     }
 
-    public void run() {
-        while (isRunning) {
-            mainMenu();
+    private void listAllCompanies(int firstRow) {
+        try {
+            for (int clear = 0; clear < 1000; clear++) {
+                System.out.println("\n");
+            }
+
+            ArrayList<Company> companies = companyDAO.findAll(firstRow, 15);
+            for (Company company : companies) {
+                System.out.println(company.toString());
+            }
+
+            System.out.println("0/ Main menu");
+            if (companies.size() == 15) {
+                System.out.println("1/ Next page");
+            }
+            if (firstRow - 15 >= 0) {
+                System.out.println("2/ Previous page");
+            }
+            System.out.println("3/ First Page");
+            System.out.println("-1/ Leave Program");
+            while (!scan.hasNextInt()) {
+                System.out.println("That's not a number!");
+                scan.next(); // this is important!
+            }
+            input = scan.nextInt();
+
+            switch (input) {
+            case 0:
+                mainMenu();
+                break;
+            case 1:
+                if (companies.size() == 15) {
+                    listAllCompanies(firstRow + 15);
+                } else {
+                    listAllCompanies(firstRow);
+                }
+                break;
+            case 2:
+                if (!(firstRow - 15 >= 0)) {
+                    listAllCompanies(firstRow - 15);
+                } else {
+                    listAllCompanies(firstRow);
+                }
+            case 3:
+                listAllCompanies(0);
+                break;
+            case -1:
+                isRunning = false;
+                break;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        System.out.println("Program exited, goodbye !");
     }
 
     private void listAllComputers(int firstRow) {
@@ -58,6 +108,7 @@ public class CommandLineInterface {
             if (firstRow - 15 >= 0) {
                 System.out.println("2/ Previous page");
             }
+            System.out.println("3/ First Page");
             System.out.println("-1/ Leave Program");
             input = scan.nextInt();
 
@@ -66,18 +117,21 @@ public class CommandLineInterface {
                 mainMenu();
                 break;
             case 1:
-                if (!(computers.size() == 15)) {
+                if (computers.size() == 15) {
                     listAllComputers(firstRow + 15);
                 } else {
                     listAllComputers(firstRow);
                 }
                 break;
-            case 2 :
+            case 2:
                 if (!(firstRow - 15 >= 0)) {
                     listAllComputers(firstRow - 15);
                 } else {
                     listAllComputers(firstRow);
                 }
+            case 3 :
+                listAllComputers(0);
+                break;
             case -1:
                 isRunning = false;
                 break;
@@ -95,13 +149,17 @@ public class CommandLineInterface {
         System.out.println("3/ Find A Computer");
         System.out.println("4/ List A Company");
         System.out.println("Type -1 to leave");
-        int input = scan.nextInt();
+        while (!scan.hasNextInt()) {
+            System.out.println("That's not a number!");
+            scan.next(); // this is important!
+        }
+        input = scan.nextInt();
         switch (input) {
         case 1:
             listAllComputers(0);
             break;
         case 2:
-
+            listAllCompanies(0);
             break;
         case 3:
             break;
@@ -112,6 +170,13 @@ public class CommandLineInterface {
         if (input == -1) {
             isRunning = !isRunning;
         }
+    }
+
+    public void run() {
+        while (isRunning) {
+            mainMenu();
+        }
+        System.out.println("Program exited, goodbye !");
     }
 
 }
