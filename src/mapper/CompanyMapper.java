@@ -9,13 +9,20 @@ import com.excilys.model.Company;
 public class CompanyMapper implements Mapper<Company>{
     public static final String ID = "id";
     public static final String NAME = "name";
+
+    private static CompanyMapper _instance = null;
     
-    public CompanyMapper(){
-        
+    public static CompanyMapper getMapper() {
+        if (_instance == null) {
+            _instance = new CompanyMapper();
+        }
+        return _instance;
     }
     
     @Override
     public void map(Company company, PreparedStatement stmt) throws SQLException {
+        stmt.setLong(1, company.getId());
+        stmt.setString(2, company.getName());
     }
 
     @Override
