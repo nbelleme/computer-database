@@ -15,7 +15,6 @@ public class CommandLineInterface {
     private ComputerDAO computerDAO;
     private CompanyDAO companyDAO;
     private boolean isRunning;
-    private int input;
     Scanner scan;
 
     public CommandLineInterface() {
@@ -24,6 +23,44 @@ public class CommandLineInterface {
             companyDAO = new CompanyDAO();
             isRunning = true;
             scan = new Scanner(System.in);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void displayCompany(Long id) {
+
+    }
+
+    private void displayComputer(Long id) {
+        try {
+            Computer computer = computerDAO.find(new Computer(id));
+            System.out.println(computer.toString());
+
+            System.out.println("0/ Main menu");
+            if (computer.getCompany() != null) {
+                System.out.println("1/ Display companies information");
+            }
+            System.out.println("-1/ Leave Program");
+
+            while (!scan.hasNextInt()) {
+                System.out.println("That's not a number!");
+                scan.next(); // this is important!
+            }
+            int input = scan.nextInt();
+
+            switch (input) {
+            case 0:
+                mainMenu();
+                break;
+            case 1:
+                if (computer.getCompany() != null) {
+                    // displayCompany(computer.getCompany().getId());
+                } else {
+                    displayCompany(computer.getCompany());
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,7 +90,7 @@ public class CommandLineInterface {
                 System.out.println("That's not a number!");
                 scan.next(); // this is important!
             }
-            input = scan.nextInt();
+            int input = scan.nextInt();
 
             switch (input) {
             case 0:
@@ -110,7 +147,7 @@ public class CommandLineInterface {
             }
             System.out.println("3/ First Page");
             System.out.println("-1/ Leave Program");
-            input = scan.nextInt();
+            int input = scan.nextInt();
 
             switch (input) {
             case 0:
@@ -129,7 +166,7 @@ public class CommandLineInterface {
                 } else {
                     listAllComputers(firstRow);
                 }
-            case 3 :
+            case 3:
                 listAllComputers(0);
                 break;
             case -1:
@@ -147,13 +184,14 @@ public class CommandLineInterface {
         System.out.println("1/ List All Computers");
         System.out.println("2/ List All Companies");
         System.out.println("3/ Find A Computer");
-        System.out.println("4/ List A Company");
+        System.out.println("4/ Find A Company");
+        System.out.println("5/ Create a computer");
         System.out.println("Type -1 to leave");
         while (!scan.hasNextInt()) {
             System.out.println("That's not a number!");
             scan.next(); // this is important!
         }
-        input = scan.nextInt();
+        int input = scan.nextInt();
         switch (input) {
         case 1:
             listAllComputers(0);
@@ -162,8 +200,20 @@ public class CommandLineInterface {
             listAllCompanies(0);
             break;
         case 3:
+            System.out.println("Enter computer's id : ");
+            while (!scan.hasNextInt()) {
+                System.out.println("That's not a number!");
+                scan.next(); // this is important!
+            }
+
+            long input2 = scan.nextLong();
+
+            displayComputer(input2);
             break;
         case 4:
+            break;
+        case 5:
+            createComputer();
             break;
         }
 
@@ -179,4 +229,7 @@ public class CommandLineInterface {
         System.out.println("Program exited, goodbye !");
     }
 
+    private void createComputer() {
+        Computer computer = new Computer();
+    }
 }
