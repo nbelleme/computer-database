@@ -71,5 +71,11 @@ public class ComputerDAO implements DAO<Computer> {
 
     @Override
     public void update(Computer computer) throws SQLException {
+        try (Connection connection = Database.getConnection()) {
+            String query = "UPDATE " + TABLE + "SET name = ?, introduced = ?, discontinued = ?, company_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            mapper.map(computer, stmt);
+            stmt.executeUpdate();
+        }
     }
 }
