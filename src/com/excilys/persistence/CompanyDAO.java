@@ -32,9 +32,18 @@ public class CompanyDAO implements DAO<Company> {
     }
 
     @Override
-    public Company find(Company entity) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+    public Company find(long id) throws SQLException {
+        String query = "SELECT id, name FROM " + TABLE + " WHERE id = ?";
+        Company company = null;
+        try (Connection connection = Database.getConnection()) {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                company = mapper.unmap(rs);
+            }
+        }
+        return company;
     }
 
     @Override

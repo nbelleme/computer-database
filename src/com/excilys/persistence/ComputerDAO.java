@@ -40,11 +40,11 @@ public class ComputerDAO implements DAO<Computer> {
     }
 
     @Override
-    public Computer find(Computer entity) throws SQLException {
+    public Computer find(long id) throws SQLException {
         try (Connection connection = Database.getConnection()) {
             String query = "SELECT * FROM " + TABLE + " WHERE id = ?";
             PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setLong(1, entity.getId());
+            stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             Computer computer = null;
             while (rs.next()) {

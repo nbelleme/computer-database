@@ -32,7 +32,7 @@ public interface DAO<T> {
      * @param item
      * @return T
      */
-    public T find(T entity) throws SQLException;
+    public T find(long id) throws SQLException;
     
     public ArrayList<T> findAll(int firstRow, int countRow) throws SQLException;
 }
