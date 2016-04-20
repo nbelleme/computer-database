@@ -1,11 +1,10 @@
 package mapper;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.sql.rowset.JdbcRowSet;
-
 import com.excilys.model.Computer;
-import com.excilys.persistence.ComputerDAO;
 
 public class ComputerMapper implements Mapper<Computer> {
 
@@ -15,23 +14,31 @@ public class ComputerMapper implements Mapper<Computer> {
     public static final String DISCONTINUED = "discontinued";
     public static final String COMPANY_ID = "company_id";
 
-    @Override
-    public void map(Computer computer, JdbcRowSet rowset) throws SQLException {
-        rowset.updateLong(ID, computer.getId());
-        rowset.updateString(NAME, computer.getName());
-        rowset.updateTimestamp(INTRODUCED, computer.getIntroduced());
-        rowset.updateTimestamp(DISCONTINUED, computer.getDiscontinued());
-        rowset.updateLong(COMPANY_ID, computer.getCompany());
+    private static ComputerMapper _instance = null;
+
+    public static ComputerMapper getMapper() {
+        if (_instance == null) {
+            _instance = new ComputerMapper();
+        }
+        return _instance;
     }
 
     @Override
-    public Computer unmap(JdbcRowSet rowset) throws SQLException {
+    public void map(Computer entity, PreparedStatement stmt) throws SQLException {
+        stmt.setString(1, entity.getName());
+        stmt.setTimestamp(2, entity.getIntroduced());
+        stmt.setTimestamp(3, entity.getDiscontinued());
+        stmt.setLong(4, entity.getCompany());
+    }
+
+    @Override
+    public Computer unmap(ResultSet rs) throws SQLException {
         Computer computer = new Computer();
-        computer.setId(rowset.getLong(ID));
-        computer.setName(rowset.getString(NAME));
-        computer.setIntroduced(rowset.getTimestamp(INTRODUCED));
-        computer.setDiscontinued(rowset.getTimestamp(DISCONTINUED));
-        computer.setCompany(rowset.getLong(COMPANY_ID));
+        computer.setId(rs.getLong(ID));
+        computer.setName(rs.getString(NAME));
+        computer.setIntroduced(rs.getTimestamp(INTRODUCED));
+        computer.setDiscontinued(rs.getTimestamp(DISCONTINUED));
+        computer.setCompany(rs.getLong(COMPANY_ID));
         return computer;
     }
 

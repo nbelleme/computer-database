@@ -1,6 +1,7 @@
 package com.excilys.persistence;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface DAO<T> {
 
@@ -31,5 +32,7 @@ public interface DAO<T> {
 	 * @param item
 	 * @return T
 	 */
-	public T find(Long id) throws SQLException;
+	public T find(T entity) throws SQLException;
+	
+	public List<T> findAll() throws SQLException;
 }

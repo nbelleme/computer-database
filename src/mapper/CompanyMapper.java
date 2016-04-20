@@ -1,8 +1,8 @@
 package mapper;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.sql.rowset.JdbcRowSet;
 
 import com.excilys.model.Company;
 
@@ -15,16 +15,13 @@ public class CompanyMapper implements Mapper<Company>{
     }
     
     @Override
-    public void map(Company company, JdbcRowSet rowset) throws SQLException {
-        rowset.updateLong(ID, company.getId());
-        rowset.updateString(NAME, company.getName());
+    public void map(Company company, PreparedStatement stmt) throws SQLException {
     }
 
     @Override
-    public Company unmap(JdbcRowSet rowset) throws SQLException {
+    public Company unmap(ResultSet rs) throws SQLException {
         Company company = new Company();
-        company.setId(rowset.getLong(ID));
-        company.setName(rowset.getString(NAME));
+        
         return company;
     }
 

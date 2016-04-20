@@ -10,12 +10,19 @@ public class Computer {
 	private Long company;
 
 	public Computer() {
-
+	    name =null;
+	    introduced = null;
+	    discontinued = null;
+	    company = (Long) null;
 	}
 
-	public Computer(Long id) {
-		this.id = id;
-	}
+    public Computer(Long id) {
+        this.id = id;
+    }
+    public Computer(Long id, Long company) {
+        this.id = id;
+        this.company = company;
+    }
 
 	public Long getId() {
 		return id;
