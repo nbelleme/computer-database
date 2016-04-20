@@ -3,18 +3,18 @@ package com.excilys.model;
 import java.sql.Timestamp;
 
 public class Computer {
-	private Long id;
-	private String name;
-	private Timestamp introduced;
-	private Timestamp discontinued;
-	private Long company;
+    private Long id;
+    private String name;
+    private Timestamp introduced;
+    private Timestamp discontinued;
+    private Long company;
 
-	public Computer() {
-	    name =null;
-	    introduced = null;
-	    discontinued = null;
-	    company = (Long) null;
-	}
+    public Computer() {
+        name =null;
+        introduced = null;
+        discontinued = null;
+        company = (Long) null;
+    }
 
     public Computer(Long id) {
         this.id = id;
@@ -24,50 +24,50 @@ public class Computer {
         this.company = company;
     }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Timestamp getIntroduced() {
-		return introduced;
-	}
+    public Timestamp getIntroduced() {
+        return introduced;
+    }
 
-	public void setIntroduced(Timestamp introduced) {
-		this.introduced = introduced;
-	}
+    public void setIntroduced(Timestamp introduced) {
+        this.introduced = introduced;
+    }
 
-	public Timestamp getDiscontinued() {
-		return discontinued;
-	}
+    public Timestamp getDiscontinued() {
+        return discontinued;
+    }
 
-	public void setDiscontinued(Timestamp discontinued) {
-		this.discontinued = discontinued;
-	}
+    public void setDiscontinued(Timestamp discontinued) {
+        this.discontinued = discontinued;
+    }
 
-	public Long getCompany() {
-		return company;
-	}
+    public Long getCompany() {
+        return company;
+    }
 
-	public void setCompany(Long company) {
-		this.company = company;
-	}
+    public void setCompany(Long company) {
+        this.company = company;
+    }
 
-	@Override
-	public String toString() {
-		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", company=" + company + "]";
-	}
+    @Override
+    public String toString() {
+        return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
+                + ", company=" + company + "]";
+    }
 
 }
