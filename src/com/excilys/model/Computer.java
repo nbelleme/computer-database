@@ -7,22 +7,17 @@ public class Computer {
     private String name;
     private Timestamp introduced;
     private Timestamp discontinued;
-    private Long company;
+    private Company company;
 
     public Computer() {
         name = null;
         introduced = null;
         discontinued = null;
-        company = (Long) null;
+        company = null;
     }
 
     public Computer(Long id) {
         this.id = id;
-    }
-
-    public Computer(Long id, Long company) {
-        this.id = id;
-        this.company = company;
     }
 
     public Long getId() {
@@ -57,18 +52,18 @@ public class Computer {
         this.discontinued = discontinued;
     }
 
-    public Long getCompany() {
+    public Company getCompany() {
         return company;
     }
 
-    public void setCompany(Long company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 
     @Override
     public String toString() {
         return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-                + ", company=" + company + "]";
+                + ", company=" + company.toString() + "]";
     }
 
 }

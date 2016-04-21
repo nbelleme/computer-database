@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.excilys.model.Company;
 import com.excilys.model.Computer;
 
 public class ComputerMapper implements Mapper<Computer> {
@@ -28,7 +29,7 @@ public class ComputerMapper implements Mapper<Computer> {
         stmt.setString(1, entity.getName());
         stmt.setTimestamp(2, entity.getIntroduced());
         stmt.setTimestamp(3, entity.getDiscontinued());
-        stmt.setLong(4, entity.getCompany());
+        stmt.setLong(4, entity.getCompany().getId());
     }
 
     @Override
@@ -38,7 +39,7 @@ public class ComputerMapper implements Mapper<Computer> {
         computer.setName(rs.getString(NAME));
         computer.setIntroduced(rs.getTimestamp(INTRODUCED));
         computer.setDiscontinued(rs.getTimestamp(DISCONTINUED));
-        computer.setCompany(rs.getLong(COMPANY_ID));
+        computer.setCompany(new Company(rs.getLong(COMPANY_ID)));
         return computer;
     }
 
