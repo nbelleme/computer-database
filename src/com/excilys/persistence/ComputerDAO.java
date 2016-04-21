@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.excilys.model.Computer;
+import com.mysql.jdbc.Statement;
 
 import mapper.ComputerMapper;
 
@@ -19,14 +20,29 @@ public class ComputerDAO implements DAO<Computer> {
     }
 
     @Override
-    public void add(Computer computer) throws SQLException {
+    public long add(Computer computer) throws SQLException {
+        long id = -1;
         try (Connection connection = Database.getConnection()) {
             String query = "INSERT INTO " + TABLE + " (name, introduced, discontinued, company_id)"
                     + " VALUES (?, ?, ?, ?)";
-            PreparedStatement stmt = connection.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             mapper.map(computer, stmt);
-            stmt.executeUpdate();
+            int affectedRows = stmt.executeUpdate();
+            
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    id = generatedKeys.getLong(1);
+                }
+                else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
         }
+        return id;
     }
 
     @Override

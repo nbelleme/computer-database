@@ -20,8 +20,9 @@ public class CompanyDAO implements DAO<Company> {
     }
 
     @Override
-    public void add(Company item) throws SQLException {
-        // TODO Auto-generated method stub
+    public long add(Company item) throws SQLException {
+        long id = -1;
+        return id;
 
     }
 

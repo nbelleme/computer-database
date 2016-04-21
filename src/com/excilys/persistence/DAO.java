@@ -10,7 +10,7 @@ public interface DAO<T> {
      * 
      * @param item
      */
-    public void add(T item) throws SQLException;
+    public long add(T item) throws SQLException;
 
     /**
      * Add item from the DB
