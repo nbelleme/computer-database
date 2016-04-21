@@ -2,7 +2,9 @@ package ui;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 import com.excilys.model.Company;
@@ -28,13 +30,13 @@ public class CommandLineInterface {
         }
     }
 
-    private void displayCompany(Long id) {
+    private void displayCompany(Company company) {
 
     }
 
     private void displayComputer(Long id) {
         try {
-            Computer computer = computerDAO.find(new Computer(id));
+            Computer computer = computerDAO.find(id);
             System.out.println(computer.toString());
 
             System.out.println("0/ Main menu");
@@ -231,5 +233,105 @@ public class CommandLineInterface {
 
     private void createComputer() {
         Computer computer = new Computer();
+        System.out.println("Enter new computer's name");
+        String inputComputerName = scan.next();
+        computer.setName(inputComputerName);
+
+        boolean isFind = false;
+        boolean error = false;
+        while (!isFind) {
+            System.out.println("Enter computer's company's id : ");
+            if (error)
+                System.out.println("Company not found");
+
+            while (!scan.hasNextLong()) {
+                System.out.println("That's not a number !");
+                scan.next();
+            }
+
+            Long inputCompany = scan.nextLong();
+            Company company = null;
+
+            try {
+                company = companyDAO.find(inputCompany);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            if (company == null) {
+                error = !error;
+            } else {
+                isFind = !isFind;
+                computer.setCompany(company);
+            }
+        }
+
+        boolean isDateOk = false;
+        boolean errorDate = false;
+        String inputDate = "";
+        while (!isDateOk) {
+            if (errorDate)
+                System.out.println("Date is not valid");
+            System.out.println("Enter introduced date with format : DD/MM/YYY or enter null");
+            inputDate = scan.next();
+            if (inputDate.matches("^\\d{2}\\/\\d{2}\\/\\d{4}$") || inputDate.equals("null")) {
+                isDateOk = !isDateOk;
+            }
+        }
+
+        Timestamp introduced = null;
+        if (!inputDate.equals("null")) {
+            String[] dateIntroduced = inputDate.split("/");
+            int dayIntroduced = Integer.parseInt(dateIntroduced[0]);
+            int monthIntroduced = Integer.parseInt(dateIntroduced[1]) - 1;
+            int yearIntroduced = Integer.parseInt(dateIntroduced[2]);
+
+            GregorianCalendar cal = new GregorianCalendar(yearIntroduced, monthIntroduced, dayIntroduced);
+            long timeIntroduced = cal.getTimeInMillis();
+            introduced = new Timestamp(timeIntroduced);
+        }
+
+        computer.setIntroduced(introduced);
+
+        isDateOk = false;
+        errorDate = false;
+        while (!isDateOk) {
+            if (errorDate)
+                System.out.println("Date is not valid");
+            System.out.println("Enter discontinued date with format : DD/MM/YYY or enter null");
+            inputDate = scan.next();
+            if (inputDate.matches("^\\d{2}\\/\\d{2}\\/\\d{4}$") || inputDate.equals("null")) {
+                isDateOk = !isDateOk;
+            }
+        }
+
+        Timestamp discontinued = null;
+
+        if (!inputDate.equals("null")) {
+            String[] dateDiscontinued = inputDate.split("/");
+            int dayDiscontinued = Integer.parseInt(dateDiscontinued[0]);
+            int monthDiscontinued = Integer.parseInt(dateDiscontinued[1]);
+            int yearDiscontinued = Integer.parseInt(dateDiscontinued[2]);
+
+            GregorianCalendar calDiscontinued = new GregorianCalendar(yearDiscontinued, monthDiscontinued,
+                    dayDiscontinued);
+            long timeDiscontinued = calDiscontinued.getTimeInMillis();
+            discontinued = new Timestamp(timeDiscontinued);
+        }
+        computer.setDiscontinued(discontinued);
+
+        long id = -1;
+        try {
+            id = computerDAO.add(computer);
+            computer.setId(id);
+            System.out.println("Computer inserted, id : " + computer.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Press any key to go back to main menu ...");
+        try {
+            System.in.read();
+        } catch (Exception e) {
+        }
     }
 }
