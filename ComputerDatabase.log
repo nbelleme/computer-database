@@ -1,0 +1,4 @@
+[2016-04-21 11:41:35,757] INFO [main] (Main.java:10[2016-04-21 11:41:38,408] INFO [main] (Main.java:10[2016-04-22 16:30:27,277] ERROR [main] (DaoException.java:13) bonjour
+[2016-04-22 16:31:11,449] ERROR [main] (DaoException.java:13) bonjour
+[2016-04-22 16:31:11,454] ERROR [main] (DaoException.java:13) Test
+[2016-04-22 16:40:21,738] ERROR [main] (ComputerService.java:95) com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-1,15' at line 1

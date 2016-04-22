@@ -1,7 +1,6 @@
 package com.excilys.persistence;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 public interface DAO<T> {
 
@@ -10,21 +9,21 @@ public interface DAO<T> {
      * 
      * @param item
      */
-    public long add(T item) throws SQLException;
+    public long add(T item) throws DaoException;
 
     /**
      * Add item from the DB
      * 
      * @param item
      */
-    public void delete(T item) throws SQLException;
+    public void delete(T item) throws DaoException;
 
     /**
      * Update an item in the DB
      * 
      * @param item
      */
-    public void update(T item) throws SQLException;
+    public void update(T item) throws DaoException;
 
     /**
      * Find an item and return it
@@ -32,7 +31,7 @@ public interface DAO<T> {
      * @param item
      * @return T
      */
-    public T find(long id) throws SQLException;
-    
-    public ArrayList<T> findAll(int firstRow, int countRow) throws SQLException;
+    public T find(long id) throws DaoException;
+
+    public List<T> findAll(int firstRow, int countRow) throws DaoException;
 }

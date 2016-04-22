@@ -14,8 +14,25 @@ public class Database {
     private final static String DATABASE = "computer-database-db";
     private final static String OPTIONS = "?zeroDateTimeBehavior=convertToNull";
 
-    public static Connection getConnection() throws SQLException{
-        return DriverManager.getConnection(URL+DATABASE+OPTIONS, USER, PASSWORD);
-        
+    private static Database _instance = null;
+
+    public static synchronized Database getInstance() {
+        if (_instance == null) {
+            synchronized (Database.class) {
+                if (_instance == null) {
+                    _instance = new Database();
+                }
+            }
+        }
+        return _instance;
+    }
+
+    public static Connection getConnection() throws DatabaseException {
+        try {
+            return DriverManager.getConnection(URL + DATABASE + OPTIONS, USER, PASSWORD);
+        } catch (SQLException e) {
+            throw new DatabaseException(e);
+        }
+
     }
 }
