@@ -1,4 +1,4 @@
-package ui;
+package com.excilys.ui;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,14 +20,11 @@ public class CommandLineInterface {
     Scanner scan;
 
     public CommandLineInterface() {
-        try {
+       
             computerDAO = new ComputerDAO();
             companyDAO = new CompanyDAO();
             isRunning = true;
             scan = new Scanner(System.in);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     private void displayCompany(Company company) {

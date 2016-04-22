@@ -1,13 +1,15 @@
 package com.excilys.main;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.excilys.persistence.DaoException;
+import com.excilys.service.ComputerService;
 
 public class Main {
-    final static Logger logger = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
-        logger.error("Bonjour");
-//        new CommandLineInterface().run();
+        new DaoException(new Exception("Test"));
+        ComputerService computerService = ComputerService.getInstance();
+        computerService.findAll(-1,15);
+        // new CommandLineInterface().run();
     }
 
 }
