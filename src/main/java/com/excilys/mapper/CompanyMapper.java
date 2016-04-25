@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.excilys.model.Company;
-import com.excilys.persistence.DaoException;
 
 public class CompanyMapper implements Mapper<Company> {
     public static final String ID = "id";

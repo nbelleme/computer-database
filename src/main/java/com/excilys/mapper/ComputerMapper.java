@@ -47,8 +47,6 @@ public class ComputerMapper implements Mapper<Computer> {
 
     @Override
     public Computer unmap(ResultSet rs) throws SQLException {
-        long id = rs.getLong(COMPANY_TABLE_ID);
-        String name = rs.getString(COMPANY_TABLE_NAME);
         LocalDateTime introduced = rs.getTimestamp(INTRODUCED) == null ? null
                 : rs.getTimestamp(INTRODUCED).toLocalDateTime();
         LocalDateTime discontinued = rs.getTimestamp(DISCONTINUED) == null ? null

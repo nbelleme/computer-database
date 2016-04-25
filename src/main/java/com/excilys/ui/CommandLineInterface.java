@@ -1,13 +1,7 @@
 package com.excilys.ui;
 
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Scanner;
 
-import com.excilys.model.Company;
-import com.excilys.model.Computer;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
