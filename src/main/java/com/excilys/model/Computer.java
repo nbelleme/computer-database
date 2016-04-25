@@ -3,149 +3,198 @@ package com.excilys.model;
 import java.time.LocalDateTime;
 
 public class Computer {
-    private long id;
-    private String name;
-    private LocalDateTime introduced;
-    private LocalDateTime discontinued;
-    private Company company;
-    
-    public Computer(){
-        id = -1;
-        introduced = LocalDateTime.now();
-        discontinued = LocalDateTime.now();
+  private long id;
+  private String name;
+  private LocalDateTime introduced;
+  private LocalDateTime discontinued;
+  private Company company;
+
+  /**
+   * Default constructor.
+   */
+  public Computer() {
+    id = -1;
+    introduced = LocalDateTime.now();
+    discontinued = LocalDateTime.now();
+  }
+
+  /**
+   * @param builder
+   *          builder
+   */
+  public Computer(Builder builder) {
+    id = builder.computer.id;
+    name = builder.computer.name;
+    introduced = builder.computer.introduced;
+    discontinued = builder.computer.discontinued;
+    company = builder.computer.company;
+  }
+
+  public static class Builder {
+    private Computer computer = new Computer();
+
+    /**
+     * @param id
+     *          id to be built
+     * @return builder builder
+     */
+    public Builder id(long id) {
+      computer.id = id;
+      return this;
     }
 
-    public Computer(Builder builder) {
-        id = builder.computer.id;
-        name = builder.computer.name;
-        introduced = builder.computer.introduced;
-        discontinued = builder.computer.discontinued;
-        company = builder.computer.company;
+    /**
+     * @param name
+     *          name to be built
+     * @return builder builder
+     */
+    public Builder name(String name) {
+      computer.name = name;
+      return this;
     }
 
-    public static class Builder {
-        private Computer computer = new Computer();
-
-        public Builder id(long id) {
-            computer.id = id;
-            return this;
-        }
-
-        public Builder name(String name) {
-            computer.name = name;
-            return this;
-        }
-
-        public Builder introduced(LocalDateTime introduced) {
-            computer.introduced = introduced;
-            return this;
-        }
-
-        public Builder discontinued(LocalDateTime discontinued) {
-            computer.discontinued = discontinued;
-            return this;
-        }
-
-        public Builder company(Company company) {
-            computer.company = new Company(company);
-            return this;
-        }
-
-        public Computer build() {
-            return new Computer(this);
-        }
-
+    /**
+     * @param introduced
+     *          date to be built
+     * @return builder builder
+     */
+    public Builder introduced(LocalDateTime introduced) {
+      computer.introduced = introduced;
+      return this;
     }
 
-    public long getId() {
-        return id;
+    /**
+     * @param discontinued
+     *          data to be build
+     * @return builder builder
+     */
+    public Builder discontinued(LocalDateTime discontinued) {
+      computer.discontinued = discontinued;
+      return this;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    /**
+     * @param company
+     *          company to be built
+     * @return builder builder
+     */
+    public Builder company(Company company) {
+      computer.company = new Company(company);
+      return this;
     }
 
-    public String getName() {
-        return name;
+    /**
+     * Call to constructor with builder.
+     *
+     * @return Computer computer built
+     */
+    public Computer build() {
+      return new Computer(this);
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  }
 
-    public LocalDateTime getIntroduced() {
-        return introduced;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public void setIntroduced(LocalDateTime introduced) {
-        this.introduced = introduced;
-    }
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public LocalDateTime getDiscontinued() {
-        return discontinued;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setDiscontinued(LocalDateTime discontinued) {
-        this.discontinued = discontinued;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public Company getCompany() {
-        return company;
-    }
+  public LocalDateTime getIntroduced() {
+    return introduced;
+  }
 
-    public void setCompany(Company company) {
-        this.company = company;
-    }
+  public void setIntroduced(LocalDateTime introduced) {
+    this.introduced = introduced;
+  }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((company == null) ? 0 : company.hashCode());
-        result = prime * result + ((discontinued == null) ? 0 : discontinued.hashCode());
-        result = prime * result + (int) (id ^ (id >>> 32));
-        result = prime * result + ((introduced == null) ? 0 : introduced.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
+  public LocalDateTime getDiscontinued() {
+    return discontinued;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Computer other = (Computer) obj;
-        if (company == null) {
-            if (other.company != null)
-                return false;
-        } else if (!company.equals(other.company))
-            return false;
-        if (discontinued == null) {
-            if (other.discontinued != null)
-                return false;
-        } else if (!discontinued.equals(other.discontinued))
-            return false;
-        if (id != other.id)
-            return false;
-        if (introduced == null) {
-            if (other.introduced != null)
-                return false;
-        } else if (!introduced.equals(other.introduced))
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
-    }
+  public void setDiscontinued(LocalDateTime discontinued) {
+    this.discontinued = discontinued;
+  }
 
-    @Override
-    public String toString() {
-        return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-                + ", company=" + company.toString() + "]";
+  public Company getCompany() {
+    return company;
+  }
+
+  public void setCompany(Company company) {
+    this.company = company;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = (prime * result) + ((company == null) ? 0 : company.hashCode());
+    result = (prime * result) + ((discontinued == null) ? 0 : discontinued.hashCode());
+    result = (prime * result) + (int) (id ^ (id >>> 32));
+    result = (prime * result) + ((introduced == null) ? 0 : introduced.hashCode());
+    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    Computer other = (Computer) obj;
+    if (company == null) {
+      if (other.company != null) {
+        return false;
+      }
+    } else if (!company.equals(other.company)) {
+      return false;
+    }
+    if (discontinued == null) {
+      if (other.discontinued != null) {
+        return false;
+      }
+    } else if (!discontinued.equals(other.discontinued)) {
+      return false;
+    }
+    if (id != other.id) {
+      return false;
+    }
+    if (introduced == null) {
+      if (other.introduced != null) {
+        return false;
+      }
+    } else if (!introduced.equals(other.introduced)) {
+      return false;
+    }
+    if (name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!name.equals(other.name)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced
+        + ", discontinued=" + discontinued + ", company=" + company.toString() + "]";
+  }
 }

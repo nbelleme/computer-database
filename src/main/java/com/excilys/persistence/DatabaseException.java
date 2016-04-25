@@ -1,7 +1,12 @@
 package com.excilys.persistence;
 
 public class DatabaseException extends RuntimeException {
-    public DatabaseException(Exception e) {
-        super(e);
-    }
+
+  /**
+   * @param e
+   *          Exception thrown
+   */
+  public DatabaseException(Exception e) {
+    super(e);
+  }
 }

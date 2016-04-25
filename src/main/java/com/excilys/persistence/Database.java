@@ -5,31 +5,39 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-    private final static String URL = "jdbc:mysql://localhost/";
-    private final static String USER = "admincdb";
-    private final static String PASSWORD = "qwerty1234";
-    private final static String DATABASE = "computer-database-db";
-    private final static String OPTIONS = "?zeroDateTimeBehavior=convertToNull";
+  private static final String URL = "jdbc:mysql://localhost/";
+  private static final String USER = "admincdb";
+  private static final String PASSWORD = "qwerty1234";
+  private static final String DATABASE = "computer-database-db";
+  private static final String OPTIONS = "?zeroDateTimeBehavior=convertToNull";
 
-    private static Database _instance = null;
+  private static Database instance = null;
 
-    public static synchronized Database getInstance() {
-        if (_instance == null) {
-            synchronized (Database.class) {
-                if (_instance == null) {
-                    _instance = new Database();
-                }
-            }
+  /**
+   * @return ComputerMapper instance of Database
+   */
+  public static synchronized Database getInstance() {
+    if (instance == null) {
+      synchronized (Database.class) {
+        if (instance == null) {
+          instance = new Database();
         }
-        return _instance;
+      }
+    }
+    return instance;
+  }
+
+  /**
+   * @return Connection connection to database
+   * @throws DatabaseException
+   *           DatabaseException
+   */
+  public static Connection getConnection() throws DatabaseException {
+    try {
+      return DriverManager.getConnection(URL + DATABASE + OPTIONS, USER, PASSWORD);
+    } catch (SQLException e) {
+      throw new DatabaseException(e);
     }
 
-    public static Connection getConnection() throws DatabaseException {
-        try {
-            return DriverManager.getConnection(URL + DATABASE + OPTIONS, USER, PASSWORD);
-        } catch (SQLException e) {
-            throw new DatabaseException(e);
-        }
-
-    }
+  }
 }
