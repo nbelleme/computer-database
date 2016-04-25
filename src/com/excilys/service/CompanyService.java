@@ -20,7 +20,7 @@ public class CompanyService {
         companyDAO = CompanyDAO.getInstance();
     }
 
-    public CompanyService getInstance() {
+    public static CompanyService getInstance() {
         if (_instance == null) {
             synchronized (CompanyService.class) {
                 if (_instance == null) {
