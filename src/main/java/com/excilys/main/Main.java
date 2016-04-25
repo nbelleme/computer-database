@@ -4,8 +4,12 @@ import com.excilys.ui.CommandLineInterface;
 
 public class Main {
 
-    public static void main(String[] args) {
-         new CommandLineInterface().run();
-    }
+  /**
+   * @param args
+   *          arguments of the program
+   */
+  public static void main(String[] args) {
+    new CommandLineInterface().run();
+  }
 
 }

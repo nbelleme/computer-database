@@ -9,72 +9,116 @@ import com.excilys.model.Company;
 import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.DaoException;
 
+/**
+ * @author nbelleme
+ */
 public class CompanyService {
 
-    private CompanyDAO companyDAO;
-    private Logger logger = LoggerFactory.getLogger(CompanyService.class);
+  private CompanyDAO companyDAO;
+  private Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
-    private static CompanyService _instance;
+  private static CompanyService instance;
 
-    public CompanyService() {
-        companyDAO = CompanyDAO.getInstance();
-    }
+  /**
+   * Default constructor.
+   */
+  private CompanyService() {
+    companyDAO = CompanyDAO.getInstance();
+  }
 
-    public static CompanyService getInstance() {
-        if (_instance == null) {
-            synchronized (CompanyService.class) {
-                if (_instance == null) {
-                    _instance = new CompanyService();
-                }
-            }
+  /**
+   * @return instance of CompanyService
+   */
+  public static CompanyService getInstance() {
+    if (instance == null) {
+      synchronized (CompanyService.class) {
+        if (instance == null) {
+          instance = new CompanyService();
         }
-
-        return _instance;
+      }
     }
 
-    public long add(Company company) throws DaoException {
-        try {
-            return companyDAO.add(company);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
-    }
+    return instance;
+  }
 
-    public void delete(Company company) throws DaoException {
-        try {
-            companyDAO.delete(company);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
+  /**
+   * @param company
+   *          company needed to be added
+   * @return inserted company id
+   * @throws DaoException
+   *           DaoException
+   */
+  public long add(Company company) throws DaoException {
+    try {
+      return companyDAO.add(company);
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
     }
+  }
 
-    public Company find(long id) throws DaoException {
-        try {
-            return companyDAO.find(id);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
+  /**
+   * @param company
+   *          company need to be deleted
+   * @throws DaoException
+   *           DaoException
+   */
+  public void delete(Company company) throws DaoException {
+    try {
+      companyDAO.delete(company);
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
     }
+  }
 
-    public List<Company> findAll(int firstRow, int countRow) throws DaoException {
-        try {
-            return companyDAO.findAll(firstRow, countRow);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
+  /**
+   * @param id
+   *          id of the company looked for
+   * @return company company found
+   * @throws DaoException
+   *           DaoException
+   */
+  public Company find(long id) throws DaoException {
+    try {
+      return companyDAO.find(id);
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
     }
+  }
 
-    public void update(Company company) throws DaoException {
-        try {
-            companyDAO.update(company);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
+  /**
+   * @param firstRow
+   *          firstRow to look for
+   * @param countRow
+   *          number of value wanted
+   * @return List<Computer> list of entity retrieved
+   * @throws DaoException
+   *           DaoException
+   */
+  public List<Company> findAll(int firstRow, int countRow) throws DaoException {
+    try {
+      return companyDAO.findAll(firstRow, countRow);
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
     }
+  }
+
+  /**
+   * @param company
+   *          company need to be updated
+   * @throws DaoException
+   *           DaoException
+   */
+  public void update(Company company) throws DaoException {
+    try {
+      companyDAO.update(company);
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
+    }
+  }
 
 }

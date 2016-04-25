@@ -11,89 +11,132 @@ import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
 
 public class ComputerService {
-    private ComputerDAO computerDAO;
-    private CompanyDAO companyDAO;
-    private static ComputerService _instance = null;
-    private Logger logger = LoggerFactory.getLogger(ComputerService.class);
+  private ComputerDAO computerDAO;
+  private CompanyDAO companyDAO;
+  private static ComputerService instance = null;
+  private Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
-    public static ComputerService getInstance() {
-        if (_instance == null) {
-            synchronized (ComputerService.class) {
-                if (_instance == null) {
-                    _instance = new ComputerService();
-                }
-            }
+  /**
+   * Get the instance of the singleton.
+   *
+   * @return instance instance of the singleton
+   */
+  public static ComputerService getInstance() {
+    if (instance == null) {
+      synchronized (ComputerService.class) {
+        if (instance == null) {
+          instance = new ComputerService();
         }
-        return _instance;
+      }
     }
+    return instance;
+  }
 
-    public ComputerService() {
-        computerDAO = ComputerDAO.getInstance();
-        companyDAO = CompanyDAO.getInstance();
-    }
+  /**
+   * Default constructor.
+   */
+  private ComputerService() {
+    computerDAO = ComputerDAO.getInstance();
+    companyDAO = CompanyDAO.getInstance();
+  }
 
-    public Computer add(Computer computer) throws DaoException {
-        try {
-            if (computer.getIntroduced().isAfter(computer.getDiscontinued())) {
-                if (computer.getCompany() != null) {
-                    if (companyDAO.find(computer.getCompany().getId()) == null) {
-                        computer.setId(computerDAO.add(computer));
-                    }
-                } else {
-                    computer.setId(computerDAO.add(computer));
-                }
-            } else {
-                return null;
-            }
-            return computer;
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
+  /**
+   * @param computer
+   *          computer to add
+   * @return computer computer added
+   * @throws DaoException
+   *           DaoException
+   */
+  public Computer add(Computer computer) throws DaoException {
+    try {
+      if (computer.getIntroduced().isAfter(computer.getDiscontinued())) {
+        if (computer.getCompany() != null) {
+          if (companyDAO.find(computer.getCompany().getId()) == null) {
+            computer.setId(computerDAO.add(computer));
+          }
+        } else {
+          computer.setId(computerDAO.add(computer));
         }
+      } else {
+        return null;
+      }
+      return computer;
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
     }
+  }
 
-    public void update(Computer computer) throws DaoException {
-        try {
-            if (computer.getIntroduced().isAfter(computer.getDiscontinued())) {
-                if (computer.getCompany() != null) {
-                    if (companyDAO.find(computer.getCompany().getId()) == null) {
-                        computerDAO.update(computer);
-                    }
-                } else {
-                    computerDAO.update(computer);
-                }
-            }
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
+  /**
+   * @param computer
+   *          computer needed to be updated
+   * @throws DaoException
+   *           DaoException
+   */
+  public void update(Computer computer) throws DaoException {
+    try {
+      if (computer.getIntroduced().isAfter(computer.getDiscontinued())) {
+        if (computer.getCompany() != null) {
+          if (companyDAO.find(computer.getCompany().getId()) == null) {
+            computerDAO.update(computer);
+          }
+        } else {
+          computerDAO.update(computer);
         }
+      }
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
+    }
+  }
+
+  /**
+   * @param computer
+   *          computer needed to be deleted
+   * @throws DaoException
+   *           DaoException
+   */
+  public void delete(Computer computer) throws DaoException {
+    try {
+      computerDAO.delete(computer);
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
     }
 
-    public void delete(Computer computer) throws DaoException {
-        try {
-            computerDAO.delete(computer);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
+  }
 
+  /**
+   * @param id
+   *          id of the entity to find
+   * @return Computer computer found
+   * @throws DaoException
+   *           DaoException
+   */
+  public Computer find(long id) throws DaoException {
+    try {
+      return computerDAO.find(id);
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
     }
+  }
 
-    public Computer find(long id) throws DaoException {
-        try {
-            return computerDAO.find(id);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
+  /**
+   * @param firstRow
+   *          firstRow to look for
+   * @param countRow
+   *          number of value wanted
+   * @return List<Computer> list of entity retrieved
+   * @throws DaoException
+   *           DaoException
+   */
+  public List<Computer> findAll(int firstRow, int countRow) throws DaoException {
+    try {
+      return computerDAO.findAll(firstRow, countRow);
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
     }
-
-    public List<Computer> findAll(int firstRow, int countRow) throws DaoException {
-        try {
-            return computerDAO.findAll(firstRow, countRow);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
-    }
+  }
 }

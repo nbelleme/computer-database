@@ -2,7 +2,13 @@ package com.excilys.persistence;
 
 public class DaoException extends RuntimeException {
 
-    public DaoException(Exception e) {
-        super(e);
-    }
+  /**
+   * Default constructor.
+   *
+   * @param e
+   *          Exception thrown
+   */
+  public DaoException(final Exception e) {
+    super(e);
+  }
 }
