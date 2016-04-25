@@ -1,11 +1,8 @@
 package com.excilys.persistence;
 
-import java.sql.*;
-import javax.sql.rowset.CachedRowSet;
-import javax.sql.rowset.JdbcRowSet;
-
-import com.sun.rowset.CachedRowSetImpl;
-import com.sun.rowset.JdbcRowSetImpl;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Database {
     private final static String URL = "jdbc:mysql://localhost/";

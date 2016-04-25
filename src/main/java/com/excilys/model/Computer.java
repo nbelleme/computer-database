@@ -2,8 +2,6 @@ package com.excilys.model;
 
 import java.time.LocalDateTime;
 
-import javafx.util.converter.LocalDateStringConverter;
-
 public class Computer {
     private long id;
     private String name;
