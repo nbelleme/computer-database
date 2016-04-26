@@ -58,4 +58,11 @@ public interface DAO<T> {
    *           throws DaoException
    */
   List<T> findAll(int firstRow, int countRow) throws DaoException;
+
+  /**
+   * Get number total of elements.
+   *
+   * @return int number of elements in the database
+   */
+  int getTotal() throws DaoException;
 }
