@@ -105,4 +105,10 @@ public class CompanyDAO implements DAO<Company> {
   public void update(Company item) throws DaoException {
 
   }
+
+  @Override
+  public int getTotal() throws DaoException {
+    // TODO Auto-generated method stub
+    return 0;
+  }
 }

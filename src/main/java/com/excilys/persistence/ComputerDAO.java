@@ -23,6 +23,7 @@ public class ComputerDAO implements DAO<Computer> {
       + COMPANY_TABLE + " ON computer.company_id = company.id " + " LIMIT ?,?";
   private static final String UPDATE_QUERY = "UPDATE " + COMPUTER_TABLE
       + "SET name = ?, introduced = ?, discontinued = ?, company_id = ?";
+  private static final String TOTAL_QUERY = "SELECT count(*) FROM " + COMPUTER_TABLE;
 
   private ComputerMapper mapper;
   private Database database;
@@ -139,6 +140,20 @@ public class ComputerDAO implements DAO<Computer> {
       throw new DatabaseException(e);
     } catch (SQLException e) {
       throw new DaoException(e);
+    }
+  }
+
+  @Override
+  public int getTotal() throws DaoException {
+    try (Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(TOTAL_QUERY);) {
+      ResultSet rs = stmt.executeQuery();
+      rs.first();
+      return rs.getInt(1);
+    } catch (DatabaseException e) {
+      throw new DatabaseException(e);
+    } catch (SQLException e1) {
+      throw new DaoException("Error request");
     }
   }
 }

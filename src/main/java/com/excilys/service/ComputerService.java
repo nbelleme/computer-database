@@ -143,4 +143,13 @@ public class ComputerService {
       throw new DaoException(e);
     }
   }
+
+  public int getTotal() throws DaoException {
+    try {
+      return computerDAO.getTotal();
+    } catch (DaoException e) {
+      throw new DaoException("Error get total");
+    }
+
+  }
 }
