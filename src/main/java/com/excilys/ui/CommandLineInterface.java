@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.excilys.model.Computer;
+import com.excilys.persistence.DaoException;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
@@ -68,38 +69,45 @@ public class CommandLineInterface {
    *          firstRow of research
    */
   private void listAllComputers(int firstRow) {
-    ArrayList<Computer> computers = (ArrayList<Computer>) computerService.findAll(firstRow, 15);
-    if (computers.size() == 0) {
-      listAllComputers(firstRow - 15);
-    }
-    for (Computer computer : computers) {
-      System.out.println(computer.toString());
-    }
+    ArrayList<Computer> computers;
+    try {
+      computers = (ArrayList<Computer>) computerService.findAll(firstRow, 15);
 
-    System.out.println("\n\n");
-    System.out.println("***Menu***");
-    System.out.println("0/ Main Menu");
-    System.out.println("1/ Next page");
-    System.out.println("2/ Previous page");
-    System.out.println("3/ Find a computer");
-    int inputMenu = (int) scan();
-    if (inputMenu < 5 && inputMenu > -1) {
-      switch (inputMenu) {
-      case 0:
-        mainMenu();
-        break;
-      case 1:
-        listAllComputers(firstRow + 15);
-        break;
-      case 2:
-        if (firstRow == 0) {
-          listAllComputers(firstRow);
-        }
-        break;
-      case 3:
-        long inputFindComputer = scan();
-        displayComputer(inputFindComputer);
+      if (computers.size() == 0) {
+        listAllComputers(firstRow - 15);
       }
+      for (Computer computer : computers) {
+        System.out.println(computer.toString());
+      }
+
+      System.out.println("\n\n");
+      System.out.println("***Menu***");
+      System.out.println("0/ Main Menu");
+      System.out.println("1/ Next page");
+      System.out.println("2/ Previous page");
+      System.out.println("3/ Find a computer");
+      int inputMenu = (int) scan();
+      if (inputMenu < 5 && inputMenu > -1) {
+        switch (inputMenu) {
+        case 0:
+          mainMenu();
+          break;
+        case 1:
+          listAllComputers(firstRow + 15);
+          break;
+        case 2:
+          if (firstRow == 0) {
+            listAllComputers(firstRow);
+          }
+          break;
+        case 3:
+          long inputFindComputer = scan();
+          displayComputer(inputFindComputer);
+        }
+      }
+    } catch (DaoException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
   }
 

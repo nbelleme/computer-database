@@ -74,9 +74,6 @@ public class CompanyDAO implements DAO<Company> {
     } catch (DatabaseException e) {
       logger.error(e.getMessage());
       throw new DatabaseException(e);
-    } catch (DaoException e) {
-      logger.error(e.getMessage());
-      throw new DaoException(e);
     } catch (SQLException e) {
       logger.error(e.getMessage());
       throw new DaoException(e);

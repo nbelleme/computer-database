@@ -9,19 +9,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.model.Computer;
 import com.excilys.persistence.DaoException;
+import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
 /**
  * Servlet implementation class CompanyServlet
  */
-public class CompanyServlet extends HttpServlet {
+public class ComputerServletView extends HttpServlet {
   private static final long serialVersionUID = 1L;
+
+  private ComputerService computerService;
+  private CompanyService companyService;
 
   /**
    * @see HttpServlet#HttpServlet()
    */
-  public CompanyServlet() {
+  public ComputerServletView() {
     super();
+    computerService = ComputerService.getInstance();
+    companyService = CompanyService.getInstance();
+
   }
 
   /**
@@ -30,19 +37,18 @@ public class CompanyServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    ComputerService computerService = ComputerService.getInstance();
-    Computer computer;
     String pathInfo = request.getPathInfo();
     String[] pathParts = pathInfo.split("/");
     String part1 = pathParts[1];
+
     long id = Long.parseLong(part1);
-    request.setAttribute("id", id);
+
     try {
-      computer = computerService.find(574L);
+      Computer computer = computerService.find(id);
       request.setAttribute("computer", computer);
-      request.getRequestDispatcher("/NewFile.jsp").forward(request, response);
+      request.getRequestDispatcher("/views/viewComputer.jsp").forward(request, response);
     } catch (DaoException e) {
-      e.printStackTrace();
+      request.getRequestDispatcher("/views/404.html").forward(request, response);
     }
   }
 

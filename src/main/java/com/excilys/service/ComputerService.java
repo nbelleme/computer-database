@@ -47,20 +47,24 @@ public class ComputerService {
    * @throws DaoException
    *           DaoException
    */
-  public long add(Computer computer) throws DaoException {
+  public Computer add(Computer computer) throws DaoException {
     try {
-      if (computer.getIntroduced().isAfter(computer.getDiscontinued())) {
+      long id = -1;
+      if (computer.getIntroduced().isBefore(computer.getDiscontinued())) {
         if (computer.getCompany() != null) {
           if (companyDAO.find(computer.getCompany().getId()) == null) {
-            computer.setId(computerDAO.add(computer));
+            id = computerDAO.add(computer);
+          } else {
+            throw new DaoException("Company not found");
           }
         } else {
-          computer.setId(computerDAO.add(computer));
+          id = computerDAO.add(computer);
         }
       } else {
-        return -1;
+        throw new DaoException("Date not valid");
       }
-      return computer.getId();
+      computer.setId(id);
+      return computer;
     } catch (DaoException e) {
       logger.error(e.getMessage());
       throw new DaoException(e);
