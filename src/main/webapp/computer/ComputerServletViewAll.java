@@ -1,6 +1,7 @@
 package computer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,19 +10,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.model.Computer;
 import com.excilys.persistence.DaoException;
+import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
 /**
- * Servlet implementation class CompanyServlet
+ * Servlet implementation class ComputerServletViewAll
  */
-public class CompanyServlet extends HttpServlet {
+
+public class ComputerServletViewAll extends HttpServlet {
   private static final long serialVersionUID = 1L;
+  private ComputerService computerService;
+  private CompanyService companyService;
 
   /**
    * @see HttpServlet#HttpServlet()
    */
-  public CompanyServlet() {
+  public ComputerServletViewAll() {
     super();
+    computerService = ComputerService.getInstance();
+    companyService = CompanyService.getInstance();
+
   }
 
   /**
@@ -30,17 +38,18 @@ public class CompanyServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    ComputerService computerService = ComputerService.getInstance();
-    Computer computer;
-    String pathInfo = request.getPathInfo();
-    String[] pathParts = pathInfo.split("/");
-    String part1 = pathParts[1];
-    long id = Long.parseLong(part1);
-    request.setAttribute("id", id);
+
+    // String pathInfo = request.getPathInfo();
+    // String[] pathParts = pathInfo.split("/");
+    // int numberRow = 10;
+    // if (pathParts[1] != null) {
+    // String part1 = pathParts[1];
+    // numberRow = Integer.parseInt(part1);
+    // }
     try {
-      computer = computerService.find(574L);
-      request.setAttribute("computer", computer);
-      request.getRequestDispatcher("/NewFile.jsp").forward(request, response);
+      ArrayList<Computer> computers = (ArrayList<Computer>) computerService.findAll(0, 10);
+      request.setAttribute("computers", computers);
+      request.getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
     } catch (DaoException e) {
       e.printStackTrace();
     }
@@ -52,6 +61,7 @@ public class CompanyServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+    // TODO Auto-generated method stub
     doGet(request, response);
   }
 

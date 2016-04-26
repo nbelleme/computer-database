@@ -45,7 +45,11 @@ public class ComputerMapper implements Mapper<Computer> {
     stmt.setString(1, entity.getName());
     stmt.setTimestamp(2, Timestamp.valueOf(entity.getIntroduced()));
     stmt.setTimestamp(3, Timestamp.valueOf(entity.getDiscontinued()));
-    stmt.setLong(4, entity.getCompany().getId());
+    if (entity.getCompany() != null) {
+      stmt.setObject(4, entity.getCompany().getId(), java.sql.Types.BIGINT);
+    } else {
+      stmt.setObject(4, null, java.sql.Types.BIGINT);
+    }
   }
 
   @Override
