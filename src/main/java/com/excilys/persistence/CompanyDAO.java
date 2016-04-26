@@ -23,11 +23,12 @@ public class CompanyDAO implements DAO<Company> {
   Logger logger = LoggerFactory.getLogger(DaoException.class);
 
   private CompanyMapper mapper;
+  private Database database;
 
   private static CompanyDAO instance = null;
 
   /**
-   * Method to get the single nstance of CompanyDAO.
+   * Method to get the single instance of CompanyDAO.
    *
    * @return instance instance of CompanyDAO
    */
@@ -46,8 +47,9 @@ public class CompanyDAO implements DAO<Company> {
   /**
    * Default constructor.
    */
-  public CompanyDAO() {
+  private CompanyDAO() {
     mapper = CompanyMapper.getMapper();
+    database = Database.getInstance();
   }
 
   @Override
@@ -58,15 +60,13 @@ public class CompanyDAO implements DAO<Company> {
 
   @Override
   public void delete(Company item) throws DaoException {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public Company find(long id) throws DaoException {
-    try (Connection connection = Database.getConnection();
+    try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(FIND_QUERY);) {
-      Company company = null;
       stmt.setLong(1, id);
       ResultSet rs = stmt.executeQuery();
       rs.first();
@@ -85,7 +85,7 @@ public class CompanyDAO implements DAO<Company> {
 
   @Override
   public List<Company> findAll(int firstRow, int countRow) throws DaoException {
-    try (Connection connection = Database.getConnection();
+    try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(FIND_ALL_QUERY);) {
       stmt.setInt(1, firstRow);
       stmt.setInt(2, countRow);
@@ -106,7 +106,6 @@ public class CompanyDAO implements DAO<Company> {
 
   @Override
   public void update(Company item) throws DaoException {
-    // TODO Auto-generated method stub
 
   }
 }

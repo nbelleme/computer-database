@@ -2,3 +2,5 @@
 [2016-04-22 16:31:11,449] ERROR [main] (DaoException.java:13) bonjour
 [2016-04-22 16:31:11,454] ERROR [main] (DaoException.java:13) Test
 [2016-04-22 16:40:21,738] ERROR [main] (ComputerService.java:95) com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-1,15' at line 1
+[2016-04-26 12:10:29,461] ERROR [main] (ComputerService.java:120) com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'computer-database-db-test.computer' doesn't exist
+[2016-04-26 12:10:29,470] ERROR [main] (ComputerService.java:138) com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'computer-database-db-test.computer' doesn't exist
