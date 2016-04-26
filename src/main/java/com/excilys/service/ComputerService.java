@@ -47,7 +47,7 @@ public class ComputerService {
    * @throws DaoException
    *           DaoException
    */
-  public Computer add(Computer computer) throws DaoException {
+  public long add(Computer computer) throws DaoException {
     try {
       if (computer.getIntroduced().isAfter(computer.getDiscontinued())) {
         if (computer.getCompany() != null) {
@@ -58,9 +58,9 @@ public class ComputerService {
           computer.setId(computerDAO.add(computer));
         }
       } else {
-        return null;
+        return -1;
       }
-      return computer;
+      return computer.getId();
     } catch (DaoException e) {
       logger.error(e.getMessage());
       throw new DaoException(e);

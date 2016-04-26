@@ -25,6 +25,7 @@ public class ComputerDAO implements DAO<Computer> {
       + "SET name = ?, introduced = ?, discontinued = ?, company_id = ?";
 
   private ComputerMapper mapper;
+  private Database database;
 
   private static ComputerDAO instance = null;
 
@@ -48,11 +49,13 @@ public class ComputerDAO implements DAO<Computer> {
    */
   private ComputerDAO() {
     mapper = ComputerMapper.getMapper();
+    database = Database.getInstance();
+
   }
 
   @Override
   public long add(Computer computer) throws DaoException, DatabaseException {
-    try (Connection connection = Database.getConnection();
+    try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(ADD_QUERY,
             Statement.RETURN_GENERATED_KEYS);) {
       long id = -1;
@@ -81,7 +84,7 @@ public class ComputerDAO implements DAO<Computer> {
 
   @Override
   public void delete(Computer computer) throws DaoException, DatabaseException {
-    try (Connection connection = Database.getConnection();
+    try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(DELETE_QUERY);) {
       stmt.setLong(1, computer.getId());
       stmt.executeUpdate();
@@ -94,7 +97,7 @@ public class ComputerDAO implements DAO<Computer> {
 
   @Override
   public Computer find(long id) throws DaoException, DatabaseException {
-    try (Connection connection = Database.getConnection();
+    try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(FIND_QUERY);) {
       stmt.setLong(1, id);
       ResultSet rs = stmt.executeQuery();
@@ -109,7 +112,7 @@ public class ComputerDAO implements DAO<Computer> {
 
   @Override
   public List<Computer> findAll(int firstRow, int countRow) throws DaoException, DatabaseException {
-    try (Connection connection = Database.getConnection();
+    try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(FIND_ALL_QUERY);) {
       stmt.setInt(1, firstRow);
       stmt.setInt(2, countRow);
@@ -128,7 +131,7 @@ public class ComputerDAO implements DAO<Computer> {
 
   @Override
   public void update(Computer computer) throws DaoException, DatabaseException {
-    try (Connection connection = Database.getConnection();
+    try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(UPDATE_QUERY);) {
       mapper.map(computer, stmt);
       stmt.executeUpdate();

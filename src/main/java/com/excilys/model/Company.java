@@ -2,6 +2,9 @@ package com.excilys.model;
 
 public class Company {
 
+  private long id;
+  private String name;
+
   public static class Builder {
     private Company company = new Company();
 
@@ -35,10 +38,6 @@ public class Company {
     }
 
   }
-
-  private long id;
-
-  private String name;
 
   /**
    * Default constructor.
