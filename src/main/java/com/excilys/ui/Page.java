@@ -6,6 +6,7 @@ public class Page<T> {
 
   private int nbElementPage;
   private int nbElementTotal;
+  private int nbPage;
   private ArrayList<T> elements;
 
   private Page(Builder<T> builder) {
@@ -16,6 +17,11 @@ public class Page<T> {
 
   public static class Builder<T> {
     private Page<T> page;
+
+    public Builder<T> nbPage(int nbPage) {
+      page.nbPage = nbPage;
+      return this;
+    }
 
     public Builder<T> nbElementPage(int nbElementPage) {
       page.nbElementPage = nbElementPage;
@@ -35,6 +41,38 @@ public class Page<T> {
     public Page<T> build() {
       return new Page(this);
     }
+  }
+
+  public int getNbElementPage() {
+    return nbElementPage;
+  }
+
+  public void setNbElementPage(int nbElementPage) {
+    this.nbElementPage = nbElementPage;
+  }
+
+  public ArrayList<T> getElements() {
+    return elements;
+  }
+
+  public void setElements(ArrayList<T> elements) {
+    this.elements = elements;
+  }
+
+  public int getNbElementTotal() {
+    return nbElementTotal;
+  }
+
+  public void setNbElementTotal(int nbElementTotal) {
+    this.nbElementTotal = nbElementTotal;
+  }
+
+  public int getNbPage() {
+    return nbPage;
+  }
+
+  public void setNbPage(int nbPage) {
+    this.nbPage = nbPage;
   }
 
 }
