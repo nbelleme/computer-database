@@ -135,9 +135,9 @@ public class ComputerService {
    * @throws DaoException
    *           DaoException
    */
-  public List<Computer> findAll(int firstRow, int countRow) throws DaoException {
+  public List<Computer> findSeveral(int firstRow, int countRow) throws DaoException {
     try {
-      return computerDAO.findAll(firstRow, countRow);
+      return computerDAO.findSeveral(firstRow, countRow);
     } catch (DaoException e) {
       logger.error(e.getMessage());
       throw new DaoException(e);

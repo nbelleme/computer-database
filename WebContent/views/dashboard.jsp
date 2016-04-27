@@ -1,31 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
-<html>
-<head>
-<title>Computer Database</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="utf-8">
-<!-- Bootstrap -->
-<link href="${pageContext.request.contextPath}/css/bootstrap.min.css"
-	rel="stylesheet" media="screen">
-<link href="${pageContext.request.contextPath}/css/font-awesome.css"
-	rel="stylesheet" media="screen">
-<link href="${pageContext.request.contextPath}/css/main.css"
-	rel="stylesheet" media="screen">
-</head>
+<%@include file="/views/fragments/head.jsp"%>
 <body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
-				Computer Database </a>
-		</div>
-	</header>
-
+	<%@include file="/views/fragments/header.jsp"%>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">121 Computers found</h1>
+			<h1 id="homeTitle">
+				<c:out value="${page.nbElementTotal}"></c:out>
+				Computers found
+			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -73,7 +57,7 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach var="computer" items="${computers}">
+					<c:forEach var="computer" items="${page.elements}">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
@@ -131,9 +115,13 @@
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button type="button" class="btn btn-default">10</button>
-				<button type="button" class="btn btn-default">50</button>
-				<button type="button" class="btn btn-default">100</button>
+				<a
+					href="${pageContext.request.contextPath}/computer/view/all?nbElementPage=10"><button
+						type="button" class="btn btn-default">10</button></a> <a
+					href="${pageContext.request.contextPath}/computer/view/all?nbElementPage=50"><button
+						type="button" class="btn btn-default">50</button></a><a
+					href="${pageContext.request.contextPath}/computer/view/all?nbElementPage=100"><button
+						type="button" class="btn btn-default">100</button></a>
 			</div>
 		</div>
 	</footer>

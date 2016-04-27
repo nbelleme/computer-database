@@ -112,7 +112,8 @@ public class ComputerDAO implements DAO<Computer> {
   }
 
   @Override
-  public List<Computer> findAll(int firstRow, int countRow) throws DaoException, DatabaseException {
+  public List<Computer> findSeveral(int firstRow, int countRow)
+      throws DaoException, DatabaseException {
     try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(FIND_ALL_QUERY);) {
       stmt.setInt(1, firstRow);

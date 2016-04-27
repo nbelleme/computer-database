@@ -71,7 +71,7 @@ public class CommandLineInterface {
   private void listAllComputers(int firstRow) {
     ArrayList<Computer> computers;
     try {
-      computers = (ArrayList<Computer>) computerService.findAll(firstRow, 15);
+      computers = (ArrayList<Computer>) computerService.findSeveral(firstRow, 15);
 
       if (computers.size() == 0) {
         listAllComputers(firstRow - 15);
