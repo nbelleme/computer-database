@@ -6,7 +6,8 @@ public class Page<T> {
 
   private int nbElementPage;
   private int nbElementTotal;
-  private int nbPage;
+  private int nbCurrentPage;
+  private int nbPageTotal;
   private ArrayList<T> elements;
 
   private Page(Builder<T> builder) {
@@ -15,11 +16,17 @@ public class Page<T> {
     elements = builder.page.elements;
   }
 
+  private Page() {
+    nbElementPage = 10;
+    nbElementTotal = -1;
+    nbCurrentPage = 1;
+  }
+
   public static class Builder<T> {
-    private Page<T> page;
+    private Page<T> page = new Page();
 
     public Builder<T> nbPage(int nbPage) {
-      page.nbPage = nbPage;
+      page.nbCurrentPage = nbPage;
       return this;
     }
 
@@ -67,12 +74,19 @@ public class Page<T> {
     this.nbElementTotal = nbElementTotal;
   }
 
-  public int getNbPage() {
-    return nbPage;
+  public int getNbCurrentPage() {
+    return nbCurrentPage;
   }
 
-  public void setNbPage(int nbPage) {
-    this.nbPage = nbPage;
+  public void setNbCurrentPage(int nbPage) {
+    this.nbCurrentPage = nbPage;
   }
 
+  public int getNbPageTotal() {
+    return nbPageTotal;
+  }
+
+  public void setNbPageTotal(int nbPageTotal) {
+    this.nbPageTotal = nbPageTotal;
+  }
 }

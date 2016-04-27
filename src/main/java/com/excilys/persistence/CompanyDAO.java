@@ -81,7 +81,7 @@ public class CompanyDAO implements DAO<Company> {
   }
 
   @Override
-  public List<Company> findAll(int firstRow, int countRow) throws DaoException {
+  public List<Company> findSeveral(int firstRow, int countRow) throws DaoException {
     try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(FIND_ALL_QUERY);) {
       stmt.setInt(1, firstRow);

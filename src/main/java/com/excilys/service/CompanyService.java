@@ -99,7 +99,7 @@ public class CompanyService {
    */
   public List<Company> findAll(int firstRow, int countRow) throws DaoException {
     try {
-      return companyDAO.findAll(firstRow, countRow);
+      return companyDAO.findSeveral(firstRow, countRow);
     } catch (DaoException e) {
       logger.error(e.getMessage());
       throw new DaoException(e);

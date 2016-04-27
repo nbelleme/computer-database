@@ -57,7 +57,7 @@ public interface DAO<T> {
    * @throws DaoException
    *           throws DaoException
    */
-  List<T> findAll(int firstRow, int countRow) throws DaoException;
+  List<T> findSeveral(int firstRow, int countRow) throws DaoException;
 
   /**
    * Get number total of elements.

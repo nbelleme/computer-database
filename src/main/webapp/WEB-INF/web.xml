@@ -23,6 +23,7 @@
 		<servlet-name>ComputerServletViewAll</servlet-name>
 		<url-pattern>/computer/view/all</url-pattern>
 	</servlet-mapping>
+	
 
 	<!-- EDIT COMPUTER -->
 	<servlet>

@@ -12,6 +12,7 @@ import com.excilys.model.Computer;
 import com.excilys.persistence.DaoException;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
+import com.excilys.ui.Page;
 
 /**
  * Servlet implementation class ComputerServletViewAll
@@ -47,8 +48,33 @@ public class ComputerServletViewAll extends HttpServlet {
     // numberRow = Integer.parseInt(part1);
     // }
     try {
-      ArrayList<Computer> computers = (ArrayList<Computer>) computerService.findAll(0, 10);
-      request.setAttribute("computers", computers);
+      Page<Computer> page = new Page.Builder<Computer>().build();
+
+      int nbElementTotal = computerService.getTotal();
+      int nbElementPage = page.getNbElementPage();
+      int firstRow = nbElementPage * page.getNbCurrentPage();
+      int currentPage = 1;
+
+      if (request.getParameter("nbElementPage") != null) {
+        try {
+          String paramNbElementPage = request.getParameter("nbElementPage");
+          nbElementPage = Integer.parseInt(paramNbElementPage);
+          if (nbElementPage == 10 || nbElementPage == 50 || nbElementPage == 100) {
+            page.setNbElementPage(nbElementPage);
+          } else {
+            throw new NumberFormatException();
+          }
+        } catch (NumberFormatException e) {
+          request.getRequestDispatcher("/views/500.html").forward(request, response);
+        }
+      }
+
+      page.setNbElementTotal(nbElementTotal);
+      page.setNbPageTotal((int) Math.ceil(nbElementTotal / nbElementPage));
+      page.setElements((ArrayList<Computer>) computerService.findSeveral(firstRow, nbElementPage));
+      page.setNbCurrentPage(currentPage);
+
+      request.setAttribute("page", page);
       request.getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
     } catch (DaoException e) {
       e.printStackTrace();
