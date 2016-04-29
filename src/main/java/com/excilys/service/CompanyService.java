@@ -97,7 +97,16 @@ public class CompanyService {
    * @throws DaoException
    *           DaoException
    */
-  public List<Company> findAll(int firstRow, int countRow) throws DaoException {
+  public List<Company> findAll() throws DaoException {
+    try {
+      return companyDAO.findAll();
+    } catch (DaoException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
+    }
+  }
+
+  public List<Company> findSeveral(int firstRow, int countRow) throws DaoException {
     try {
       return companyDAO.findSeveral(firstRow, countRow);
     } catch (DaoException e) {

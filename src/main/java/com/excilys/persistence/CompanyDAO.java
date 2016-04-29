@@ -18,7 +18,9 @@ public class CompanyDAO implements DAO<Company> {
 
   private static final String FIND_QUERY = "SELECT id, name FROM " + COMPANY_TABLE
       + " WHERE id = ?";
-  private static final String FIND_ALL_QUERY = "SELECT * " + "FROM " + COMPANY_TABLE + " LIMIT ?,?";
+  private static final String FIND_SEVERAL_QUERY = "SELECT * " + "FROM " + COMPANY_TABLE
+      + " LIMIT ?,?";
+  private static final String FIND_ALL_QUERY = "SELECT * " + "FROM " + COMPANY_TABLE;
 
   Logger logger = LoggerFactory.getLogger(DaoException.class);
 
@@ -83,7 +85,7 @@ public class CompanyDAO implements DAO<Company> {
   @Override
   public List<Company> findSeveral(int firstRow, int countRow) throws DaoException {
     try (Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(FIND_ALL_QUERY);) {
+        PreparedStatement stmt = connection.prepareStatement(FIND_SEVERAL_QUERY);) {
       stmt.setInt(1, firstRow);
       stmt.setInt(2, countRow);
       ResultSet rs = stmt.executeQuery();
@@ -97,6 +99,22 @@ public class CompanyDAO implements DAO<Company> {
       throw new DatabaseException(e);
     } catch (SQLException e) {
       logger.error(e.getMessage());
+      throw new DaoException(e);
+    }
+  }
+
+  public List<Company> findAll() {
+    try (Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(FIND_ALL_QUERY);) {
+      ResultSet rs = stmt.executeQuery();
+      ArrayList<Company> companies = new ArrayList<Company>();
+      while (rs.next()) {
+        companies.add(mapper.unmap(rs));
+      }
+      return companies;
+    } catch (DatabaseException e) {
+      throw new DatabaseException(e);
+    } catch (SQLException e) {
       throw new DaoException(e);
     }
   }
