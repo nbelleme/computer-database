@@ -1,13 +1,5 @@
 'use strict';
 
-function $(string) {
-	return document.querySelector(string);
-}
-
-function checkName() {
-	alert();
-}
-
 // Check if name length is > 2
 function checkName() {
 	var input = document.querySelector("#computerName");
@@ -36,9 +28,9 @@ function checkDate(event) {
 	var id = "#" + target.id;
 
 	var input = document.querySelector(id);
-	var introduced = input.value;
-	if (introduced != ""
-			&& (isNaN(Date.parse(introduced)) || !isDateValid(introduced))) {
+	var value = input.value;
+	if (value != ""
+			&& (isNaN(Date.parse(value)) || !isDateValid(value))) {
 		input.parentNode.classList.remove("has-success");
 		input.parentNode.classList.add("has-error");
 	} else {

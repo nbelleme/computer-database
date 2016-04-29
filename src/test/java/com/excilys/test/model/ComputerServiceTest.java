@@ -57,15 +57,15 @@ public class ComputerServiceTest extends TestCase {
     }
   }
 
-  @Test
-  public void findAllTest() {
-    try {
-      ArrayList<Computer> computers = (ArrayList<Computer>) computerService.findAll(0, 15);
-      assertEquals(15, computers.size());
-    } catch (DaoException e) {
-      e.printStackTrace();
-    }
-  }
+  // @Test
+  // public void findAllTest() {
+  // try {
+  // ArrayList<Computer> computers = (ArrayList<Computer>) computerService.findAll(0, 15);
+  // assertEquals(15, computers.size());
+  // } catch (DaoException e) {
+  // e.printStackTrace();
+  // }
+  // }
 
   @Test
   public void addAllOkTest() {
