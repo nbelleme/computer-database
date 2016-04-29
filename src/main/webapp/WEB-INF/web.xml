@@ -34,4 +34,15 @@
 		<servlet-name>ComputerServletEdit</servlet-name>
 		<url-pattern>/computer/edit/*</url-pattern>
 	</servlet-mapping>
+	
+	<!--  ADD COMPUTER -->
+	<servlet>
+		<servlet-name>AddComputer</servlet-name>
+		<servlet-class>computer.AddComputer</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddComputer</servlet-name>
+		<url-pattern>/computer/add</url-pattern>
+	</servlet-mapping>
+	
 </web-app>

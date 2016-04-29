@@ -37,46 +37,10 @@ function checkDate(event) {
 			&& (isNaN(Date.parse(introduced)) || !isDateValid(introduced))) {
 		input.parentNode.classList.remove("has-success");
 		input.parentNode.classList.add("has-error");
+		alert();
 	} else {
 		input.parentNode.classList.remove("has-error");
 		input.parentNode.classList.add("has-success");
 	}
 
-}
-
-function checkSubmit(event) {
-	event.preventDefault();
-	var form = event.target || event.srcElement;
-	var introduced = document.querySelector("#introduced").value;
-	var discontinued = document.querySelector("#discontinued").value;
-	var isValidIntroduced = false;
-	var isValidDiscontinued = false;
-	if (!(introduced != "" && (isNaN(Date.parse(introduced)) || !isDateValid(introduced)))) {
-		isValidIntroduced = true;
-	}
-
-	if (!(discontinued != "" && (isNaN(Date.parse(discontinued)) || !isDateValid(discontinued)))) {
-		isValidDiscontinued = true;
-	}
-
-	if ((introduced == "" || isValidIntroduced)
-			&& (discontinued == "" || isValidDiscontinued)) {
-		document.querySelector("#introduced").value = dateToTimeStamp(introduced);
-		document.querySelector("#discontinued").value = dateToTimeStamp(discontinued);
-		
-	} else {
-		console.log("introduced : " + introduced);
-		console.log("isValidIntroduced : " + isValidIntroduced);
-		console.log("discontinued : " + discontinued );
-		console.log("isValidDiscontinued : " + isValidDiscontinued);
-		console.log("!ok");
-	}
-
-	 setTimeout(function(){
-		 form.submit();
-	 }, 000);
-}
-
-function dateToTimeStamp(str) {
-	return new Date(str).getTime();
 }
