@@ -28,11 +28,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" placeholder="Introduced date">
+                                <input type="date" class="form-control" id="introduced" placeholder="Introduced date" onkeyup="checkDate(event)">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" placeholder="Discontinued date">
+                                <input type="date" class="form-control" id="discontinued" placeholder="Discontinued date" onkeyup="checkDate(event)"> 
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>

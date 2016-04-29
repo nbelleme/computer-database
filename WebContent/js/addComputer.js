@@ -21,10 +21,14 @@ function checkName() {
 };
 
 function isDateValid(str) {
-	var before = new Date("1970-01-01");
-	var after = new Date("2037-12-31");
-	var current = new Date(str);
-	return before <= current && current <= after;
+	var re = /^\d{4}-\d{2}-\d{2}$/;
+	if (re.test(str)) {
+		var before = new Date("1970-01-01");
+		var after = new Date("2037-12-31");
+		var current = new Date(str);
+		return before <= current && current <= after;
+	}
+	return false;
 }
 
 function checkDate(event) {
@@ -37,7 +41,6 @@ function checkDate(event) {
 			&& (isNaN(Date.parse(introduced)) || !isDateValid(introduced))) {
 		input.parentNode.classList.remove("has-success");
 		input.parentNode.classList.add("has-error");
-		alert();
 	} else {
 		input.parentNode.classList.remove("has-error");
 		input.parentNode.classList.add("has-success");
