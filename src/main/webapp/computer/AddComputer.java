@@ -46,6 +46,7 @@ public class AddComputer extends HttpServlet {
       request.setAttribute("companies", companies);
       request.getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
     } catch (DaoException e) {
+      e.printStackTrace();
       request.getRequestDispatcher("/views/500.html").forward(request, response);
     }
   }
