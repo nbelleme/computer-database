@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.excilys.model.Company;
@@ -11,7 +12,7 @@ import com.excilys.model.Computer;
 import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
 
-public class ComputerMapper implements Mapper<Computer> {
+public class ComputerMapperDB implements Mapper<Computer> {
 
   public static final String COMPUTER_TABLE = ComputerDAO.COMPUTER_TABLE;
   public static final String COMPANY_TABLE = CompanyDAO.COMPANY_TABLE;
@@ -24,16 +25,16 @@ public class ComputerMapper implements Mapper<Computer> {
   public static final String COMPANY_TABLE_ID = "company.id";
   public static final String COMPANY_TABLE_NAME = "company.name";
 
-  private static ComputerMapper instance = null;
+  private static ComputerMapperDB instance = null;
 
   /**
    * @return ComputerMapper instance of ComputerMapper
    */
-  public static ComputerMapper getMapper() {
+  public static ComputerMapperDB getMapper() {
     if (instance == null) {
-      synchronized (ComputerMapper.class) {
+      synchronized (ComputerMapperDB.class) {
         if (instance == null) {
-          instance = new ComputerMapper();
+          instance = new ComputerMapperDB();
         }
       }
     }
@@ -43,14 +44,14 @@ public class ComputerMapper implements Mapper<Computer> {
   @Override
   public void map(Computer entity, PreparedStatement stmt) throws SQLException {
     stmt.setString(1, entity.getName());
-    if (entity.getIntroduced() != null) {
 
-      stmt.setTimestamp(2, Timestamp.valueOf(entity.getIntroduced()));
+    if (entity.getIntroduced() != null) {
+      stmt.setTimestamp(2, Timestamp.valueOf(entity.getIntroduced().atStartOfDay()));
     } else {
       stmt.setObject(2, null, java.sql.Types.TIMESTAMP);
     }
     if (entity.getDiscontinued() != null) {
-      stmt.setTimestamp(3, Timestamp.valueOf(entity.getDiscontinued()));
+      stmt.setTimestamp(3, Timestamp.valueOf(entity.getDiscontinued().atStartOfDay()));
     } else {
       stmt.setObject(3, null, java.sql.Types.TIMESTAMP);
     }
@@ -63,10 +64,10 @@ public class ComputerMapper implements Mapper<Computer> {
 
   @Override
   public Computer unmap(ResultSet rs) throws SQLException {
-    LocalDateTime introduced = rs.getTimestamp(INTRODUCED) == null ? null
-        : rs.getTimestamp(INTRODUCED).toLocalDateTime();
-    LocalDateTime discontinued = rs.getTimestamp(DISCONTINUED) == null ? null
-        : rs.getTimestamp(DISCONTINUED).toLocalDateTime();
+    LocalDate introduced = rs.getTimestamp(INTRODUCED) == null ? null
+        : rs.getTimestamp(INTRODUCED).toLocalDateTime().toLocalDate();
+    LocalDate discontinued = rs.getTimestamp(DISCONTINUED) == null ? null
+        : rs.getTimestamp(DISCONTINUED).toLocalDateTime().toLocalDate();
     Company company = new Company.Builder().id(rs.getLong(COMPANY_TABLE_ID))
         .name(rs.getString(COMPANY_TABLE_NAME)).build();
     return new Computer.Builder().id(rs.getLong(ID)).name(rs.getString(NAME)).introduced(introduced)
