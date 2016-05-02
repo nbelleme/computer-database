@@ -10,7 +10,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.mapper.CompanyMapper;
+import com.excilys.mapper.CompanyMapperDB;
 import com.excilys.model.Company;
 
 public class CompanyDAO implements DAO<Company> {
@@ -24,7 +24,7 @@ public class CompanyDAO implements DAO<Company> {
 
   Logger logger = LoggerFactory.getLogger(DaoException.class);
 
-  private CompanyMapper mapper;
+  private CompanyMapperDB mapper;
   private Database database;
 
   private static CompanyDAO instance = null;
@@ -50,7 +50,7 @@ public class CompanyDAO implements DAO<Company> {
    * Default constructor.
    */
   private CompanyDAO() {
-    mapper = CompanyMapper.getMapper();
+    mapper = CompanyMapperDB.getMapper();
     database = Database.getInstance();
   }
 
