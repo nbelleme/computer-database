@@ -6,20 +6,20 @@ import java.sql.SQLException;
 
 import com.excilys.model.Company;
 
-public class CompanyMapper implements Mapper<Company> {
+public class CompanyMapperDB implements Mapper<Company> {
   public static final String ID = "id";
   public static final String NAME = "name";
 
-  private static CompanyMapper instance = null;
+  private static CompanyMapperDB instance = null;
 
   /**
    * @return ComputerMapper instance of CompanyMapper
    */
-  public static CompanyMapper getMapper() {
+  public static CompanyMapperDB getMapper() {
     if (instance == null) {
-      synchronized (CompanyMapper.class) {
+      synchronized (CompanyMapperDB.class) {
         if (instance == null) {
-          instance = new CompanyMapper();
+          instance = new CompanyMapperDB();
         }
       }
     }

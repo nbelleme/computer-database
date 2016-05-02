@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.mapper.ComputerMapper;
+import com.excilys.mapper.ComputerMapperDB;
 import com.excilys.model.Computer;
 import com.mysql.jdbc.Statement;
 
@@ -25,7 +25,7 @@ public class ComputerDAO implements DAO<Computer> {
       + "SET name = ?, introduced = ?, discontinued = ?, company_id = ?";
   private static final String TOTAL_QUERY = "SELECT count(*) FROM " + COMPUTER_TABLE;
 
-  private ComputerMapper mapper;
+  private ComputerMapperDB mapper;
   private Database database;
 
   private static ComputerDAO instance = null;
@@ -49,7 +49,7 @@ public class ComputerDAO implements DAO<Computer> {
    * Default constructor, initialize mapper.
    */
   private ComputerDAO() {
-    mapper = ComputerMapper.getMapper();
+    mapper = ComputerMapperDB.getMapper();
     database = Database.getInstance();
 
   }
