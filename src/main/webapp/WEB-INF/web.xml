@@ -4,38 +4,27 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
-	<!-- VIEW ONE COMPUTER -->
-	<servlet>
-		<servlet-name>ComputerServletView</servlet-name>
-		<servlet-class>computer.ComputerServletView</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ComputerServletView</servlet-name>
-		<url-pattern>/computer/view/*</url-pattern>
-	</servlet-mapping>
-
 	<!-- VIEW ALL COMPUTERS -->
 	<servlet>
-		<servlet-name>ComputerServletViewAll</servlet-name>
-		<servlet-class>computer.ComputerServletViewAll</servlet-class>
+		<servlet-name>ViewAll</servlet-name>
+		<servlet-class>computer.ViewAll</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>ComputerServletViewAll</servlet-name>
+		<servlet-name>ViewAll</servlet-name>
 		<url-pattern>/computer/view/all</url-pattern>
 	</servlet-mapping>
-	
 
 	<!-- EDIT COMPUTER -->
 	<servlet>
-		<servlet-name>ComputerServletEdit</servlet-name>
-		<servlet-class>computer.ComputerServletEdit</servlet-class>
+		<servlet-name>Edit</servlet-name>
+		<servlet-class>computer.Edit</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>ComputerServletEdit</servlet-name>
+		<servlet-name>Edit</servlet-name>
 		<url-pattern>/computer/edit/*</url-pattern>
 	</servlet-mapping>
-	
-	<!--  ADD COMPUTER -->
+
+	<!-- ADD COMPUTER -->
 	<servlet>
 		<servlet-name>AddComputer</servlet-name>
 		<servlet-class>computer.AddComputer</servlet-class>
@@ -44,5 +33,23 @@
 		<servlet-name>AddComputer</servlet-name>
 		<url-pattern>/computer/add</url-pattern>
 	</servlet-mapping>
+
+	<!-- ERROR PAGE ServiceException -->
+	<error-page>
+		<exception-type>com.excilys.service.ServiceException</exception-type>
+		<location>/views/500.jsp</location>
+	</error-page>
+
+	<!-- ERROR PAGE DaoException -->
+	<error-page>
+		<exception-type>com.excilys.persistence.DaoException</exception-type>
+		<location>/WEB-INF/views/500.jsp</location>
+	</error-page>
 	
+	<!-- PAGE NOT FOUND -->
+	<error-page>
+	<error-code>404</error-code>
+	<location>/WEB-INF/views/404.jsp</location>
+	</error-page>
+
 </web-app>
