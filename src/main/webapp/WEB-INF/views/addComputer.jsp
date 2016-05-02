@@ -53,6 +53,6 @@
 	</section>
 
 	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/js/addComputer.js"></script>
+		src="${pageContext.request.contextPath}/resources/js/addComputer.js"></script>
 </body>
 </html>
