@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
@@ -34,17 +34,12 @@
 		<url-pattern>/computer/add</url-pattern>
 	</servlet-mapping>
 
-	<!-- ERROR PAGE ServiceException -->
+	<!-- INTERNAL ERROR EXCEPTION -->
 	<error-page>
-		<exception-type>com.excilys.service.ServiceException</exception-type>
+		<error-code>500</error-code>
 		<location>/views/500.jsp</location>
 	</error-page>
 
-	<!-- ERROR PAGE DaoException -->
-	<error-page>
-		<exception-type>com.excilys.persistence.DaoException</exception-type>
-		<location>/WEB-INF/views/500.jsp</location>
-	</error-page>
 	
 	<!-- PAGE NOT FOUND -->
 	<error-page>

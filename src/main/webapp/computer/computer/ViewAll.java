@@ -2,6 +2,7 @@ package computer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -50,11 +51,11 @@ public class ViewAll extends HttpServlet {
       try {
         if (request.getParameter("nbElementPage") != null) {
           String paramNbElementPage = request.getParameter("nbElementPage");
-          nbElementPage = Integer.parseInt(paramNbElementPage);
-          if (nbElementPage == 10 || nbElementPage == 50 || nbElementPage == 100) {
-            page.setNbElementPage(nbElementPage);
+          Pattern patternElementPage = Pattern.compile("^(?!0+$)\\d+$");
+          if (patternElementPage.matcher(paramNbElementPage).matches()) {
+            nbElementPage = Integer.parseInt(paramNbElementPage);
           } else {
-            throw new NumberFormatException();
+            nbElementPage = 10;
           }
         }
         nbPageTotal = (int) Math.ceil((double) nbElementTotal / (double) nbElementPage);
