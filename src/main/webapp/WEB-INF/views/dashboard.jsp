@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@include file="/views/fragments/head.jsp"%>
+<%@ taglib prefix="p" tagdir="/WEB-INF/tags"%>
+<%@ include file="/WEB-INF/views/fragments/head.jsp"%>
 <body>
-	<%@include file="/views/fragments/header.jsp"%>
+
+	<%@include file="/WEB-INF/views/fragments/header.jsp"%>
+
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
@@ -13,7 +16,6 @@
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
-
 						<input type="search" id="searchbox" name="search"
 							class="form-control" placeholder="Search name" /> <input
 							type="submit" id="searchsubmit" value="Filter by name"
@@ -99,35 +101,13 @@
 		</div>
 	</section>
 
-	<footer class="navbar-fixed-bottom">
-		<div class="container text-center">
-			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span
-						aria-hidden="true">&laquo;</span>
-				</a></li>
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
-			</ul>
+	<p:footer page="${page }" />
 
-			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a
-					href="${pageContext.request.contextPath}/computer/view/all?nbElementPage=10"><button
-						type="button" class="btn btn-default">10</button></a> <a
-					href="${pageContext.request.contextPath}/computer/view/all?nbElementPage=50"><button
-						type="button" class="btn btn-default">50</button></a><a
-					href="${pageContext.request.contextPath}/computer/view/all?nbElementPage=100"><button
-						type="button" class="btn btn-default">100</button></a>
-			</div>
-		</div>
-	</footer>
+	
 	<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
+
 
 </body>
 </html>

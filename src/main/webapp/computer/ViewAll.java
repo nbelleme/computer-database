@@ -18,7 +18,7 @@ import com.excilys.ui.Page;
  * Servlet implementation class ComputerServletViewAll
  */
 
-public class ComputerServletViewAll extends HttpServlet {
+public class ViewAll extends HttpServlet {
   private static final long serialVersionUID = 1L;
   private ComputerService computerService;
   private CompanyService companyService;
@@ -26,7 +26,7 @@ public class ComputerServletViewAll extends HttpServlet {
   /**
    * @see HttpServlet#HttpServlet()
    */
-  public ComputerServletViewAll() {
+  public ViewAll() {
     super();
     computerService = ComputerService.getInstance();
     companyService = CompanyService.getInstance();
@@ -39,24 +39,16 @@ public class ComputerServletViewAll extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
-    // String pathInfo = request.getPathInfo();
-    // String[] pathParts = pathInfo.split("/");
-    // int numberRow = 10;
-    // if (pathParts[1] != null) {
-    // String part1 = pathParts[1];
-    // numberRow = Integer.parseInt(part1);
-    // }
     try {
       Page<Computer> page = new Page.Builder<Computer>().build();
 
       int nbElementTotal = computerService.getTotal();
       int nbElementPage = page.getNbElementPage();
-      int firstRow = nbElementPage * page.getNbCurrentPage();
-      int currentPage = 1;
+      int nbCurrentPage = 1;
+      int nbPageTotal = 0;
 
-      if (request.getParameter("nbElementPage") != null) {
-        try {
+      try {
+        if (request.getParameter("nbElementPage") != null) {
           String paramNbElementPage = request.getParameter("nbElementPage");
           nbElementPage = Integer.parseInt(paramNbElementPage);
           if (nbElementPage == 10 || nbElementPage == 50 || nbElementPage == 100) {
@@ -64,19 +56,32 @@ public class ComputerServletViewAll extends HttpServlet {
           } else {
             throw new NumberFormatException();
           }
-        } catch (NumberFormatException e) {
-          request.getRequestDispatcher("/views/500.html").forward(request, response);
         }
+        nbPageTotal = (int) Math.ceil((double) nbElementTotal / (double) nbElementPage);
+        if (request.getParameter("page") != null) {
+          String paramNbCurrentPage = request.getParameter("page");
+          nbCurrentPage = Integer.parseInt(paramNbCurrentPage);
+          if (nbCurrentPage > nbPageTotal) {
+            nbCurrentPage = nbPageTotal;
+          }
+        }
+
+      } catch (NumberFormatException e) {
+        request.getRequestDispatcher("/WEB-INF/views/500.html").forward(request, response);
       }
 
+      int firstRow = nbElementPage * (nbCurrentPage - 1);
+
       page.setNbElementTotal(nbElementTotal);
-      page.setNbPageTotal((int) Math.ceil(nbElementTotal / nbElementPage));
+      page.setNbPageTotal(nbPageTotal);
       page.setElements((ArrayList<Computer>) computerService.findSeveral(firstRow, nbElementPage));
-      page.setNbCurrentPage(currentPage);
+      page.setNbCurrentPage(nbCurrentPage);
 
       request.setAttribute("page", page);
-      request.getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
-    } catch (DaoException e) {
+      request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
+    } catch (
+
+    DaoException e) {
       e.printStackTrace();
     }
   }

@@ -44,10 +44,10 @@ public class AddComputer extends HttpServlet {
     try {
       ArrayList<Company> companies = (ArrayList<Company>) companyService.findAll();
       request.setAttribute("companies", companies);
-      request.getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
+      request.getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
     } catch (DaoException e) {
       e.printStackTrace();
-      request.getRequestDispatcher("/views/500.html").forward(request, response);
+      request.getRequestDispatcher("/WEB-INF/views/500.html").forward(request, response);
     }
   }
 
@@ -94,7 +94,7 @@ public class AddComputer extends HttpServlet {
       }
     } catch (DateTimeException e) {
       request.setAttribute("errorDate", true);
-      request.getRequestDispatcher("/views/500.html").forward(request, response);
+      request.getRequestDispatcher("/WEB-INF/views/500.html").forward(request, response);
     }
 
     ComputerService computerService = ComputerService.getInstance();
