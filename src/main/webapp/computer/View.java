@@ -15,7 +15,7 @@ import com.excilys.service.ComputerService;
 /**
  * Servlet implementation class CompanyServlet
  */
-public class ComputerServletView extends HttpServlet {
+public class View extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   private ComputerService computerService;
@@ -24,7 +24,7 @@ public class ComputerServletView extends HttpServlet {
   /**
    * @see HttpServlet#HttpServlet()
    */
-  public ComputerServletView() {
+  public View() {
     super();
     computerService = ComputerService.getInstance();
     companyService = CompanyService.getInstance();
@@ -46,9 +46,9 @@ public class ComputerServletView extends HttpServlet {
     try {
       Computer computer = computerService.find(id);
       request.setAttribute("computer", computer);
-      request.getRequestDispatcher("/views/viewComputer.jsp").forward(request, response);
+      request.getRequestDispatcher("/WEB-INF/views/viewComputer.jsp").forward(request, response);
     } catch (DaoException e) {
-      request.getRequestDispatcher("/views/404.html").forward(request, response);
+      request.getRequestDispatcher("/WEB-INF/views/404.html").forward(request, response);
     }
   }
 

@@ -13,6 +13,8 @@ public enum ComputerValidator {
           if (computer.getIntroduced().isBefore(computer.getDiscontinued())) {
             return true;
           }
+        } else {
+          return true;
         }
       }
     }

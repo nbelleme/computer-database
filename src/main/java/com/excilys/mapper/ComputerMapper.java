@@ -43,8 +43,17 @@ public class ComputerMapper implements Mapper<Computer> {
   @Override
   public void map(Computer entity, PreparedStatement stmt) throws SQLException {
     stmt.setString(1, entity.getName());
-    stmt.setTimestamp(2, Timestamp.valueOf(entity.getIntroduced()));
-    stmt.setTimestamp(3, Timestamp.valueOf(entity.getDiscontinued()));
+    if (entity.getIntroduced() != null) {
+
+      stmt.setTimestamp(2, Timestamp.valueOf(entity.getIntroduced()));
+    } else {
+      stmt.setObject(2, null, java.sql.Types.TIMESTAMP);
+    }
+    if (entity.getDiscontinued() != null) {
+      stmt.setTimestamp(3, Timestamp.valueOf(entity.getDiscontinued()));
+    } else {
+      stmt.setObject(3, null, java.sql.Types.TIMESTAMP);
+    }
     if (entity.getCompany() != null) {
       stmt.setObject(4, entity.getCompany().getId(), java.sql.Types.BIGINT);
     } else {
@@ -57,7 +66,7 @@ public class ComputerMapper implements Mapper<Computer> {
     LocalDateTime introduced = rs.getTimestamp(INTRODUCED) == null ? null
         : rs.getTimestamp(INTRODUCED).toLocalDateTime();
     LocalDateTime discontinued = rs.getTimestamp(DISCONTINUED) == null ? null
-        : rs.getTimestamp(INTRODUCED).toLocalDateTime();
+        : rs.getTimestamp(DISCONTINUED).toLocalDateTime();
     Company company = new Company.Builder().id(rs.getLong(COMPANY_TABLE_ID))
         .name(rs.getString(COMPANY_TABLE_NAME)).build();
     return new Computer.Builder().id(rs.getLong(ID)).name(rs.getString(NAME)).introduced(introduced)
