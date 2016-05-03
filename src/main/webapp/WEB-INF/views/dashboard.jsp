@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags"%>
 <%@ include file="/WEB-INF/views/fragments/head.jsp"%>
 <body>
@@ -9,10 +10,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">
-				<c:out value="${page.nbElementTotal}"></c:out>
-				Computers found
-			</h1>
+			<h1 id="homeTitle">${page.nbElementTotal} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -23,14 +21,17 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/computer/add">Add
+					<a class="btn btn-success" id="addComputer"
+						href="${pageContext.request.contextPath}/computer/add">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
+		<form id="deleteForm"
+			action="${pageContext.request.contextPath}/computer/delete"
+			method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 
@@ -62,7 +63,7 @@
 					<c:forEach var="computer" items="${page.elements}">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
+								class="cb" value="${computer.id}"></td>
 							<td><a
 								href="${pageContext.request.contextPath}/computer/edit/<c:out value="${computer.id }">
 										</c:out>"
@@ -103,10 +104,13 @@
 
 	<p:footer page="${page }" />
 
-	
-	<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script>
+
+	<script
+		src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script>
 
 
 </body>
