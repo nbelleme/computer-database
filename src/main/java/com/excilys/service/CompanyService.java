@@ -1,5 +1,8 @@
 package com.excilys.service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -7,7 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.model.Company;
 import com.excilys.persistence.CompanyDAO;
+import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
+import com.excilys.persistence.Database;
+import com.excilys.persistence.DatabaseException;
 
 /**
  * @author nbelleme
@@ -19,11 +25,14 @@ public class CompanyService {
 
   private static CompanyService instance;
 
+  private Database database;
+
   /**
    * Default constructor.
    */
   private CompanyService() {
     companyDAO = CompanyDAO.getInstance();
+    database = Database.getInstance();
   }
 
   /**
@@ -63,12 +72,25 @@ public class CompanyService {
    * @throws DaoException
    *           DaoException
    */
-  public void delete(Company company) throws DaoException {
-    try {
-      companyDAO.delete(company);
-    } catch (DaoException e) {
-      logger.error(e.getMessage());
-      throw new DaoException(e);
+  public void delete(Company company) {
+    if (company != null) {
+      try (Connection conn = database.getConnection();
+          PreparedStatement stmtCompany = conn.prepareStatement(CompanyDAO.DELETE_COMPANY);) {
+        try {
+          conn.setAutoCommit(false);
+          ComputerDAO.getInstance().deleteFromCompanyId(company.getId());
+          stmtCompany.setLong(1, company.getId());
+          stmtCompany.executeUpdate();
+
+          conn.commit();
+        } catch (SQLException e) {
+          logger.error("Rollback executed");
+          conn.rollback();
+          throw new DatabaseException(e);
+        }
+      } catch (SQLException e) {
+        throw new DatabaseException(e);
+      }
     }
   }
 

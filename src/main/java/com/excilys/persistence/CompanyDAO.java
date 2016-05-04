@@ -22,6 +22,8 @@ public class CompanyDAO implements DAO<Company> {
       + " LIMIT ?,?";
   private static final String FIND_ALL_QUERY = "SELECT * " + "FROM " + COMPANY_TABLE;
 
+  public static final String DELETE_COMPANY = "DELETE FROM " + COMPANY_TABLE + " WHERE id = ?";
+
   Logger logger = LoggerFactory.getLogger(DaoException.class);
 
   private CompanyMapperDB mapper;

@@ -37,6 +37,9 @@ public class ComputerDAO implements DAO<Computer> {
       + " LEFT JOIN " + COMPANY_TABLE + " ON computer.company_id = company.id "
       + "WHERE computer.name LIKE ? or company.name LIKE ?";
 
+  public static final String DELETE_WHERE_COMPANY = "DELETE FROM " + COMPUTER_TABLE
+      + " WHERE company_id = ?";
+
   private ComputerMapperDB mapper;
   private Database database;
   private Logger logger;
@@ -210,6 +213,16 @@ public class ComputerDAO implements DAO<Computer> {
       return rs.getInt(1);
     } catch (SQLException e) {
       logger.error("Error function : findByNameOrCompany");
+      throw new DaoException(e);
+    }
+  }
+
+  public void deleteFromCompanyId(long id) {
+    try (Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(DELETE_WHERE_COMPANY);) {
+      stmt.setLong(1, id);
+      stmt.executeUpdate();
+    } catch (SQLException e) {
       throw new DaoException(e);
     }
   }
