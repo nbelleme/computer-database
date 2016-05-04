@@ -75,7 +75,6 @@ public enum ComputerValidator {
    *          computer to test
    */
   public void isValid(Computer computer) {
-    isIdValid(computer.getId());
     isNameValid(computer.getName());
     if (computer.getIntroduced() != null) {
       isDateConvertibleToTimestamp(computer.getIntroduced());
