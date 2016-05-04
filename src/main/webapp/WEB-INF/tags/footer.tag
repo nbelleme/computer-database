@@ -8,63 +8,63 @@
 <footer class="navbar-fixed-bottom">
 	<div class="container text-center">
 		<ul class="pagination">
-			<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-					page="${(page.nbCurrentPage -1 > 0) ? page.nbCurrentPage -1 : 1}"
-					target="computer/view/all">&laquo;</p:linkToPage></li>
-			<li><p:linkToPage nbElementPage="${page.nbElementPage}" page="1"
-					target="computer/view/all">1</p:linkToPage></li>
+			<li><p:link nbElementPage="${page.nbElementPage}"
+					pageNumber="${(page.nbCurrentPage -1 > 0) ? page.nbCurrentPage -1 : 1}"
+					target="computer/view/all">&laquo;</p:link></li>
+			<li><p:link nbElementPage="${page.nbElementPage}" pageNumber="1"
+					target="computer/view/all">1</p:link></li>
 			<c:choose>
 				<c:when test="${ page.nbPageTotal > 5 }">
 					<c:choose>
 						<c:when test="${ page.nbCurrentPage < 4 }">
-							<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-									page="2" target="computer/view/all">2</p:linkToPage></li>
-							<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-									page="3" target="computer/view/all">3</p:linkToPage></li>
-							<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-									page="4" target="computer/view/all">4</p:linkToPage></li>
-							<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-									page="5" target="computer/view/all">5</p:linkToPage></li>
+							<li><p:link nbElementPage="${page.nbElementPage}"
+									pageNumber="2" target="computer/view/all">2</p:link></li>
+							<li><p:link nbElementPage="${page.nbElementPage}"
+									pageNumber="3" target="computer/view/all">3</p:link></li>
+							<li><p:link nbElementPage="${page.nbElementPage}"
+									pageNumber="4" target="computer/view/all">4</p:link></li>
+							<li><p:link nbElementPage="${page.nbElementPage}"
+									pageNumber="5" target="computer/view/all">5</p:link></li>
 							<li><span aria-hidden="true">&hellip;</span></li>
 						</c:when>
 
 						<c:when test="${ page.nbCurrentPage > page.nbPageTotal - 4 }">
 							<li><span aria-hidden="true">&hellip;</span></li>
-							<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-									page="${ page.nbPageTotal - 4 }" target="computer/view/all">
-									${page.nbPageTotal - 4 }</p:linkToPage></li>
-							<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-									page="${ page.nbPageTotal - 3 }" target="computer/view/all">
-									${page.nbPageTotal - 3 }</p:linkToPage></li>
-							<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-									page="${ page.nbPageTotal - 2 }" target="computer/view/all">
+							<li><p:link nbElementPage="${page.nbElementPage}"
+									pageNumber="${ page.nbPageTotal - 4 }" target="computer/view/all">
+									${page.nbPageTotal - 4 }</p:link></li>
+							<li><p:link nbElementPage="${page.nbElementPage}"
+									pageNumber="${ page.nbPageTotal - 3 }" target="computer/view/all">
+									${page.nbPageTotal - 3 }</p:link></li>
+							<li><p:link nbElementPage="${page.nbElementPage}"
+									pageNumber="${ page.nbPageTotal - 2 }" target="computer/view/all">
 									${page.nbPageTotal - 2 }
-									</p:linkToPage></li>
-							<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-									page="${ page.nbPageTotal - 1 }" target="computer/view/all">
-									${page.nbPageTotal - 1 }</p:linkToPage></li>
+									</p:link></li>
+							<li><p:link nbElementPage="${page.nbElementPage}"
+									pageNumber="${ page.nbPageTotal - 1 }" target="computer/view/all">
+									${page.nbPageTotal - 1 }</p:link></li>
 						</c:when>
 
 						<c:otherwise>
 							<li><span aria-hidden="true">&hellip;</span></li>
-							<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-									page="${ page.nbCurrentPage -1 }" target="computer/view/all">
-									${page.nbCurrentPage - 1 }</p:linkToPage></li>
-							<li class="active"><p:linkToPage
+							<li><p:link nbElementPage="${page.nbElementPage}"
+									pageNumber="${ page.nbCurrentPage -1 }" target="computer/view/all">
+									${page.nbCurrentPage - 1 }</p:link></li>
+							<li class="active"><p:link
 									nbElementPage="${page.nbElementPage}"
-									page="${ page.nbCurrentPage}" target="computer/view/all">
-									${page.nbCurrentPage }</p:linkToPage></li>
-							<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-									page="${ page.nbCurrentPage + 1 }" target="computer/view/all">${page.nbCurrentPage + 1 }</p:linkToPage></li>
+									pageNumber="${ page.nbCurrentPage}" target="computer/view/all">
+									${page.nbCurrentPage }</p:link></li>
+							<li><p:link nbElementPage="${page.nbElementPage}"
+									pageNumber="${ page.nbCurrentPage + 1 }" target="computer/view/all">${page.nbCurrentPage + 1 }</p:link></li>
 							<li><span aria-hidden="true">&hellip;</span></li>
 						</c:otherwise>
 					</c:choose>
 				</c:when>
 				<c:when test="${ page.nbPageTotal > 2}">
 					<c:forEach begin="1" end="${ page.nbPageTotal - 2 }" var="i">
-						<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-								page="${i}" target="computer/view/all">
-									${ i + 1 }</p:linkToPage>
+						<li><p:link nbElementPage="${page.nbElementPage}"
+								pageNumber="${i}" target="computer/view/all">
+									${ i + 1 }</p:link>
 					</c:forEach>
 				</c:when>
 
@@ -72,29 +72,29 @@
 			</c:choose>
 
 			<c:if test="${ page.nbPageTotal > 1 }">
-				<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-						page="${page.nbPageTotal }" target="computer/view/all">${ page.nbPageTotal }</p:linkToPage>
+				<li><p:link nbElementPage="${page.nbElementPage}"
+						pageNumber="${page.nbPageTotal }" target="computer/view/all">${ page.nbPageTotal }</p:link>
 					</a></li>
 			</c:if>
 
-			<li><p:linkToPage nbElementPage="${page.nbElementPage}"
-					page="${(page.nbCurrentPage + 1 <= page.nbPageTotal) ? page.nbCurrentPage + 1 : page.nbPageTotal}"
-					target="computer/view/all">&raquo;</p:linkToPage></span>
+			<li><p:link nbElementPage="${page.nbElementPage}"
+					pageNumber="${(page.nbCurrentPage + 1 <= page.nbPageTotal) ? page.nbCurrentPage + 1 : page.nbPageTotal}"
+					target="computer/view/all">&raquo;</p:link></span>
 		</ul>
 
 		<div class="btn-group btn-group-sm pull-right" role="group">
-			<p:linkToPage nbElementPage="10" page="${page.nbCurrentPage}"
+			<p:link nbElementPage="10" pageNumber="${page.nbCurrentPage}"
 				target="computer/view/all">
 				<button type="button" class="btn btn-default">10</button>
-			</p:linkToPage>
-			<p:linkToPage nbElementPage="50" page="${page.nbCurrentPage}"
+			</p:link>
+			<p:link nbElementPage="50" pageNumber="${page.nbCurrentPage}"
 				target="computer/view/all">
 				<button type="button" class="btn btn-default">50</button>
-			</p:linkToPage>
-			<p:linkToPage nbElementPage="100" page="${page.nbCurrentPage}"
+			</p:link>
+			<p:link nbElementPage="100" pageNumber="${page.nbCurrentPage}"
 				target="computer/view/all">
 				<button type="button" class="btn btn-default">100</button>
-			</p:linkToPage>
+			</p:link>
 		</div>
 	</div>
 </footer>

@@ -1,5 +1,10 @@
 package com.excilys.service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -135,21 +140,20 @@ public class ComputerService {
    * @throws DaoException
    *           DaoException
    */
-  public List<Computer> findSeveral(int firstRow, int countRow) throws DaoException {
-    try {
-      return computerDAO.findSeveral(firstRow, countRow);
-    } catch (DaoException e) {
-      logger.error(e.getMessage());
-      throw new DaoException(e);
-    }
+  public List<Computer> findSeveral(int firstRow, int countRow) {
+    return computerDAO.findSeveral(firstRow, countRow);
   }
 
-  public int getTotal() throws DaoException {
-    try {
-      return computerDAO.getTotal();
-    } catch (DaoException e) {
-      throw new DaoException("Error get total");
-    }
+  public int getTotal() {
+    return computerDAO.getTotal();
+  }
 
+  public List<Computer> findByNameOrCompany(String name, String orderBy, String orderSort,
+      int firstRow, int count) {
+    return computerDAO.findByNameOrCompany(name, orderBy, orderSort, firstRow, count);
+  }
+
+  public int getNumberEntriesFindByNameOrCompany(String name) {
+    return computerDAO.getNumberEntriesFindByNameOrCompany(name);
   }
 }

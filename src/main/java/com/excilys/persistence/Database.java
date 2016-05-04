@@ -4,9 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 public class Database {
   private String URL;
@@ -15,6 +16,7 @@ public class Database {
   private String USER;
   private String PASSWORD;
   private String JDBC_DRIVER;
+  private HikariDataSource poolConnection;
 
   private static Database instance = null;
 
@@ -34,7 +36,19 @@ public class Database {
       PASSWORD = props.getProperty("PASSWORD");
       JDBC_DRIVER = props.getProperty("JDBC_DRIVER");
 
+      poolConnection = new HikariDataSource();
+      poolConnection.setJdbcUrl(URL + DATABASE + OPTIONS);
+      poolConnection.setUsername(USER);
+      poolConnection.setPassword(PASSWORD);
+      // set chache of prepStmts (with recommended value from Hikari)
+      poolConnection.addDataSourceProperty("cachePrepStmts", "true");
+      // the default is 25
+      poolConnection.addDataSourceProperty("prepStmtCacheSize", "10");
+      // the default is 256
+      poolConnection.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
       Class.forName(JDBC_DRIVER);
+
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     } catch (ClassNotFoundException e) {
@@ -66,8 +80,7 @@ public class Database {
    */
   public Connection getConnection() throws DatabaseException {
     try {
-
-      return DriverManager.getConnection(URL + DATABASE + OPTIONS, USER, PASSWORD);
+      return poolConnection.getConnection();
     } catch (SQLException e) {
       throw new DatabaseException(e);
     }

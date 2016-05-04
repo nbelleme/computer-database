@@ -1,6 +1,7 @@
 package com.excilys.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Page<T> {
 
@@ -8,7 +9,7 @@ public class Page<T> {
   private int nbElementTotal;
   private int nbCurrentPage;
   private int nbPageTotal;
-  private ArrayList<T> elements;
+  private List<T> elements;
 
   private Page(Builder<T> builder) {
     nbElementPage = builder.page.nbElementPage;
@@ -40,7 +41,7 @@ public class Page<T> {
       return this;
     }
 
-    public Builder<T> elements(ArrayList elements) {
+    public Builder<T> elements(List elements) {
       page.elements = elements;
       return this;
     }
@@ -58,11 +59,11 @@ public class Page<T> {
     this.nbElementPage = nbElementPage;
   }
 
-  public ArrayList<T> getElements() {
+  public List<T> getElements() {
     return elements;
   }
 
-  public void setElements(ArrayList<T> elements) {
+  public void setElements(List<T> elements) {
     this.elements = elements;
   }
 

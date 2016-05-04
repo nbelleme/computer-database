@@ -7,8 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.mapper.ComputerMapperDB;
 import com.excilys.model.Computer;
+import com.excilys.validator.ComputerDTOValidator;
 import com.mysql.jdbc.Statement;
 
 public class ComputerDAO implements DAO<Computer> {
@@ -19,14 +23,22 @@ public class ComputerDAO implements DAO<Computer> {
   private static final String DELETE_QUERY = "DELETE FROM " + COMPUTER_TABLE + " WHERE id = ? ";
   private static final String FIND_QUERY = "SELECT * FROM " + COMPUTER_TABLE + "  LEFT JOIN "
       + COMPANY_TABLE + " ON computer.company_id = company.id WHERE computer.id = ?;";
-  private static final String FIND_ALL_QUERY = "SELECT * FROM " + COMPUTER_TABLE + " LEFT JOIN "
+  private static final String FIND_SEVERAL_QUERY = "SELECT * FROM " + COMPUTER_TABLE + " LEFT JOIN "
       + COMPANY_TABLE + " ON computer.company_id = company.id " + " LIMIT ?,?";
   private static final String UPDATE_QUERY = "UPDATE " + COMPUTER_TABLE
       + "SET name = ?, introduced = ?, discontinued = ?, company_id = ?";
   private static final String TOTAL_QUERY = "SELECT count(*) FROM " + COMPUTER_TABLE;
+  private static final String FIND_BY_NAME_OR_COMPANY = "SELECT * FROM " + COMPUTER_TABLE
+      + " LEFT JOIN " + COMPANY_TABLE + " ON computer.company_id = company.id "
+      + "WHERE computer.name LIKE ? or company.name LIKE ? ORDER BY computer.%s %s LIMIT ?,?";
+
+  private static final String NUMBER_BY_NAME_OR_COMPANY = "SELECT count(*) FROM " + COMPUTER_TABLE
+      + " LEFT JOIN " + COMPANY_TABLE + " ON computer.company_id = company.id "
+      + "WHERE computer.name LIKE ? or company.name LIKE ?";
 
   private ComputerMapperDB mapper;
   private Database database;
+  private Logger logger;
 
   private static ComputerDAO instance = null;
 
@@ -51,11 +63,11 @@ public class ComputerDAO implements DAO<Computer> {
   private ComputerDAO() {
     mapper = ComputerMapperDB.getMapper();
     database = Database.getInstance();
-
+    logger = LoggerFactory.getLogger(ComputerDTOValidator.class);
   }
 
   @Override
-  public long add(Computer computer) throws DaoException, DatabaseException {
+  public long add(Computer computer) {
     try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(ADD_QUERY,
             Statement.RETURN_GENERATED_KEYS);) {
@@ -77,84 +89,108 @@ public class ComputerDAO implements DAO<Computer> {
       return id;
     } catch (SQLException e) {
       throw new DaoException(e);
-    } catch (DatabaseException e) {
-      throw new DatabaseException(e);
     }
 
   }
 
   @Override
-  public void delete(Computer computer) throws DaoException, DatabaseException {
+  public void delete(Computer computer) {
     try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(DELETE_QUERY);) {
       stmt.setLong(1, computer.getId());
       stmt.executeUpdate();
-    } catch (DatabaseException e) {
-      throw new DatabaseException(e);
     } catch (SQLException e) {
       throw new DaoException(e);
     }
   }
 
   @Override
-  public Computer find(long id) throws DaoException, DatabaseException {
+  public Computer find(long id) {
     try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(FIND_QUERY);) {
       stmt.setLong(1, id);
       ResultSet rs = stmt.executeQuery();
       rs.first();
       return mapper.unmap(rs);
-    } catch (DatabaseException e) {
-      throw new DatabaseException(e);
     } catch (SQLException e) {
       throw new DaoException(e);
     }
   }
 
   @Override
-  public List<Computer> findSeveral(int firstRow, int countRow)
-      throws DaoException, DatabaseException {
+  public List<Computer> findSeveral(int firstRow, int countRow) {
     try (Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(FIND_ALL_QUERY);) {
+        PreparedStatement stmt = connection.prepareStatement(FIND_SEVERAL_QUERY);) {
       stmt.setInt(1, firstRow);
       stmt.setInt(2, countRow);
       ResultSet rs = stmt.executeQuery();
-      ArrayList<Computer> computers = new ArrayList<Computer>();
+      List<Computer> computers = new ArrayList<Computer>();
       while (rs.next()) {
         computers.add(mapper.unmap(rs));
       }
       return computers;
-    } catch (DatabaseException e) {
-      throw new DatabaseException(e);
     } catch (SQLException e) {
       throw new DaoException(e);
     }
   }
 
   @Override
-  public void update(Computer computer) throws DaoException, DatabaseException {
+  public void update(Computer computer) {
     try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(UPDATE_QUERY);) {
       mapper.map(computer, stmt);
       stmt.executeUpdate();
-    } catch (DatabaseException e) {
-      throw new DatabaseException(e);
     } catch (SQLException e) {
       throw new DaoException(e);
     }
   }
 
   @Override
-  public int getTotal() throws DaoException {
+  public int getTotal() {
     try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(TOTAL_QUERY);) {
       ResultSet rs = stmt.executeQuery();
       rs.first();
       return rs.getInt(1);
-    } catch (DatabaseException e) {
-      throw new DatabaseException(e);
-    } catch (SQLException e1) {
-      throw new DaoException("Error request");
+    } catch (SQLException e) {
+      throw new DaoException(e);
+    }
+  }
+
+  public List<Computer> findByNameOrCompany(String name, String orderBy, String orderSort,
+      int firstRow, int count) {
+    try (Connection connection = database.getConnection();) {
+      String str = String.format(FIND_BY_NAME_OR_COMPANY, orderBy, orderSort);
+      System.out.println(str);
+      PreparedStatement stmt = connection.prepareStatement(str);
+      stmt.setString(1, '%' + name + '%');
+      stmt.setString(2, '%' + name + '%');
+      stmt.setInt(3, firstRow);
+      stmt.setInt(4, count);
+
+      ResultSet rs = stmt.executeQuery();
+      List<Computer> computers = new ArrayList<Computer>();
+      while (rs.next()) {
+        computers.add(mapper.unmap(rs));
+      }
+      return computers;
+    } catch (SQLException e) {
+      logger.error("Error function : findByNameOrCompany");
+      throw new DaoException(e);
+    }
+  }
+
+  public int getNumberEntriesFindByNameOrCompany(String name) {
+    try (Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(NUMBER_BY_NAME_OR_COMPANY);) {
+      stmt.setString(1, '%' + name + '%');
+      stmt.setString(2, '%' + name + '%');
+      ResultSet rs = stmt.executeQuery();
+      rs.first();
+      return rs.getInt(1);
+    } catch (SQLException e) {
+      logger.error("Error function : findByNameOrCompany");
+      throw new DaoException(e);
     }
   }
 }

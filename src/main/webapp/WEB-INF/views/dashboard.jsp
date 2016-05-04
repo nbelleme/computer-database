@@ -10,7 +10,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.nbElementTotal} Computers found</h1>
+			<h1 id="homeTitle">${page.nbElementTotal}&nbsp;Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -40,7 +40,6 @@
 				<thead>
 					<tr>
 						<!-- Variable declarations for passing labels as parameters -->
-						<!-- Table header for Computer Name -->
 
 						<th class="editMode" style="width: 60px; height: 22px;"><input
 							type="checkbox" id="selectall" /> <span
@@ -49,12 +48,19 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
+						<!-- Table header for Computer Name -->
+						<th><p:link target="computer/view/all"
+								orderSort="${orderSort == 'asc' ? 'desc' : 'asc'}"
+								search="${search}" orderBy="name">Computer name</p:link></th>
+						<th><p:link target="computer/view/all"
+								orderSort="${orderSort}" search="${search}" orderBy="introduced">Introduced date</p:link></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th><p:link target="computer/view/all"
+								orderSort="${orderSort == 'asc' ? 'desc' : 'asc'}" search="${search}"
+								orderBy="discontinued">Discontinued date</p:link></th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><p:link target="computer/view/all"
+								orderSort="${orderSort == 'asc' ? 'desc' : 'asc'}" search="${search}" orderBy="company">Company</p:link></th>
 
 					</tr>
 				</thead>
