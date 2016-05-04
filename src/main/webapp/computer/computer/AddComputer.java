@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -26,6 +25,7 @@ import com.excilys.validator.ComputerValidator;
 public class AddComputer extends HttpServlet {
   private static final long serialVersionUID = 1L;
   private CompanyService companyService;
+  private ComputerValidator computerValidator;
 
   /**
    * @see HttpServlet#HttpServlet()
@@ -33,6 +33,7 @@ public class AddComputer extends HttpServlet {
   public AddComputer() {
     super();
     companyService = CompanyService.getInstance();
+    computerValidator = ComputerValidator.INSTANCE;
   }
 
   /**
@@ -67,8 +68,8 @@ public class AddComputer extends HttpServlet {
     companyId = companyId.trim();
     PrintWriter out = response.getWriter();
     out.println(introduced);
-    LocalDateTime introducedDateTime = null;
-    LocalDateTime discontinuedDateTime = null;
+    LocalDate introducedDateTime = null;
+    LocalDate discontinuedDateTime = null;
     try {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
@@ -80,7 +81,6 @@ public class AddComputer extends HttpServlet {
           introduced = introduced.replace("-", "");
         }
         LocalDate introducedDate = LocalDate.parse(introduced, formatter);
-        introducedDateTime = introducedDate.atStartOfDay();
       }
       if (discontinued != "") {
         if (discontinued.contains("/")) {
@@ -90,7 +90,6 @@ public class AddComputer extends HttpServlet {
           discontinued = discontinued.replace("-", "");
         }
         LocalDate discontinuedDate = LocalDate.parse(discontinued, formatter);
-        discontinuedDateTime = discontinuedDate.atStartOfDay();
       }
     } catch (DateTimeException e) {
       request.setAttribute("errorDate", true);
@@ -116,18 +115,8 @@ public class AddComputer extends HttpServlet {
     Computer computer = new Computer.Builder().name(name).introduced(introducedDateTime)
         .discontinued(discontinuedDateTime).company(company).build();
 
-    if (ComputerValidator.INSTANCE.isValid(computer)) {
-      try {
-        computerService.add(computer);
-
-      } catch (DaoException e) {
-        out.print(computer.toString());
-        e.printStackTrace();
-      }
-    } else {
-      out.println("INVALID MOTHERFUCKER");
-    }
-
+    computerValidator.isValid(computer);
+    computerService.add(computer);
   }
 
 }

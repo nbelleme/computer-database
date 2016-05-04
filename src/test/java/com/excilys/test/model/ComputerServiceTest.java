@@ -1,7 +1,6 @@
 package com.excilys.test.model;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalDate;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,10 +24,8 @@ public class ComputerServiceTest extends TestCase {
   @Mock
   Company company;
 
-  LocalDateTime local1;
-  LocalDateTime local2;
-  LocalDateTime local3;
-  LocalDateTime local4;
+  LocalDate local1;
+  LocalDate local2;
 
   Computer computer;
 
@@ -37,10 +34,8 @@ public class ComputerServiceTest extends TestCase {
   public void setUp() {
     MockitoAnnotations.initMocks(this);
 
-    local1 = LocalDateTime.of(2016, 04, 26, 0, 0);
-    local2 = LocalDateTime.of(2016, 04, 27, 0, 0);
-    local3 = LocalDateTime.of(2016, 04, 28, 0, 0);
-    local4 = LocalDateTime.of(2016, 04, 29, 0, 0);
+    local1 = LocalDate.of(2016, 04, 26);
+    local2 = LocalDate.of(2016, 04, 27);
 
     computer = new Computer.Builder().name("name").introduced(local1).discontinued(local2).build();
 
