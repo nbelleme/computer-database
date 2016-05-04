@@ -1,14 +1,19 @@
 'use strict';
 
+var body = document.querySelector("body");
+body.addEventListener("load", checkDateOnLoad, false);
+
+
 // Check if name length is > 2
 function checkName() {
 	var input = document.querySelector("#computerName");
 	if (input.value.length < 4) {
-		input.parentNode.classList.remove("has-success");
-		input.parentNode.classList.add("has-error");
+		input.parentElement.classList.remove("has-success");
+		input.parentElement.classList.add("has-error");
 	} else {
-		input.parentNode.classList.remove("has-error");
-		input.parentNode.classList.add("has-success");
+		
+		input.parentElement.classList.remove("has-error");
+		input.parentElement.classList.add("has-success");
 	}
 };
 
@@ -23,9 +28,8 @@ function isDateValid(str) {
 	return false;
 }
 
-function checkDate(event) {
-	var target = event.target || event.srcElement;
-	var id = "#" + target.id;
+function checkDate(id) {
+	var id = "#" + id;
 
 	var input = document.querySelector(id);
 	var value = input.value;
@@ -34,8 +38,14 @@ function checkDate(event) {
 		input.parentNode.classList.remove("has-success");
 		input.parentNode.classList.add("has-error");
 	} else {
+		console.log(input.parentElement.nodeName);
 		input.parentNode.classList.remove("has-error");
 		input.parentNode.classList.add("has-success");
 	}
+}
 
+function checkDateOnLoad(){
+	console.log("in")
+	checkDate("introduced");
+	checkDate("discontinued");
 }

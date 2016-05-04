@@ -1,26 +1,39 @@
 package com.excilys.mapper;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
+import com.excilys.validator.ValidatorException;
 
 import dto.ComputerDTO;
 
-public enum ComputerMapperDTO {
+public enum ComputerDTOMapper {
   INSTANCE;
 
   public ComputerDTO map(Computer computer) {
     ComputerDTO computerDTO = new ComputerDTO();
     computerDTO.setId(String.valueOf(computer.getId()));
     computerDTO.setName(computer.getName());
-    String introduced = computer.getIntroduced().getYear() + "-"
-        + computer.getIntroduced().getMonthValue() + "-" + computer.getIntroduced().getDayOfMonth();
-    computerDTO.setIntroduced(introduced);
-    String discontinued = computer.getDiscontinued().getYear() + "-"
-        + computer.getDiscontinued().getMonthValue() + "-"
-        + computer.getDiscontinued().getDayOfMonth();
-    computerDTO.setDiscontinued(discontinued);
+    DecimalFormat df = new DecimalFormat("00");
+    if (computer.getIntroduced() != null) {
+      String introduced = computer.getIntroduced().getYear() + "-"
+          + df.format(computer.getIntroduced().getMonthValue()) + "-"
+          + df.format(computer.getIntroduced().getDayOfMonth());
+      computerDTO.setIntroduced(introduced);
+    } else {
+      computerDTO.setIntroduced("");
+    }
+    if (computer.getDiscontinued() != null) {
+      String discontinued = computer.getDiscontinued().getYear() + "-"
+          + df.format(computer.getDiscontinued().getMonthValue()) + "-"
+          + df.format(computer.getDiscontinued().getDayOfMonth());
+      computerDTO.setDiscontinued(discontinued);
+    } else {
+      computerDTO.setDiscontinued("");
+    }
     if (computer.getCompany() != null) {
       computerDTO.setIdCompany(String.valueOf(computer.getCompany().getId()));
       computerDTO.setNameCompany(computer.getCompany().getName());
@@ -29,7 +42,14 @@ public enum ComputerMapperDTO {
   }
 
   public Computer unmap(ComputerDTO computerDTO) {
-    long id = Long.parseLong(computerDTO.getId());
+    Pattern patternId = Pattern.compile("^\\d+$");
+    long id;
+    if (patternId.matcher(computerDTO.getId()).matches()) {
+      id = Integer.parseInt(computerDTO.getId());
+    } else {
+      id = -1;
+    }
+
     String name = computerDTO.getName();
 
     LocalDate introduced = null;
@@ -52,7 +72,13 @@ public enum ComputerMapperDTO {
 
     Company company = null;
     if (computerDTO.getIdCompany() != "" && computerDTO.getIdCompany() != null) {
-      long idCompany = Long.parseLong(computerDTO.getId());
+      long idCompany;
+      if (patternId.matcher(computerDTO.getIdCompany()).matches()) {
+        idCompany = Integer.parseInt(computerDTO.getIdCompany());
+      } else {
+        idCompany = -1;
+      }
+
       company = new Company.Builder().id(idCompany).name(computerDTO.getNameCompany()).build();
     }
 

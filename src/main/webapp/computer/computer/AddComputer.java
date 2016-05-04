@@ -42,14 +42,9 @@ public class AddComputer extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    try {
-      ArrayList<Company> companies = (ArrayList<Company>) companyService.findAll();
-      request.setAttribute("companies", companies);
-      request.getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
-    } catch (DaoException e) {
-      e.printStackTrace();
-      request.getRequestDispatcher("/WEB-INF/views/500.html").forward(request, response);
-    }
+    ArrayList<Company> companies = (ArrayList<Company>) companyService.findAll();
+    request.setAttribute("companies", companies);
+    request.getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
   }
 
   /**
@@ -70,30 +65,25 @@ public class AddComputer extends HttpServlet {
     out.println(introduced);
     LocalDate introducedDateTime = null;
     LocalDate discontinuedDateTime = null;
-    try {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-      if (introduced != "") {
-        if (introduced.contains("/")) {
-          introduced = introduced.replace("/", "");
+    if (introduced != "") {
+      if (introduced.contains("/")) {
+        introduced = introduced.replace("/", "");
 
-        } else {
-          introduced = introduced.replace("-", "");
-        }
-        LocalDate introducedDate = LocalDate.parse(introduced, formatter);
+      } else {
+        introduced = introduced.replace("-", "");
       }
-      if (discontinued != "") {
-        if (discontinued.contains("/")) {
-          discontinued = discontinued.replace("/", "");
+      LocalDate introducedDate = LocalDate.parse(introduced, formatter);
+    }
+    if (discontinued != "") {
+      if (discontinued.contains("/")) {
+        discontinued = discontinued.replace("/", "");
 
-        } else {
-          discontinued = discontinued.replace("-", "");
-        }
-        LocalDate discontinuedDate = LocalDate.parse(discontinued, formatter);
+      } else {
+        discontinued = discontinued.replace("-", "");
       }
-    } catch (DateTimeException e) {
-      request.setAttribute("errorDate", true);
-      request.getRequestDispatcher("/WEB-INF/views/500.html").forward(request, response);
+      LocalDate discontinuedDate = LocalDate.parse(discontinued, formatter);
     }
 
     ComputerService computerService = ComputerService.getInstance();

@@ -2,11 +2,8 @@ package com.excilys.validator;
 
 import java.time.LocalDate;
 
-import org.mockito.cglib.core.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.excilys.persistence.DaoException;
 
 public enum ComputerDTOValidator {
   INSTANCE;

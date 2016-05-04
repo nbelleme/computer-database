@@ -1,7 +1,6 @@
 package computer;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -11,12 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.mapper.ComputerDTOMapper;
 import com.excilys.model.Computer;
-import com.excilys.persistence.DaoException;
 import com.excilys.persistence.OrderBy;
-import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 import com.excilys.ui.Page;
+
+import dto.ComputerDTO;
 
 /**
  * Servlet implementation class ComputerServletViewAll
@@ -25,7 +25,7 @@ import com.excilys.ui.Page;
 public class ViewAll extends HttpServlet {
   private static final long serialVersionUID = 1L;
   private ComputerService computerService;
-  private CompanyService companyService;
+  private ComputerDTOMapper computerDtoMapper;
 
   /**
    * @see HttpServlet#HttpServlet()
@@ -33,7 +33,7 @@ public class ViewAll extends HttpServlet {
   public ViewAll() {
     super();
     computerService = ComputerService.getInstance();
-    companyService = CompanyService.getInstance();
+    computerDtoMapper = ComputerDTOMapper.INSTANCE;
 
   }
 
@@ -44,9 +44,7 @@ public class ViewAll extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    PrintWriter out = response.getWriter();
-
-    Page<Computer> page = new Page.Builder<Computer>().build();
+    Page<ComputerDTO> page = new Page.Builder<ComputerDTO>().build();
 
     String orderByParam = request.getParameter("orderBy");
     String orderSortParam = request.getParameter("orderSort");
@@ -60,7 +58,8 @@ public class ViewAll extends HttpServlet {
 
     OrderBy orderBy = OrderBy.ID;
     if (orderByParam != null) {
-      orderBy = getOrderBy(orderByParam);
+      orderBy = OrderBy.getOrderBy(orderByParam);
+      request.setAttribute("orderBy", orderByParam);
     }
 
     int nbElementPage = getNbElementPage(request.getParameter("nbElementPage"));
@@ -76,7 +75,7 @@ public class ViewAll extends HttpServlet {
     int nbCurrentPage = getPageNumber(request.getParameter("page"), nbPageTotal);
     int firstRow = nbElementPage * (nbCurrentPage - 1);
 
-    List<Computer> computers = new ArrayList();
+    List<Computer> computers = new ArrayList<Computer>();
     if (search != null) {
       computers = computerService.findByNameOrCompany(search, orderBy.getName(), orderSort,
           firstRow, nbElementPage);
@@ -85,10 +84,15 @@ public class ViewAll extends HttpServlet {
           nbElementPage);
     }
 
+    List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+    for (Computer computer : computers) {
+      computersDTO.add(computerDtoMapper.map(computer));
+    }
+
     page.setNbElementTotal(nbElementTotal);
     page.setNbPageTotal(nbPageTotal);
     page.setNbCurrentPage(nbCurrentPage);
-    page.setElements(computers);
+    page.setElements(computersDTO);
 
     request.setAttribute("page", page);
     request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
@@ -102,22 +106,6 @@ public class ViewAll extends HttpServlet {
       throws ServletException, IOException {
     // TODO Auto-generated method stub
     doGet(request, response);
-  }
-
-  private OrderBy getOrderBy(String param) {
-    switch (param) {
-    case "id":
-      return OrderBy.ID;
-    case "name":
-      return OrderBy.NAME;
-    case "introduced":
-      return OrderBy.INTRODUCED;
-    case "discontinued":
-      return OrderBy.DISCONTINUED;
-    case "company":
-      return OrderBy.COMPANY;
-    }
-    return OrderBy.ID;
   }
 
   private int getNbElementPage(String param) {
@@ -142,7 +130,6 @@ public class ViewAll extends HttpServlet {
       }
     }
     return nbCurrentPage;
-
   }
 
 }
