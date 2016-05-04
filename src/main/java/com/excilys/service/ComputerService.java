@@ -51,27 +51,9 @@ public class ComputerService {
    *           DaoException
    */
   public Computer add(Computer computer) throws DaoException {
-    try {
-      long id = -1;
-      if (computer.getIntroduced().isBefore(computer.getDiscontinued())) {
-        if (computer.getCompany() != null) {
-          if (companyDAO.find(computer.getCompany().getId()) == null) {
-            id = computerDAO.add(computer);
-          } else {
-            throw new DaoException("Company not found");
-          }
-        } else {
-          id = computerDAO.add(computer);
-        }
-      } else {
-        throw new DaoException("Date not valid");
-      }
-      computer.setId(id);
-      return computer;
-    } catch (DaoException e) {
-      logger.error(e.getMessage());
-      throw new DaoException(e);
-    }
+    long id = computerDAO.add(computer);
+    computer.setId(id);
+    return computer;
   }
 
   /**
@@ -81,6 +63,7 @@ public class ComputerService {
    *           DaoException
    */
   public void update(Computer computer) {
+    computerValidator.isIdValid(computer.getId());
     computerValidator.isValid(computer);
     computerDAO.update(computer);
   }
@@ -91,14 +74,10 @@ public class ComputerService {
    * @throws DaoException
    *           DaoException
    */
-  public void delete(Computer computer) throws DaoException {
-    try {
-      computerDAO.delete(computer);
-    } catch (DaoException e) {
-      logger.error(e.getMessage());
-      throw new DaoException(e);
-    }
-
+  public void delete(Computer computer) {
+    computerValidator.isIdValid(computer.getId());
+    computerValidator.isValid(computer);
+    computerDAO.delete(computer);
   }
 
   /**

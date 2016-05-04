@@ -13,9 +13,9 @@
 			<h1 id="homeTitle">${page.nbElementTotal}&nbsp;Computer${page.nbElementTotal > 1 ? 's' : ''}&nbsp;found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="#" method="GET" class="form-inline">
+					<form id="searchForm" action="${pageContext.request.contextPath}/computer/view/all" method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" /> <input
+							class="form-control" placeholder="Search name"/><input
 							type="submit" id="searchsubmit" value="Filter by name"
 							class="btn btn-primary" />
 					</form>
@@ -51,8 +51,7 @@
 						<!-- Table header for Computer Name -->
 						<th><p:link target="computer/view/all"
 								orderSort="${orderSort == 'asc' ? 'desc' : 'asc'}"
-								search="${search}" orderBy="name">Computer name</p:link>
-								<c:if
+								search="${search}" orderBy="name">Computer name</p:link> <c:if
 								test="${orderBy == 'name'}">
 								<span class="${orderSort}"></span>
 							</c:if></th>

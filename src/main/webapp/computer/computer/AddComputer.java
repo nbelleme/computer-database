@@ -107,6 +107,7 @@ public class AddComputer extends HttpServlet {
 
     computerValidator.isValid(computer);
     computerService.add(computer);
+    request.getRequestDispatcher("/computer/view/all").forward(request, response);
   }
 
 }
