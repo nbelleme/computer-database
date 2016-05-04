@@ -1,10 +1,5 @@
 package com.excilys.service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,12 +9,14 @@ import com.excilys.model.Computer;
 import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
+import com.excilys.validator.ComputerValidator;
 
 public class ComputerService {
   private ComputerDAO computerDAO;
   private CompanyDAO companyDAO;
   private static ComputerService instance = null;
   private Logger logger = LoggerFactory.getLogger(ComputerService.class);
+  private ComputerValidator computerValidator;
 
   /**
    * Get the instance of the singleton.
@@ -43,6 +40,7 @@ public class ComputerService {
   private ComputerService() {
     computerDAO = ComputerDAO.getInstance();
     companyDAO = CompanyDAO.getInstance();
+    computerValidator = ComputerValidator.INSTANCE;
   }
 
   /**
@@ -82,21 +80,9 @@ public class ComputerService {
    * @throws DaoException
    *           DaoException
    */
-  public void update(Computer computer) throws DaoException {
-    try {
-      if (computer.getIntroduced().isAfter(computer.getDiscontinued())) {
-        if (computer.getCompany() != null) {
-          if (companyDAO.find(computer.getCompany().getId()) == null) {
-            computerDAO.update(computer);
-          }
-        } else {
-          computerDAO.update(computer);
-        }
-      }
-    } catch (DaoException e) {
-      logger.error(e.getMessage());
-      throw new DaoException(e);
-    }
+  public void update(Computer computer) {
+    computerValidator.isValid(computer);
+    computerDAO.update(computer);
   }
 
   /**

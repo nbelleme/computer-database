@@ -16,19 +16,19 @@
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName" name="computerName"
 									placeholder="Computer name" onkeyup="checkName()"
-									value="testComputer" required>
+									required>
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced" name="introduced"
-									placeholder="Introduced date" onkeyup="checkDate(event)"
-									value="1992-05-26">
+									placeholder="Introduced date" onkeyup="checkDate('introduced')"
+									>
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
-									type="date" class="form-control" id="discontinued" name="discontinued"
-									placeholder="Discontinued date" onkeyup="checkDate(event)"
-									value="1993-05-26">
+									type="date" class="form-control" id="discontinued"
+									name="discontinued" placeholder="Discontinued date"
+									onkeyup="checkDate('discontinued')">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select

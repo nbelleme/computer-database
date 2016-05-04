@@ -10,7 +10,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.nbElementTotal}&nbsp;Computers found</h1>
+			<h1 id="homeTitle">${page.nbElementTotal}&nbsp;Computer${page.nbElementTotal > 1 ? 's' : ''}&nbsp;found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -51,16 +51,31 @@
 						<!-- Table header for Computer Name -->
 						<th><p:link target="computer/view/all"
 								orderSort="${orderSort == 'asc' ? 'desc' : 'asc'}"
-								search="${search}" orderBy="name">Computer name</p:link></th>
+								search="${search}" orderBy="name">Computer name</p:link>
+								<c:if
+								test="${orderBy == 'name'}">
+								<span class="${orderSort}"></span>
+							</c:if></th>
 						<th><p:link target="computer/view/all"
-								orderSort="${orderSort}" search="${search}" orderBy="introduced">Introduced date</p:link></th>
+								orderSort="${orderSort == 'asc' ? 'desc' : 'asc'}"
+								search="${search}" orderBy="introduced">Introduced date</p:link>
+							<c:if test="${orderBy eq 'introduced'}">
+								<span class="${orderSort}"></span>
+							</c:if></th>
 						<!-- Table header for Discontinued Date -->
 						<th><p:link target="computer/view/all"
-								orderSort="${orderSort == 'asc' ? 'desc' : 'asc'}" search="${search}"
-								orderBy="discontinued">Discontinued date</p:link></th>
+								orderSort="${orderSort == 'asc' ? 'desc' : 'asc'}"
+								search="${search}" orderBy="discontinued">Discontinued date</p:link>
+							<c:if test="${orderBy eq 'discontinued'}">
+								<span class="${orderSort}"></span>
+							</c:if></th>
 						<!-- Table header for Company -->
 						<th><p:link target="computer/view/all"
-								orderSort="${orderSort == 'asc' ? 'desc' : 'asc'}" search="${search}" orderBy="company">Company</p:link></th>
+								orderSort="${orderSort == 'asc' ? 'desc' : 'asc'}"
+								search="${search}" orderBy="company">Company</p:link> <c:if
+								test="${orderBy eq 'company'}">
+								<span class="${orderSort}"></span>
+							</c:if></th>
 
 					</tr>
 				</thead>
@@ -71,36 +86,12 @@
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}"></td>
 							<td><a
-								href="${pageContext.request.contextPath}/computer/edit/<c:out value="${computer.id }">
+								href="${pageContext.request.contextPath}/computer/edit?id=<c:out value="${computer.id}">
 										</c:out>"
 								onclick=""><c:out value="${computer.name}"></c:out></a></td>
-							<td><c:choose>
-									<c:when test="${not empty computer.introduced}">
-										<c:out value="${computer.introduced }">
-										</c:out>
-									</c:when>
-									<c:when test="${empty computer.introduced}">
-					N/C
-				</c:when>
-								</c:choose></td>
-							<td><c:choose>
-									<c:when test="${not empty computer.discontinued}">
-										<c:out value="${computer.discontinued }">
-										</c:out>
-									</c:when>
-									<c:when test="${empty computer.discontinued}">
-					N/C
-				</c:when>
-								</c:choose></td>
-
-							<td><c:choose>
-									<c:when test="${not empty computer.company}">
-										<c:out value="${computer.company.name }">
-										</c:out>
-									</c:when>
-									<c:when test="${empty computer.company}">N/C</c:when>
-								</c:choose></td>
-
+							<td>${computer.introduced }</td>
+							<td>${computer.discontinued}</td>
+							<td>${computer.nameCompany}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.model.Computer;
-import com.excilys.persistence.DaoException;
 
 public enum ComputerValidator {
 
@@ -78,8 +77,12 @@ public enum ComputerValidator {
   public void isValid(Computer computer) {
     isIdValid(computer.getId());
     isNameValid(computer.getName());
-    isDateConvertibleToTimestamp(computer.getIntroduced());
-    isDateConvertibleToTimestamp(computer.getDiscontinued());
+    if (computer.getIntroduced() != null) {
+      isDateConvertibleToTimestamp(computer.getIntroduced());
+    }
+    if (computer.getDiscontinued() != null) {
+      isDateConvertibleToTimestamp(computer.getDiscontinued());
+    }
     isDatesValid(computer.getIntroduced(), computer.getDiscontinued());
   }
 

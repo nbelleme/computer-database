@@ -18,10 +18,10 @@
 	<c:if test="${not empty orderSort }">
 	&orderSort=${orderSort}
 	</c:if>
-	<c:if test="${orderBy != null && orderBy != ''}">
+	<c:if test="${not empty orderBy}">
 	&orderBy=${orderBy}
 	</c:if>	
-	<c:if test="${search != null && search != '' }">
+	<c:if test="${not empty search}">
 	&search=${search}
 	</c:if>
 	">

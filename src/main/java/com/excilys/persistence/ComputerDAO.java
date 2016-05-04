@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +27,11 @@ public class ComputerDAO implements DAO<Computer> {
   private static final String FIND_SEVERAL_QUERY = "SELECT * FROM " + COMPUTER_TABLE + " LEFT JOIN "
       + COMPANY_TABLE + " ON computer.company_id = company.id " + " LIMIT ?,?";
   private static final String UPDATE_QUERY = "UPDATE " + COMPUTER_TABLE
-      + "SET name = ?, introduced = ?, discontinued = ?, company_id = ?";
+      + " SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
   private static final String TOTAL_QUERY = "SELECT count(*) FROM " + COMPUTER_TABLE;
   private static final String FIND_BY_NAME_OR_COMPANY = "SELECT * FROM " + COMPUTER_TABLE
       + " LEFT JOIN " + COMPANY_TABLE + " ON computer.company_id = company.id "
-      + "WHERE computer.name LIKE ? or company.name LIKE ? ORDER BY computer.%s %s LIMIT ?,?";
+      + "WHERE computer.name LIKE ? or company.name LIKE ? ORDER BY %s %s LIMIT ?,?";
 
   private static final String NUMBER_BY_NAME_OR_COMPANY = "SELECT count(*) FROM " + COMPUTER_TABLE
       + " LEFT JOIN " + COMPANY_TABLE + " ON computer.company_id = company.id "
@@ -138,7 +139,27 @@ public class ComputerDAO implements DAO<Computer> {
   public void update(Computer computer) {
     try (Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(UPDATE_QUERY);) {
-      mapper.map(computer, stmt);
+      stmt.setString(1, computer.getName());
+      if (computer.getIntroduced() != null) {
+        stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
+      } else {
+        stmt.setObject(2, null, java.sql.Types.TIMESTAMP);
+      }
+
+      if (computer.getDiscontinued() != null) {
+        stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued().atStartOfDay()));
+      } else {
+        stmt.setObject(3, null, java.sql.Types.TIMESTAMP);
+      }
+
+      if (computer.getCompany() != null) {
+        stmt.setObject(4, computer.getCompany().getId(), java.sql.Types.BIGINT);
+      } else {
+        stmt.setObject(4, null, java.sql.Types.BIGINT);
+      }
+
+      stmt.setLong(5, computer.getId());
+
       stmt.executeUpdate();
     } catch (SQLException e) {
       throw new DaoException(e);
@@ -161,7 +182,6 @@ public class ComputerDAO implements DAO<Computer> {
       int firstRow, int count) {
     try (Connection connection = database.getConnection();) {
       String str = String.format(FIND_BY_NAME_OR_COMPANY, orderBy, orderSort);
-      System.out.println(str);
       PreparedStatement stmt = connection.prepareStatement(str);
       stmt.setString(1, '%' + name + '%');
       stmt.setString(2, '%' + name + '%');
