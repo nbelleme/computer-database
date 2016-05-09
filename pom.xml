@@ -21,6 +21,10 @@
 		<jstl.version>1.2</jstl.version>
 		<jsp.api.version>2.0</jsp.api.version>
 		<hikaricp.version>2.4.5</hikaricp.version>
+		<gatling.version>2.1.7</gatling.version>
+        <gatling-plugin.version>2.1.7</gatling-plugin.version>
+        <scala-maven-plugin.version>3.2.2</scala-maven-plugin.version>
+		
 	</properties>
 
 	<dependencies>
@@ -86,7 +90,6 @@
 			<version>${hikaricp.version}</version>
 			<scope>compile</scope>
 		</dependency>
-
 	</dependencies>
 
 	<packaging>war</packaging>
@@ -125,6 +128,7 @@
 					<server>tomcatserver</server>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 </project>

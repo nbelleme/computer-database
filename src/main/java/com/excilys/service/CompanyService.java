@@ -69,28 +69,15 @@ public class CompanyService {
   /**
    * @param company
    *          company need to be deleted
-   * @throws DaoException
-   *           DaoException
    */
   public void delete(Company company) {
     if (company != null) {
-      try (Connection conn = database.getConnection();
-          PreparedStatement stmtCompany = conn.prepareStatement(CompanyDAO.DELETE_COMPANY);) {
-        try {
-          conn.setAutoCommit(false);
-          ComputerDAO.getInstance().deleteFromCompanyId(company.getId());
-          stmtCompany.setLong(1, company.getId());
-          stmtCompany.executeUpdate();
-
-          conn.commit();
-        } catch (SQLException e) {
-          logger.error("Rollback executed");
-          conn.rollback();
-          throw new DatabaseException(e);
-        }
-      } catch (SQLException e) {
-        throw new DatabaseException(e);
-      }
+      database.init();
+      database.setAutoCommit(false);
+      ComputerDAO.getInstance().deleteFromCompanyId(company.getId());
+      CompanyDAO.getInstance().delete(company);
+      database.commit();
+      database.closeConnection();
     }
   }
 

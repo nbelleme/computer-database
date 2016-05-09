@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.persistence.DaoException;
@@ -26,6 +29,7 @@ public class AddComputer extends HttpServlet {
   private static final long serialVersionUID = 1L;
   private CompanyService companyService;
   private ComputerValidator computerValidator;
+  private Logger logger = LoggerFactory.getLogger(AddComputer.class);
 
   /**
    * @see HttpServlet#HttpServlet()
@@ -54,13 +58,22 @@ public class AddComputer extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     String name = request.getParameter("computerName");
-    name = name.trim();
+    if (name != null) {
+      name = name.trim();
+    }
     String introduced = request.getParameter("introduced");
-    introduced = introduced.trim();
+    if (introduced != null) {
+      introduced = introduced.trim();
+    }
     String discontinued = request.getParameter("discontinued");
-    discontinued = discontinued.trim();
+    if (discontinued != null) {
+
+      discontinued = discontinued.trim();
+    }
     String companyId = request.getParameter("companyId");
-    companyId = companyId.trim();
+    if (companyId != null) {
+      companyId = companyId.trim();
+    }
     PrintWriter out = response.getWriter();
     out.println(introduced);
     LocalDate introducedDateTime = null;

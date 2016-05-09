@@ -17,6 +17,7 @@ public class Database {
   private String PASSWORD;
   private String JDBC_DRIVER;
   private HikariDataSource poolConnection;
+  private ThreadLocal<Connection> connectionLocal;
 
   private static Database instance = null;
 
@@ -40,14 +41,10 @@ public class Database {
       poolConnection.setJdbcUrl(URL + DATABASE + OPTIONS);
       poolConnection.setUsername(USER);
       poolConnection.setPassword(PASSWORD);
-      // set chache of prepStmts (with recommended value from Hikari)
-      poolConnection.addDataSourceProperty("cachePrepStmts", "true");
-      // the default is 25
-      poolConnection.addDataSourceProperty("prepStmtCacheSize", "10");
-      // the default is 256
-      poolConnection.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
       Class.forName(JDBC_DRIVER);
+
+      connectionLocal = new ThreadLocal<>();
 
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -73,17 +70,57 @@ public class Database {
     return instance;
   }
 
-  /**
-   * @return Connection connection to database
-   * @throws DatabaseException
-   *           DatabaseException
-   */
-  public Connection getConnection() throws DatabaseException {
+  public void init() {
     try {
-      return poolConnection.getConnection();
+      Connection conn = poolConnection.getConnection();
+      connectionLocal.set(conn);
     } catch (SQLException e) {
       throw new DatabaseException(e);
     }
-
   }
+
+  /**
+   * @return Connection connection to database
+   */
+  public Connection getConnection() {
+    return connectionLocal.get();
+  }
+
+  public void closeConnection() {
+    if (connectionLocal.get() != null) {
+      try {
+        connectionLocal.get().close();
+      } catch (SQLException e) {
+        throw new DatabaseException(e);
+      } finally {
+        connectionLocal.remove();
+      }
+    }
+  }
+
+  public void setAutoCommit(boolean bool) {
+    try {
+      connectionLocal.get().setAutoCommit(bool);
+    } catch (SQLException e) {
+      throw new DatabaseException(e);
+    }
+  }
+
+  public void commit() {
+    try {
+      connectionLocal.get().commit();
+    } catch (SQLException e) {
+      rollback();
+      throw new DatabaseException(e);
+    }
+  }
+
+  public void rollback() {
+    try {
+      connectionLocal.get().rollback();
+    } catch (SQLException e) {
+      throw new DatabaseException(e);
+    }
+  }
+
 }
