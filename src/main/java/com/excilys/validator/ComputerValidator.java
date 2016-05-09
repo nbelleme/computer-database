@@ -28,7 +28,7 @@ public enum ComputerValidator {
   public void isNameValid(String name) {
     if (name == "" || name == null) {
       logger.error("Error Computer Validator : name invalid");
-      throw new ValidatorException("Error Computer Validator : name invalid");
+      throw new ValidatorException("Error Computer Validator : name invalid : " + name);
     }
   }
 

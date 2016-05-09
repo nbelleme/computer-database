@@ -9,6 +9,7 @@ import com.excilys.model.Computer;
 import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
+import com.excilys.persistence.SearchComputer;
 import com.excilys.validator.ComputerValidator;
 
 public class ComputerService {
@@ -120,5 +121,13 @@ public class ComputerService {
 
   public int getNumberEntriesFindByNameOrCompany(String name) {
     return computerDAO.getNumberEntriesFindByNameOrCompany(name);
+  }
+
+  public List<Computer> findBySearch(SearchComputer search) {
+    return computerDAO.findBySearch(search);
+  }
+
+  public int getNumberFindBySearch(SearchComputer search) {
+    return computerDAO.getNumberFindBySearch(search);
   }
 }

@@ -64,30 +64,41 @@ public class CompanyDAO implements DAO<Company> {
 
   @Override
   public void delete(Company item) throws DaoException {
-
+    database.init();
+    Connection conn = database.getConnection();
+    try {
+      PreparedStatement stmtCompany = conn.prepareStatement(DELETE_COMPANY);
+      stmtCompany.setLong(1, item.getId());
+      stmtCompany.executeUpdate();
+    } catch (SQLException e) {
+      logger.error(e.getMessage());
+      throw new DaoException(e);
+    } finally {
+      database.closeConnection();
+    }
   }
 
   @Override
   public Company find(long id) throws DaoException {
-    try (Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(FIND_QUERY);) {
+    database.init();
+    Connection connection = database.getConnection();
+    try (PreparedStatement stmt = connection.prepareStatement(FIND_QUERY);) {
       stmt.setLong(1, id);
       ResultSet rs = stmt.executeQuery();
       rs.first();
       return mapper.unmap(rs);
-    } catch (DatabaseException e) {
-      logger.error(e.getMessage());
-      throw new DatabaseException(e);
     } catch (SQLException e) {
       logger.error(e.getMessage());
       throw new DaoException(e);
+    } finally {
+      database.closeConnection();
     }
   }
 
   @Override
   public List<Company> findSeveral(int firstRow, int countRow) throws DaoException {
-    try (Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(FIND_SEVERAL_QUERY);) {
+    Connection connection = database.getConnection();
+    try (PreparedStatement stmt = connection.prepareStatement(FIND_SEVERAL_QUERY);) {
       stmt.setInt(1, firstRow);
       stmt.setInt(2, countRow);
       ResultSet rs = stmt.executeQuery();
@@ -96,28 +107,28 @@ public class CompanyDAO implements DAO<Company> {
         companies.add(mapper.unmap(rs));
       }
       return companies;
-    } catch (DatabaseException e) {
-      logger.error(e.getMessage());
-      throw new DatabaseException(e);
     } catch (SQLException e) {
       logger.error(e.getMessage());
       throw new DaoException(e);
+    } finally {
+      database.closeConnection();
     }
   }
 
   public List<Company> findAll() {
-    try (Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(FIND_ALL_QUERY);) {
+    database.init();
+    Connection connection = database.getConnection();
+    try (PreparedStatement stmt = connection.prepareStatement(FIND_ALL_QUERY);) {
       ResultSet rs = stmt.executeQuery();
       ArrayList<Company> companies = new ArrayList<Company>();
       while (rs.next()) {
         companies.add(mapper.unmap(rs));
       }
       return companies;
-    } catch (DatabaseException e) {
-      throw new DatabaseException(e);
     } catch (SQLException e) {
       throw new DaoException(e);
+    } finally {
+      database.closeConnection();
     }
   }
 

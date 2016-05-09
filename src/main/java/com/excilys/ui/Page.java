@@ -50,6 +50,10 @@ public class Page<T> {
     }
   }
 
+  public int getFirsRow() {
+    return nbElementPage * (nbCurrentPage - 1);
+  }
+
   public int getNbElementPage() {
     return nbElementPage;
   }
@@ -89,4 +93,5 @@ public class Page<T> {
   public void setNbPageTotal(int nbPageTotal) {
     this.nbPageTotal = nbPageTotal;
   }
+
 }

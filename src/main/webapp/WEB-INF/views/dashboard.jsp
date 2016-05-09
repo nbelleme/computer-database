@@ -82,10 +82,10 @@
 				<tbody id="results">
 					<c:forEach var="computer" items="${page.elements}">
 						<tr>
-							<td class="editMode"><input type="checkbox" name="cb"
+							<td class="editMode"><input type="checkbox" name="cb" id="${computer.name}_id"
 								class="cb" value="${computer.id}"></td>
-							<td><a
-								href="${pageContext.request.contextPath}/computer/edit?id=<c:out value="${computer.id}">
+							<td><a id="${computer.name}_name"
+								href="http://localhost:8080/ComputerDatabase/computer/edit?id=<c:out value="${computer.id}">
 										</c:out>"
 								onclick=""><c:out value="${computer.name}"></c:out></a></td>
 							<td>${computer.introduced }</td>

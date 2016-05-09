@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.mapper.ComputerDTOMapper;
 import com.excilys.model.Computer;
-import com.excilys.persistence.OrderBy;
+import com.excilys.persistence.SearchComputer;
 import com.excilys.service.ComputerService;
 import com.excilys.ui.Page;
 
@@ -34,7 +34,6 @@ public class ViewAll extends HttpServlet {
     super();
     computerService = ComputerService.getInstance();
     computerDtoMapper = ComputerDTOMapper.INSTANCE;
-
   }
 
   /**
@@ -46,54 +45,39 @@ public class ViewAll extends HttpServlet {
 
     Page<ComputerDTO> page = new Page.Builder<ComputerDTO>().build();
 
-    String orderByParam = request.getParameter("orderBy");
-    String orderSortParam = request.getParameter("orderSort");
-    String orderSort = "asc";
-    if (orderSortParam != null) {
-      orderSort = orderSortParam;
-    }
-    request.setAttribute("orderSort", orderSortParam);
-    String search = request.getParameter("search");
-    int nbElementTotal = 0;
+    SearchComputer search = new SearchComputer(request);
+    search.setPage(page);
 
-    OrderBy orderBy = OrderBy.ID;
-    if (orderByParam != null) {
-      orderBy = OrderBy.getOrderBy(orderByParam);
-      request.setAttribute("orderBy", orderByParam);
+    if (search.getOrderBy() != null) {
+      request.setAttribute("orderBy", search.getOrderBy().getName());
     }
 
+    if (search.getName() != null) {
+      request.setAttribute("search", search.getName());
+    }
+
+    if (search.getOrderSort() != null && search.getOrderSort() != "") {
+      request.setAttribute("orderSort", search.getOrderSort());
+    }
+
+    int nbElementTotal = computerService.getNumberFindBySearch(search);
     int nbElementPage = getNbElementPage(request.getParameter("nbElementPage"));
-
-    if (search != null) {
-      request.setAttribute("search", search);
-      nbElementTotal = computerService.getNumberEntriesFindByNameOrCompany(search);
-    } else {
-      nbElementTotal = computerService.getTotal();
-    }
-
     int nbPageTotal = (int) Math.ceil((double) nbElementTotal / nbElementPage);
     int nbCurrentPage = getPageNumber(request.getParameter("page"), nbPageTotal);
-    int firstRow = nbElementPage * (nbCurrentPage - 1);
+
+    page.setNbElementTotal(nbElementTotal);
+    page.setNbPageTotal(nbPageTotal);
+    page.setNbCurrentPage(nbCurrentPage);
 
     List<Computer> computers = new ArrayList<Computer>();
-    if (search != null) {
-      computers = computerService.findByNameOrCompany(search, orderBy.getName(), orderSort,
-          firstRow, nbElementPage);
-    } else {
-      computers = computerService.findByNameOrCompany("", orderBy.getName(), orderSort, firstRow,
-          nbElementPage);
-    }
+    computers = computerService.findBySearch(search);
 
     List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
     for (Computer computer : computers) {
       computersDTO.add(computerDtoMapper.map(computer));
     }
 
-    page.setNbElementTotal(nbElementTotal);
-    page.setNbPageTotal(nbPageTotal);
-    page.setNbCurrentPage(nbCurrentPage);
     page.setElements(computersDTO);
-
     request.setAttribute("page", page);
     request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
   }
@@ -123,8 +107,7 @@ public class ViewAll extends HttpServlet {
   private int getPageNumber(String param, int nbPageTotal) {
     int nbCurrentPage = 1;
     if (param != null) {
-      String paramNbCurrentPage = param;
-      nbCurrentPage = Integer.parseInt(paramNbCurrentPage);
+      nbCurrentPage = Integer.parseInt(param);
       if (nbCurrentPage > nbPageTotal) {
         nbCurrentPage = nbPageTotal;
       }
