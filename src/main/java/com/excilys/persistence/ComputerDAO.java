@@ -263,8 +263,9 @@ public class ComputerDAO implements DAO<Computer> {
     }
 
     if (search.getName() != null && search.getName() != "") {
-      query = query + " computer.name LIKE '" + search.getName() + "%' OR company.name LIKE '"
-          + search.getName() + "%' ";
+      query = query + " computer.name LIKE '" + search.getName();
+      // + "%' OR company.name LIKE '"
+      // + search.getName() + "%' ";
     }
 
     if (search.getOrderBy() != null) {
