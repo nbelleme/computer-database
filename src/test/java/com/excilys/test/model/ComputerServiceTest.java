@@ -14,6 +14,6 @@ public class ComputerServiceTest extends TestCase {
   @Test
   public void addAllOkTest() {
     ComputerService.getInstance().find(5);
-    assertEquals(true, true);
+    assertEquals(true, false);
   }
 }
