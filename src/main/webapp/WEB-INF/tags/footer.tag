@@ -74,12 +74,12 @@
 			<c:if test="${ page.nbPageTotal > 1 }">
 				<li><p:link nbElementPage="${page.nbElementPage}"
 						pageNumber="${page.nbPageTotal }" target="computer/view/all">${ page.nbPageTotal }</p:link>
-					</a></li>
+					</li>
 			</c:if>
 
 			<li><p:link nbElementPage="${page.nbElementPage}"
 					pageNumber="${(page.nbCurrentPage + 1 <= page.nbPageTotal) ? page.nbCurrentPage + 1 : page.nbPageTotal}"
-					target="computer/view/all">&raquo;</p:link></span>
+					target="computer/view/all">&raquo;</p:link>
 		</ul>
 
 		<div class="btn-group btn-group-sm pull-right" role="group">

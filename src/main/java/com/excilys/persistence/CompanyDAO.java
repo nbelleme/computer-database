@@ -9,10 +9,15 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.mapper.CompanyMapperDB;
 import com.excilys.model.Company;
 
+@Repository
+@Scope("singleton")
 public class CompanyDAO implements DAO<Company> {
   public static final String COMPANY_TABLE = "company";
 
@@ -26,35 +31,11 @@ public class CompanyDAO implements DAO<Company> {
 
   Logger logger = LoggerFactory.getLogger(DaoException.class);
 
+  @Autowired
   private CompanyMapperDB mapper;
+
+  @Autowired
   private Database database;
-
-  private static CompanyDAO instance = null;
-
-  /**
-   * Method to get the single instance of CompanyDAO.
-   *
-   * @return instance instance of CompanyDAO
-   */
-  public static CompanyDAO getInstance() {
-    if (instance == null) {
-      synchronized (CompanyDAO.class) {
-        if (instance == null) {
-          instance = new CompanyDAO();
-        }
-      }
-    }
-
-    return instance;
-  }
-
-  /**
-   * Default constructor.
-   */
-  private CompanyDAO() {
-    mapper = CompanyMapperDB.getMapper();
-    database = Database.getInstance();
-  }
 
   @Override
   public long add(Company item) throws DaoException {
@@ -139,7 +120,6 @@ public class CompanyDAO implements DAO<Company> {
 
   @Override
   public int getTotal() throws DaoException {
-    // TODO Auto-generated method stub
     return 0;
   }
 }

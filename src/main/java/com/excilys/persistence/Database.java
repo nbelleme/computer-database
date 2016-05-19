@@ -7,8 +7,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.zaxxer.hikari.HikariDataSource;
 
+@Component
+@Scope("singleton")
 public class Database {
   private String URL;
   private String DATABASE;
@@ -18,8 +23,6 @@ public class Database {
   private String JDBC_DRIVER;
   private HikariDataSource poolConnection;
   private ThreadLocal<Connection> connectionLocal;
-
-  private static Database instance = null;
 
   private Database() {
     try {
@@ -53,21 +56,6 @@ public class Database {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  /**
-   * @return ComputerMapper instance of Database
-   * @throws ClassNotFoundException
-   */
-  public static Database getInstance() {
-    if (instance == null) {
-      synchronized (Database.class) {
-        if (instance == null) {
-          instance = new Database();
-        }
-      }
-    }
-    return instance;
   }
 
   public void init() {

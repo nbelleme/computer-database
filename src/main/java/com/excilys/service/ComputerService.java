@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import com.excilys.model.Computer;
 import com.excilys.persistence.CompanyDAO;
@@ -12,37 +15,18 @@ import com.excilys.persistence.DaoException;
 import com.excilys.persistence.SearchComputer;
 import com.excilys.validator.ComputerValidator;
 
+@Service
+@Scope("singleton")
 public class ComputerService {
-  private ComputerDAO computerDAO;
-  private CompanyDAO companyDAO;
   private static ComputerService instance = null;
   private Logger logger = LoggerFactory.getLogger(ComputerService.class);
+
+  @Autowired
   private ComputerValidator computerValidator;
-
-  /**
-   * Get the instance of the singleton.
-   *
-   * @return instance instance of the singleton
-   */
-  public static ComputerService getInstance() {
-    if (instance == null) {
-      synchronized (ComputerService.class) {
-        if (instance == null) {
-          instance = new ComputerService();
-        }
-      }
-    }
-    return instance;
-  }
-
-  /**
-   * Default constructor.
-   */
-  private ComputerService() {
-    computerDAO = ComputerDAO.getInstance();
-    companyDAO = CompanyDAO.getInstance();
-    computerValidator = ComputerValidator.INSTANCE;
-  }
+  @Autowired
+  private ComputerDAO computerDAO;
+  @Autowired
+  private CompanyDAO companyDAO;
 
   /**
    * @param computer

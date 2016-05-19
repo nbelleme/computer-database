@@ -1,17 +1,19 @@
-package computer;
+package com.excilys.computer;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import com.excilys.model.Computer;
-import com.excilys.persistence.DaoException;
 import com.excilys.service.ComputerService;
 
 /**
@@ -19,6 +21,8 @@ import com.excilys.service.ComputerService;
  */
 public class Delete extends HttpServlet {
   private static final long serialVersionUID = 1L;
+
+  @Autowired
   private ComputerService computerService;
 
   /**
@@ -26,7 +30,13 @@ public class Delete extends HttpServlet {
    */
   public Delete() {
     super();
-    computerService = ComputerService.getInstance();
+  }
+
+  @Override
+  public void init(ServletConfig config) throws ServletException {
+    super.init(config);
+    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+        config.getServletContext());
   }
 
   /**
@@ -58,7 +68,6 @@ public class Delete extends HttpServlet {
 
     for (Computer computer : computers) {
       computerService.delete(computer);
-      // computerService.add(computer);
     }
     response.sendRedirect("/ComputerDatabase/computer/view/all");
   }

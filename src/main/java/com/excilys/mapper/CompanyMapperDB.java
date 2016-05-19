@@ -4,27 +4,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.model.Company;
 
+@Component
+@Scope("singleton")
 public class CompanyMapperDB implements Mapper<Company> {
   public static final String ID = "id";
   public static final String NAME = "name";
-
-  private static CompanyMapperDB instance = null;
-
-  /**
-   * @return ComputerMapper instance of CompanyMapper
-   */
-  public static CompanyMapperDB getMapper() {
-    if (instance == null) {
-      synchronized (CompanyMapperDB.class) {
-        if (instance == null) {
-          instance = new CompanyMapperDB();
-        }
-      }
-    }
-    return instance;
-  }
 
   @Override
   public void map(Company company, PreparedStatement stmt) throws SQLException {

@@ -6,11 +6,16 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
 
+@Component
+@Scope("singleton")
 public class ComputerMapperDB implements Mapper<Computer> {
 
   public static final String COMPUTER_TABLE = ComputerDAO.COMPUTER_TABLE;
@@ -23,22 +28,6 @@ public class ComputerMapperDB implements Mapper<Computer> {
   public static final String COMPANY_NAME = "company.name";
   public static final String COMPANY_TABLE_ID = "company.id";
   public static final String COMPANY_TABLE_NAME = "company.name";
-
-  private static ComputerMapperDB instance = null;
-
-  /**
-   * @return ComputerMapper instance of ComputerMapper
-   */
-  public static ComputerMapperDB getMapper() {
-    if (instance == null) {
-      synchronized (ComputerMapperDB.class) {
-        if (instance == null) {
-          instance = new ComputerMapperDB();
-        }
-      }
-    }
-    return instance;
-  }
 
   @Override
   public void map(Computer entity, PreparedStatement stmt) throws SQLException {
