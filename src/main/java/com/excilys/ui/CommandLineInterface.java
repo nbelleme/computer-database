@@ -106,7 +106,6 @@ public class CommandLineInterface {
         }
       }
     } catch (DaoException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }

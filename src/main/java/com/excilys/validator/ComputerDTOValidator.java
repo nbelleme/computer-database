@@ -4,9 +4,13 @@ import java.time.LocalDate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-public enum ComputerDTOValidator {
-  INSTANCE;
+@Component
+@Scope("singleton")
+public class ComputerDTOValidator {
+
   private Logger logger = LoggerFactory.getLogger(ComputerDTOValidator.class);
 
   /**

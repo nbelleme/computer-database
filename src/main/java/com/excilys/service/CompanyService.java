@@ -1,54 +1,34 @@
 package com.excilys.service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import com.excilys.model.Company;
 import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
 import com.excilys.persistence.Database;
-import com.excilys.persistence.DatabaseException;
 
 /**
  * @author nbelleme
  */
+@Service
+@Scope("singleton")
 public class CompanyService {
 
+  @Autowired
   private CompanyDAO companyDAO;
-  private Logger logger = LoggerFactory.getLogger(CompanyService.class);
-
-  private static CompanyService instance;
-
+  @Autowired
+  private ComputerDAO computerDAO;
+  @Autowired
   private Database database;
 
-  /**
-   * Default constructor.
-   */
-  private CompanyService() {
-    companyDAO = CompanyDAO.getInstance();
-    database = Database.getInstance();
-  }
-
-  /**
-   * @return instance of CompanyService
-   */
-  public static CompanyService getInstance() {
-    if (instance == null) {
-      synchronized (CompanyService.class) {
-        if (instance == null) {
-          instance = new CompanyService();
-        }
-      }
-    }
-
-    return instance;
-  }
+  private Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
   /**
    * @param company
@@ -74,11 +54,12 @@ public class CompanyService {
     if (company != null) {
       database.init();
       database.setAutoCommit(false);
-      ComputerDAO.getInstance().deleteFromCompanyId(company.getId());
-      CompanyDAO.getInstance().delete(company);
+      computerDAO.deleteFromCompanyId(company.getId());
+      companyDAO.delete(company);
       database.commit();
       database.closeConnection();
     }
+
   }
 
   /**

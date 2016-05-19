@@ -1,12 +1,12 @@
-package computer;
+package com.excilys.computer;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
@@ -27,8 +29,14 @@ import com.excilys.validator.ComputerValidator;
  */
 public class AddComputer extends HttpServlet {
   private static final long serialVersionUID = 1L;
+
+  @Autowired
+  private ComputerService computerService;
+  @Autowired
   private CompanyService companyService;
+  @Autowired
   private ComputerValidator computerValidator;
+
   private Logger logger = LoggerFactory.getLogger(AddComputer.class);
 
   /**
@@ -36,8 +44,13 @@ public class AddComputer extends HttpServlet {
    */
   public AddComputer() {
     super();
-    companyService = CompanyService.getInstance();
-    computerValidator = ComputerValidator.INSTANCE;
+  }
+
+  @Override
+  public void init(ServletConfig config) throws ServletException {
+    super.init(config);
+    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+        config.getServletContext());
   }
 
   /**
@@ -99,8 +112,6 @@ public class AddComputer extends HttpServlet {
       LocalDate discontinuedDate = LocalDate.parse(discontinued, formatter);
     }
 
-    ComputerService computerService = ComputerService.getInstance();
-    CompanyService companyService = CompanyService.getInstance();
     Company company = null;
     long idCompany = -1;
 

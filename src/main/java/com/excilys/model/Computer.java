@@ -2,6 +2,11 @@ package com.excilys.model;
 
 import java.time.LocalDate;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class Computer {
   private long id;
   private String name;
@@ -14,7 +19,6 @@ public class Computer {
    */
   public Computer() {
     id = -1;
-    introduced = LocalDate.now();
   }
 
   /**

@@ -1,4 +1,4 @@
-package computer;
+package com.excilys.computer;
 
 import java.io.IOException;
 
@@ -7,9 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.model.Computer;
 import com.excilys.persistence.DaoException;
-import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
 /**
@@ -18,16 +19,14 @@ import com.excilys.service.ComputerService;
 public class View extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
+  @Autowired
   private ComputerService computerService;
-  private CompanyService companyService;
 
   /**
    * @see HttpServlet#HttpServlet()
    */
   public View() {
     super();
-    computerService = ComputerService.getInstance();
-    companyService = CompanyService.getInstance();
 
   }
 

@@ -4,14 +4,17 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
-import com.excilys.validator.ValidatorException;
 
 import dto.ComputerDTO;
 
-public enum ComputerDTOMapper {
-  INSTANCE;
+@Component
+@Scope("singleton")
+public class ComputerDTOMapper {
 
   public ComputerDTO map(Computer computer) {
     ComputerDTO computerDTO = new ComputerDTO();

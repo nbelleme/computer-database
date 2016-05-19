@@ -1,14 +1,18 @@
-package computer;
+package com.excilys.computer;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.mapper.ComputerDTOMapper;
 import com.excilys.model.Computer;
@@ -24,7 +28,10 @@ import dto.ComputerDTO;
 
 public class ViewAll extends HttpServlet {
   private static final long serialVersionUID = 1L;
+
+  @Autowired
   private ComputerService computerService;
+  @Autowired
   private ComputerDTOMapper computerDtoMapper;
 
   /**
@@ -32,8 +39,13 @@ public class ViewAll extends HttpServlet {
    */
   public ViewAll() {
     super();
-    computerService = ComputerService.getInstance();
-    computerDtoMapper = ComputerDTOMapper.INSTANCE;
+  }
+
+  @Override
+  public void init(ServletConfig config) throws ServletException {
+    super.init(config);
+    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+        config.getServletContext());
   }
 
   /**
@@ -88,7 +100,6 @@ public class ViewAll extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    // TODO Auto-generated method stub
     doGet(request, response);
   }
 

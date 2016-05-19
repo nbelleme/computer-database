@@ -4,12 +4,15 @@ import java.time.LocalDate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.excilys.model.Computer;
 
-public enum ComputerValidator {
+@Component
+@Scope("singleton")
+public class ComputerValidator {
 
-  INSTANCE;
   private Logger logger = LoggerFactory.getLogger(ComputerValidator.class);
 
   public void isIdValid(long id) {

@@ -10,12 +10,17 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.mapper.ComputerMapperDB;
 import com.excilys.model.Computer;
 import com.excilys.validator.ComputerDTOValidator;
 import com.mysql.jdbc.Statement;
 
+@Repository
+@Scope("singleton")
 public class ComputerDAO implements DAO<Computer> {
   public static final String COMPUTER_TABLE = "computer";
   public static final String COMPANY_TABLE = "company";
@@ -42,33 +47,16 @@ public class ComputerDAO implements DAO<Computer> {
   public static final String DELETE_WHERE_COMPANY = "DELETE FROM " + COMPUTER_TABLE
       + " WHERE company_id = ?";
 
+  @Autowired
   private ComputerMapperDB mapper;
+  @Autowired
   private Database database;
   private Logger logger;
-
-  private static ComputerDAO instance = null;
-
-  /**
-   * @return instance instance of ComputerDAO
-   */
-  public static ComputerDAO getInstance() {
-    if (instance == null) {
-      synchronized (ComputerDAO.class) {
-        if (instance == null) {
-          instance = new ComputerDAO();
-        }
-      }
-    }
-
-    return instance;
-  }
 
   /**
    * Default constructor, initialize mapper.
    */
   private ComputerDAO() {
-    mapper = ComputerMapperDB.getMapper();
-    database = Database.getInstance();
     logger = LoggerFactory.getLogger(ComputerDTOValidator.class);
   }
 
