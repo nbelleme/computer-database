@@ -2,6 +2,9 @@ package com.excilys.ui;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Page<T> {
 
   private int nbElementPage;
@@ -23,7 +26,7 @@ public class Page<T> {
   }
 
   public static class Builder<T> {
-    private Page<T> page = new Page();
+    private Page<T> page = new Page<T>();
 
     public Builder<T> nbPage(int nbPage) {
       page.nbCurrentPage = nbPage;
@@ -40,13 +43,13 @@ public class Page<T> {
       return this;
     }
 
-    public Builder<T> elements(List elements) {
+    public Builder<T> elements(List<T> elements) {
       page.elements = elements;
       return this;
     }
 
     public Page<T> build() {
-      return new Page(this);
+      return new Page<T>(this);
     }
   }
 

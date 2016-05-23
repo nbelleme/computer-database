@@ -2,14 +2,21 @@ package com.excilys.persistence;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.ui.Page;
 
+@Component
 public class SearchComputer {
   private String name;
   private OrderBy orderBy;
   private String orderSort;
 
   private Page page;
+
+  private SearchComputer() {
+
+  }
 
   public SearchComputer(HttpServletRequest request) {
     name = request.getParameter("search");

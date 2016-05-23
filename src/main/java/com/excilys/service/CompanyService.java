@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.model.Company;
 import com.excilys.persistence.CompanyDAO;
@@ -50,14 +51,11 @@ public class CompanyService {
    * @param company
    *          company need to be deleted
    */
+  @Transactional
   public void delete(Company company) {
     if (company != null) {
-      database.init();
-      database.setAutoCommit(false);
       computerDAO.deleteFromCompanyId(company.getId());
       companyDAO.delete(company);
-      database.commit();
-      database.closeConnection();
     }
 
   }

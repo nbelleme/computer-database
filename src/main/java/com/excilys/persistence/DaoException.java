@@ -1,7 +1,7 @@
 package com.excilys.persistence;
 
-@SuppressWarnings("serial")
 public class DaoException extends RuntimeException {
+  private static final long serialVersionUID = 3631455266081508130L;
 
   /**
    * Default constructor.

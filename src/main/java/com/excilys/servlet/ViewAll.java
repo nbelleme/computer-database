@@ -1,4 +1,4 @@
-package com.excilys.computer;
+package com.excilys.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,20 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.excilys.dto.ComputerDTO;
 import com.excilys.mapper.ComputerDTOMapper;
 import com.excilys.model.Computer;
 import com.excilys.persistence.SearchComputer;
 import com.excilys.service.ComputerService;
 import com.excilys.ui.Page;
 
-import dto.ComputerDTO;
-
 /**
  * Servlet implementation class ComputerServletViewAll
  */
-
 public class ViewAll extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
@@ -34,16 +34,10 @@ public class ViewAll extends HttpServlet {
   @Autowired
   private ComputerDTOMapper computerDtoMapper;
 
-  /**
-   * @see HttpServlet#HttpServlet()
-   */
-  public ViewAll() {
-    super();
-  }
-
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
+    WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
     SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
         config.getServletContext());
   }

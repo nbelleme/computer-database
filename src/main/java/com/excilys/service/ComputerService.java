@@ -5,28 +5,22 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.excilys.model.Computer;
-import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
 import com.excilys.persistence.SearchComputer;
 import com.excilys.validator.ComputerValidator;
 
 @Service
-@Scope("singleton")
 public class ComputerService {
-  private static ComputerService instance = null;
   private Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
   @Autowired
   private ComputerValidator computerValidator;
   @Autowired
   private ComputerDAO computerDAO;
-  @Autowired
-  private CompanyDAO companyDAO;
 
   /**
    * @param computer

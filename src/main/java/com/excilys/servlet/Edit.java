@@ -1,4 +1,4 @@
-package com.excilys.computer;
+package com.excilys.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import com.excilys.dto.ComputerDTO;
 import com.excilys.mapper.ComputerDTOMapper;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
@@ -22,8 +23,6 @@ import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 import com.excilys.validator.ComputerValidator;
 import com.excilys.validator.ValidatorException;
-
-import dto.ComputerDTO;
 
 /**
  * Servlet implementation class ComputerServletEdit

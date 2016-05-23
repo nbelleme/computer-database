@@ -1,4 +1,4 @@
-package com.excilys.computer;
+package com.excilys.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
