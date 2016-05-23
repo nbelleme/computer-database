@@ -1,7 +1,8 @@
 package com.excilys.persistence;
 
-@SuppressWarnings("serial")
 public class DatabaseException extends RuntimeException {
+
+  private static final long serialVersionUID = 4120903544176738859L;
 
   /**
    * @param e

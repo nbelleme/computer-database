@@ -3,6 +3,8 @@ package com.excilys.ui;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.model.Computer;
 import com.excilys.persistence.DaoException;
 import com.excilys.service.CompanyService;
@@ -10,7 +12,9 @@ import com.excilys.service.ComputerService;
 
 public class CommandLineInterface {
 
+  @Autowired
   private ComputerService computerService;
+  @Autowired
   private CompanyService companyService;
   private boolean isRunning;
   Scanner scan;
@@ -19,8 +23,6 @@ public class CommandLineInterface {
    * Default constructor.
    */
   public CommandLineInterface() {
-    computerService = ComputerService.getInstance();
-    companyService = CompanyService.getInstance();
     isRunning = true;
     scan = new Scanner(System.in);
   }

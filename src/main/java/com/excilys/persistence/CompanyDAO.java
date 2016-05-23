@@ -45,7 +45,6 @@ public class CompanyDAO implements DAO<Company> {
 
   @Override
   public void delete(Company item) throws DaoException {
-    database.init();
     Connection conn = database.getConnection();
     try {
       PreparedStatement stmtCompany = conn.prepareStatement(DELETE_COMPANY);
@@ -54,14 +53,11 @@ public class CompanyDAO implements DAO<Company> {
     } catch (SQLException e) {
       logger.error(e.getMessage());
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
   @Override
   public Company find(long id) throws DaoException {
-    database.init();
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(FIND_QUERY);) {
       stmt.setLong(1, id);
@@ -71,8 +67,6 @@ public class CompanyDAO implements DAO<Company> {
     } catch (SQLException e) {
       logger.error(e.getMessage());
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
@@ -91,13 +85,10 @@ public class CompanyDAO implements DAO<Company> {
     } catch (SQLException e) {
       logger.error(e.getMessage());
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
   public List<Company> findAll() {
-    database.init();
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(FIND_ALL_QUERY);) {
       ResultSet rs = stmt.executeQuery();
@@ -108,8 +99,6 @@ public class CompanyDAO implements DAO<Company> {
       return companies;
     } catch (SQLException e) {
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 

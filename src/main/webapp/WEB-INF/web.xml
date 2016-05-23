@@ -3,16 +3,17 @@
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
-	
+	<display-name>Computer Database</display-name>
+
 	<!-- LISTENER -->
 	<listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
 	<!-- VIEW ALL COMPUTER -->
 	<servlet>
 		<servlet-name>ViewAll</servlet-name>
-		<servlet-class>com.excilys.computer.ViewAll</servlet-class>
+		<servlet-class>com.excilys.servlet.ViewAll</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ViewAll</servlet-name>
@@ -22,7 +23,7 @@
 	<!-- ADD COMPUTER -->
 	<servlet>
 		<servlet-name>AddComputer</servlet-name>
-		<servlet-class>com.excilys.computer.AddComputer</servlet-class>
+		<servlet-class>com.excilys.servlet.AddComputer</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AddComputer</servlet-name>
@@ -32,7 +33,7 @@
 	<!-- EDIT COMPUTER -->
 	<servlet>
 		<servlet-name>Edit</servlet-name>
-		<servlet-class>com.excilys.computer.Edit</servlet-class>
+		<servlet-class>com.excilys.servlet.Edit</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Edit</servlet-name>
@@ -42,7 +43,7 @@
 	<!-- DELETE COMPUTER -->
 	<servlet>
 		<servlet-name>Delete</servlet-name>
-		<servlet-class>com.excilys.computer.Delete</servlet-class>
+		<servlet-class>com.excilys.servlet.Delete</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Delete</servlet-name>

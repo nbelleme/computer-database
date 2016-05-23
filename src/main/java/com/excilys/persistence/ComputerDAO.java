@@ -51,18 +51,10 @@ public class ComputerDAO implements DAO<Computer> {
   private ComputerMapperDB mapper;
   @Autowired
   private Database database;
-  private Logger logger;
-
-  /**
-   * Default constructor, initialize mapper.
-   */
-  private ComputerDAO() {
-    logger = LoggerFactory.getLogger(ComputerDTOValidator.class);
-  }
+  private Logger logger = LoggerFactory.getLogger(ComputerDTOValidator.class);
 
   @Override
   public long add(Computer computer) {
-    database.init();
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(ADD_QUERY,
         Statement.RETURN_GENERATED_KEYS);) {
@@ -84,29 +76,23 @@ public class ComputerDAO implements DAO<Computer> {
       return id;
     } catch (SQLException e) {
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
 
   }
 
   @Override
   public void delete(Computer computer) {
-    database.init();
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(DELETE_QUERY);) {
       stmt.setLong(1, computer.getId());
       stmt.executeUpdate();
     } catch (SQLException e) {
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
   @Override
   public Computer find(long id) {
-    database.init();
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(FIND_QUERY);) {
       stmt.setLong(1, id);
@@ -115,14 +101,11 @@ public class ComputerDAO implements DAO<Computer> {
       return mapper.unmap(rs);
     } catch (SQLException e) {
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
   @Override
   public List<Computer> findSeveral(int firstRow, int countRow) {
-    database.init();
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(FIND_SEVERAL_QUERY);) {
       stmt.setInt(1, firstRow);
@@ -135,14 +118,11 @@ public class ComputerDAO implements DAO<Computer> {
       return computers;
     } catch (SQLException e) {
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
   @Override
   public void update(Computer computer) {
-    database.init();
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(UPDATE_QUERY);) {
       stmt.setString(1, computer.getName());
@@ -169,14 +149,11 @@ public class ComputerDAO implements DAO<Computer> {
       stmt.executeUpdate();
     } catch (SQLException e) {
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
   @Override
   public int getTotal() {
-    database.init();
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(TOTAL_QUERY);) {
       ResultSet rs = stmt.executeQuery();
@@ -184,14 +161,11 @@ public class ComputerDAO implements DAO<Computer> {
       return rs.getInt(1);
     } catch (SQLException e) {
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
   public List<Computer> findByNameOrCompany(String name, String orderBy, String orderSort,
       int firstRow, int count) {
-    database.init();
     Connection connection = database.getConnection();
     try {
       String str = String.format(FIND_BY_NAME_OR_COMPANY, orderBy, orderSort);
@@ -210,8 +184,6 @@ public class ComputerDAO implements DAO<Computer> {
     } catch (SQLException e) {
       logger.error("Error function : findByNameOrCompany");
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
@@ -226,8 +198,6 @@ public class ComputerDAO implements DAO<Computer> {
     } catch (SQLException e) {
       logger.error("Error function : findByNameOrCompany");
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
@@ -238,8 +208,6 @@ public class ComputerDAO implements DAO<Computer> {
       stmt.executeUpdate();
     } catch (SQLException e) {
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
@@ -264,7 +232,6 @@ public class ComputerDAO implements DAO<Computer> {
     }
 
     query = query + " LIMIT ?, ?";
-    database.init();
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(query)) {
       stmt.setInt(1, search.getPage().getFirsRow());
@@ -278,8 +245,6 @@ public class ComputerDAO implements DAO<Computer> {
       return computers;
     } catch (SQLException e) {
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 
@@ -302,7 +267,6 @@ public class ComputerDAO implements DAO<Computer> {
       }
     }
 
-    database.init();
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(query)) {
 
@@ -311,8 +275,6 @@ public class ComputerDAO implements DAO<Computer> {
       return rs.getInt(1);
     } catch (SQLException e) {
       throw new DaoException(e);
-    } finally {
-      database.closeConnection();
     }
   }
 }

@@ -7,10 +7,9 @@ import java.util.regex.Pattern;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.excilys.dto.ComputerDTO;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
-
-import dto.ComputerDTO;
 
 @Component
 @Scope("singleton")
