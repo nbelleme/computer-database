@@ -8,53 +8,37 @@ import com.excilys.ui.Page;
 
 @Component
 public class SearchComputer {
-  private String name;
-  private OrderBy orderBy;
-  private String orderSort;
-
+  private String nameToSearch;
+  private String sort;
+  private OrderBy order;
   private Page page;
 
-  private SearchComputer() {
-
-  }
-
-  public SearchComputer(HttpServletRequest request) {
-    name = request.getParameter("search");
-    orderSort = request.getParameter("orderSort");
-
-    orderBy(request.getParameter("orderBy"));
-  }
-
   private void orderBy(String param) {
-    if (param != null) {
-      orderBy = OrderBy.getOrderBy(param);
-    } else {
-      orderBy = null;
-    }
+
   }
 
-  public String getName() {
-    return name;
+  public String getNameToSearch() {
+    return nameToSearch;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setNameToSearch(String name) {
+    this.nameToSearch = name;
   }
 
-  public OrderBy getOrderBy() {
-    return orderBy;
+  public OrderBy getOrder() {
+    return order;
   }
 
-  public void setOrderBy(OrderBy orderBy) {
-    this.orderBy = orderBy;
+  public void setOrder(String orderBy) {
+    this.order = OrderBy.getOrderBy(orderBy);
   }
 
-  public String getOrderSort() {
-    return orderSort;
+  public String getSort() {
+    return sort;
   }
 
-  public void setOrderSort(String orderSort) {
-    this.orderSort = orderSort;
+  public void setSort(String sort) {
+    this.sort = sort;
   }
 
   public void setPage(Page page) {

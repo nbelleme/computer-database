@@ -2,22 +2,22 @@
 <configuration>
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>ComputerDatabase.log</file>
+		<file>/home/nbelleme/Bureau/dev/computer-database/ComputerDatabase.log</file>
 		<encoder>
 			<pattern>[%date] %level [%thread] \(%file:%line\) %msg%n</pattern>
 		</encoder>
 	</appender>
 
-	<appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>[%date] %level [%thread] \(%file:%line\) %msg%n</pattern>
 		</encoder>
-		<target>System.err</target>
+		<target>System.out</target>
 	</appender>
 
 
-	<root level="DEBUG">
-		<appender-ref ref="STDERR" />
+	<root level="DEBUG	">
+		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>
 </configuration>

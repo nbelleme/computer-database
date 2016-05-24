@@ -70,35 +70,13 @@ public class ComputerService {
     try {
       return computerDAO.find(id);
     } catch (DaoException e) {
-      logger.error(e.getMessage());
+      logger.debug(e.getMessage());
       throw new DaoException(e);
     }
   }
 
-  /**
-   * @param firstRow
-   *          firstRow to look for
-   * @param countRow
-   *          number of value wanted
-   * @return List<Computer> list of entity retrieved
-   * @throws DaoException
-   *           DaoException
-   */
-  public List<Computer> findSeveral(int firstRow, int countRow) {
-    return computerDAO.findSeveral(firstRow, countRow);
-  }
-
   public int getTotal() {
     return computerDAO.getTotal();
-  }
-
-  public List<Computer> findByNameOrCompany(String name, String orderBy, String orderSort,
-      int firstRow, int count) {
-    return computerDAO.findByNameOrCompany(name, orderBy, orderSort, firstRow, count);
-  }
-
-  public int getNumberEntriesFindByNameOrCompany(String name) {
-    return computerDAO.getNumberEntriesFindByNameOrCompany(name);
   }
 
   public List<Computer> findBySearch(SearchComputer search) {

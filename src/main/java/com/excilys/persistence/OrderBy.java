@@ -1,13 +1,20 @@
 package com.excilys.persistence;
 
 public enum OrderBy {
-  ID("computer.id"), NAME("computer.name"), INTRODUCED("computer.introduced"), DISCONTINUED(
-      "computer.discontinued"), COMPANY("company.name");
+  ID("computer.id", "id"), NAME("computer.name", "name"), INTRODUCED("computer.introduced",
+      "introduced"), DISCONTINUED("computer.discontinued",
+          "discontinued"), COMPANY("company.name", "company");
 
+  String column;
   String name;
 
-  OrderBy(String name) {
+  OrderBy(String column, String name) {
     this.name = name;
+    this.column = column;
+  }
+
+  public String getColumn() {
+    return column;
   }
 
   public String getName() {
@@ -15,19 +22,21 @@ public enum OrderBy {
   }
 
   public static OrderBy getOrderBy(String param) {
-    switch (param) {
-    case "id":
-      return ID;
-    case "name":
-      return NAME;
-    case "introduced":
-      return INTRODUCED;
-    case "discontinued":
-      return DISCONTINUED;
-    case "company":
-      return COMPANY;
+    if (param != null) {
+      switch (param) {
+      case "id":
+        return ID;
+      case "name":
+        return NAME;
+      case "introduced":
+        return INTRODUCED;
+      case "discontinued":
+        return DISCONTINUED;
+      case "company":
+        return COMPANY;
+      }
     }
-    return OrderBy.ID;
+    return ID;
   }
 
 }

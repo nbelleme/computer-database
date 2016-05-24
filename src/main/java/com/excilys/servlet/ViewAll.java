@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -51,41 +50,41 @@ public class ViewAll extends HttpServlet {
 
     Page<ComputerDTO> page = new Page.Builder<ComputerDTO>().build();
 
-    SearchComputer search = new SearchComputer(request);
-    search.setPage(page);
-
-    if (search.getOrderBy() != null) {
-      request.setAttribute("orderBy", search.getOrderBy().getName());
-    }
-
-    if (search.getName() != null) {
-      request.setAttribute("search", search.getName());
-    }
-
-    if (search.getOrderSort() != null && search.getOrderSort() != "") {
-      request.setAttribute("orderSort", search.getOrderSort());
-    }
-
-    int nbElementTotal = computerService.getNumberFindBySearch(search);
-    int nbElementPage = getNbElementPage(request.getParameter("nbElementPage"));
-    int nbPageTotal = (int) Math.ceil((double) nbElementTotal / nbElementPage);
-    int nbCurrentPage = getPageNumber(request.getParameter("page"), nbPageTotal);
-
-    page.setNbElementTotal(nbElementTotal);
-    page.setNbPageTotal(nbPageTotal);
-    page.setNbCurrentPage(nbCurrentPage);
-
-    List<Computer> computers = new ArrayList<Computer>();
-    computers = computerService.findBySearch(search);
-
-    List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
-    for (Computer computer : computers) {
-      computersDTO.add(computerDtoMapper.map(computer));
-    }
-
-    page.setElements(computersDTO);
-    request.setAttribute("page", page);
-    request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
+    // SearchComputer search = new SearchComputer(request);
+    // search.setPage(page);
+    //
+    // if (search.getOrderBy() != null) {
+    // request.setAttribute("orderBy", search.getOrderBy().getName());
+    // }
+    //
+    // if (search.getName() != null) {
+    // request.setAttribute("search", search.getName());
+    // }
+    //
+    // if (search.getOrderSort() != null && search.getOrderSort() != "") {
+    // request.setAttribute("orderSort", search.getOrderSort());
+    // }
+    //
+    // int nbElementTotal = computerService.getNumberFindBySearch(search);
+    // int nbElementPage = getNbElementPage(request.getParameter("nbElementPage"));
+    // int nbPageTotal = (int) Math.ceil((double) nbElementTotal / nbElementPage);
+    // int nbCurrentPage = getPageNumber(request.getParameter("page"), nbPageTotal);
+    //
+    // page.setNbElementTotal(nbElementTotal);
+    // page.setNbPageTotal(nbPageTotal);
+    // page.setNbCurrentPage(nbCurrentPage);
+    //
+    // List<Computer> computers = new ArrayList<Computer>();
+    // computers = computerService.findBySearch(search);
+    //
+    // List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+    // for (Computer computer : computers) {
+    // computersDTO.add(computerDtoMapper.map(computer));
+    // }
+    //
+    // page.setElements(computersDTO);
+    // request.setAttribute("page", page);
+    // request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
   }
 
   /**
@@ -107,17 +106,6 @@ public class ViewAll extends HttpServlet {
       }
     }
     return nbElementPage;
-  }
-
-  private int getPageNumber(String param, int nbPageTotal) {
-    int nbCurrentPage = 1;
-    if (param != null) {
-      nbCurrentPage = Integer.parseInt(param);
-      if (nbCurrentPage > nbPageTotal) {
-        nbCurrentPage = nbPageTotal;
-      }
-    }
-    return nbCurrentPage;
   }
 
 }
