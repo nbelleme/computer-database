@@ -13,7 +13,6 @@ import com.excilys.model.Company;
 import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
-import com.excilys.persistence.Database;
 
 /**
  * @author nbelleme
@@ -26,8 +25,6 @@ public class CompanyService {
   private CompanyDAO companyDAO;
   @Autowired
   private ComputerDAO computerDAO;
-  @Autowired
-  private Database database;
 
   private Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
@@ -89,16 +86,7 @@ public class CompanyService {
     try {
       return companyDAO.findAll();
     } catch (DaoException e) {
-      logger.error(e.getMessage());
-      throw new DaoException(e);
-    }
-  }
-
-  public List<Company> findSeveral(int firstRow, int countRow) throws DaoException {
-    try {
-      return companyDAO.findSeveral(firstRow, countRow);
-    } catch (DaoException e) {
-      logger.error(e.getMessage());
+      logger.debug(e.getMessage());
       throw new DaoException(e);
     }
   }

@@ -82,7 +82,7 @@ public class Computer {
      * @return builder builder
      */
     public Builder company(Company company) {
-      computer.company = new Company(company);
+      computer.company = company;
       return this;
     }
 

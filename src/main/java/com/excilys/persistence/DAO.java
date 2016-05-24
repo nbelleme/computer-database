@@ -47,19 +47,6 @@ public interface DAO<T> {
   T find(long id) throws DaoException;
 
   /**
-   * Find X computers from firstRow.
-   *
-   * @param firstRow
-   *          first row of the table
-   * @param countRow
-   *          number of return values wanted
-   * @return list of entity
-   * @throws DaoException
-   *           throws DaoException
-   */
-  List<T> findSeveral(int firstRow, int countRow) throws DaoException;
-
-  /**
    * Get number total of elements.
    *
    * @return int number of elements in the database

@@ -4,14 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.mapper.ComputerMapperDB;
@@ -21,6 +25,7 @@ import com.mysql.jdbc.Statement;
 
 @Repository
 @Scope("singleton")
+
 public class ComputerDAO implements DAO<Computer> {
   public static final String COMPUTER_TABLE = "computer";
   public static final String COMPANY_TABLE = "company";
@@ -51,157 +56,45 @@ public class ComputerDAO implements DAO<Computer> {
   private ComputerMapperDB mapper;
   @Autowired
   private Database database;
-  private Logger logger = LoggerFactory.getLogger(ComputerDTOValidator.class);
+  @Autowired
+  private DataSource dataSource;
+
+  private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
   @Override
   public long add(Computer computer) {
-    Connection connection = database.getConnection();
-    try (PreparedStatement stmt = connection.prepareStatement(ADD_QUERY,
-        Statement.RETURN_GENERATED_KEYS);) {
-      long id = -1;
+    logger.debug("ComputerDAO ---- add");
+    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    GeneratedKeyHolder generatedKeysHolder = new GeneratedKeyHolder();
+    long out = jdbcTemplate.update((Connection con) -> {
+      PreparedStatement stmt = con.prepareStatement(ADD_QUERY, Statement.RETURN_GENERATED_KEYS);
       mapper.map(computer, stmt);
-      int affectedRows = stmt.executeUpdate();
+      return stmt;
+    }, generatedKeysHolder);
 
-      if (affectedRows == 0) {
-        throw new DaoException(new SQLException("Creating computer failed, no rows affected."));
-      }
-
-      try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-        if (generatedKeys.next()) {
-          id = generatedKeys.getLong(1);
-        } else {
-          throw new DaoException(new SQLException("Creating computer failed, no ID obtained."));
-        }
-      }
-      return id;
-    } catch (SQLException e) {
-      throw new DaoException(e);
+    long id;
+    if (out != 0) {
+      id = generatedKeysHolder.getKey().longValue();
+    } else {
+      throw new DaoException(new SQLException("Creating computer failed, no ID obtained."));
     }
+    return id;
 
   }
 
   @Override
   public void delete(Computer computer) {
-    Connection connection = database.getConnection();
-    try (PreparedStatement stmt = connection.prepareStatement(DELETE_QUERY);) {
-      stmt.setLong(1, computer.getId());
-      stmt.executeUpdate();
-    } catch (SQLException e) {
-      throw new DaoException(e);
-    }
-  }
-
-  @Override
-  public Computer find(long id) {
-    Connection connection = database.getConnection();
-    try (PreparedStatement stmt = connection.prepareStatement(FIND_QUERY);) {
-      stmt.setLong(1, id);
-      ResultSet rs = stmt.executeQuery();
-      rs.first();
-      return mapper.unmap(rs);
-    } catch (SQLException e) {
-      throw new DaoException(e);
-    }
-  }
-
-  @Override
-  public List<Computer> findSeveral(int firstRow, int countRow) {
-    Connection connection = database.getConnection();
-    try (PreparedStatement stmt = connection.prepareStatement(FIND_SEVERAL_QUERY);) {
-      stmt.setInt(1, firstRow);
-      stmt.setInt(2, countRow);
-      ResultSet rs = stmt.executeQuery();
-      List<Computer> computers = new ArrayList<Computer>();
-      while (rs.next()) {
-        computers.add(mapper.unmap(rs));
-      }
-      return computers;
-    } catch (SQLException e) {
-      throw new DaoException(e);
-    }
-  }
-
-  @Override
-  public void update(Computer computer) {
-    Connection connection = database.getConnection();
-    try (PreparedStatement stmt = connection.prepareStatement(UPDATE_QUERY);) {
-      stmt.setString(1, computer.getName());
-      if (computer.getIntroduced() != null) {
-        stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroduced().atStartOfDay()));
-      } else {
-        stmt.setObject(2, null, java.sql.Types.TIMESTAMP);
-      }
-
-      if (computer.getDiscontinued() != null) {
-        stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinued().atStartOfDay()));
-      } else {
-        stmt.setObject(3, null, java.sql.Types.TIMESTAMP);
-      }
-
-      if (computer.getCompany() != null) {
-        stmt.setObject(4, computer.getCompany().getId(), java.sql.Types.BIGINT);
-      } else {
-        stmt.setObject(4, null, java.sql.Types.BIGINT);
-      }
-
-      stmt.setLong(5, computer.getId());
-
-      stmt.executeUpdate();
-    } catch (SQLException e) {
-      throw new DaoException(e);
-    }
-  }
-
-  @Override
-  public int getTotal() {
-    Connection connection = database.getConnection();
-    try (PreparedStatement stmt = connection.prepareStatement(TOTAL_QUERY);) {
-      ResultSet rs = stmt.executeQuery();
-      rs.first();
-      return rs.getInt(1);
-    } catch (SQLException e) {
-      throw new DaoException(e);
-    }
-  }
-
-  public List<Computer> findByNameOrCompany(String name, String orderBy, String orderSort,
-      int firstRow, int count) {
-    Connection connection = database.getConnection();
+    logger.debug("ComputerDAO ---- delete");
+    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
     try {
-      String str = String.format(FIND_BY_NAME_OR_COMPANY, orderBy, orderSort);
-      PreparedStatement stmt = connection.prepareStatement(str);
-      stmt.setString(1, '%' + name + '%');
-      stmt.setString(2, '%' + name + '%');
-      stmt.setInt(3, firstRow);
-      stmt.setInt(4, count);
-
-      ResultSet rs = stmt.executeQuery();
-      List<Computer> computers = new ArrayList<Computer>();
-      while (rs.next()) {
-        computers.add(mapper.unmap(rs));
-      }
-      return computers;
-    } catch (SQLException e) {
-      logger.error("Error function : findByNameOrCompany");
-      throw new DaoException(e);
-    }
-  }
-
-  public int getNumberEntriesFindByNameOrCompany(String name) {
-    Connection connection = database.getConnection();
-    try (PreparedStatement stmt = connection.prepareStatement(NUMBER_BY_NAME_OR_COMPANY);) {
-      stmt.setString(1, name + '%');
-      stmt.setString(2, name + '%');
-      ResultSet rs = stmt.executeQuery();
-      rs.first();
-      return rs.getInt(1);
-    } catch (SQLException e) {
-      logger.error("Error function : findByNameOrCompany");
+      jdbcTemplate.update(DELETE_QUERY, computer.getId());
+    } catch (DataAccessException e) {
       throw new DaoException(e);
     }
   }
 
   public void deleteFromCompanyId(long id) {
+    logger.debug("ComputerDAO ---- deleteFromCompanyId");
     Connection connection = database.getConnection();
     try (PreparedStatement stmt = connection.prepareStatement(DELETE_WHERE_COMPANY);) {
       stmt.setLong(1, id);
@@ -211,69 +104,105 @@ public class ComputerDAO implements DAO<Computer> {
     }
   }
 
+  @Override
+  public Computer find(long id) {
+    logger.debug("ComputerDAO ---- find");
+    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    Object[] args = { id };
+    try {
+      return jdbcTemplate.queryForObject(FIND_QUERY, args, (ResultSet rs, int rownum) -> {
+        rs.first();
+        return mapper.unmap(rs);
+      });
+    } catch (DataAccessException e) {
+      logger.error("ComputerDAO Exception ---- " + e.getMessage());
+      throw new DaoException(e);
+    }
+
+  }
+
   public List<Computer> findBySearch(SearchComputer search) {
+    logger.debug("ComputerDAO ---- findBySearch");
     String query = FIND_SEARCH;
 
-    if (search.getName() != null) {
-      query = query + " WHERE ";
+    if (search.getNameToSearch() != null && search.getNameToSearch() != "") {
+      query = query + " WHERE computer.name LIKE '" + search.getNameToSearch()
+          + "%' OR company.name LIKE '" + search.getNameToSearch() + "%' ";
     }
-
-    if (search.getName() != null && search.getName() != "") {
-      query = query + " computer.name LIKE '" + search.getName();
-      // + "%' OR company.name LIKE '"
-      // + search.getName() + "%' ";
-    }
-
-    if (search.getOrderBy() != null) {
-      query = query + " ORDER BY " + search.getOrderBy().getName();
-      if (search.getOrderSort() != null) {
-        query = query + " " + search.getOrderSort();
+    if (search.getOrder() != null) {
+      query = query + " ORDER BY " + search.getOrder().getColumn();
+      if (search.getSort() != null) {
+        query = query + " " + search.getSort();
       }
     }
-
     query = query + " LIMIT ?, ?";
-    Connection connection = database.getConnection();
-    try (PreparedStatement stmt = connection.prepareStatement(query)) {
-      stmt.setInt(1, search.getPage().getFirsRow());
-      stmt.setInt(2, search.getPage().getNbElementPage());
+    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    try {
 
-      ResultSet rs = stmt.executeQuery();
-      List<Computer> computers = new ArrayList<Computer>();
-      while (rs.next()) {
-        computers.add(mapper.unmap(rs));
-      }
-      return computers;
-    } catch (SQLException e) {
+      Object[] args = { search.getPage().getFirsRow(), search.getPage().getNbElementPage() };
+      return jdbcTemplate.queryForObject(query, args, (ResultSet rs, int rowNum) -> {
+        List<Computer> computers = new ArrayList<>();
+        rs.beforeFirst();
+        while (rs.next()) {
+          computers.add(mapper.unmap(rs));
+        }
+        return computers;
+      });
+
+    } catch (DataAccessException e) {
       throw new DaoException(e);
     }
   }
 
   public int getNumberFindBySearch(SearchComputer search) {
+    logger.debug("ComputerDAO ---- getNumberFindBySearch");
     String query = NUMBER_BY_NAME_OR_COMPANY;
 
-    if (search.getName() != null) {
-      query = query + " WHERE ";
+    if (search.getNameToSearch() != null && search.getNameToSearch() != "") {
+      query = query + " WHERE  computer.name LIKE '" + search.getNameToSearch()
+          + "%' OR company.name LIKE '" + search.getNameToSearch() + "%' ";
     }
 
-    if (search.getName() != null && search.getName() != "") {
-      query = query + " computer.name LIKE '" + search.getName() + "%' OR company.name LIKE '"
-          + search.getName() + "%' ";
-    }
-
-    if (search.getOrderBy() != null) {
-      query = query + " ORDER BY " + search.getOrderBy().getName();
-      if (search.getOrderSort() != null) {
-        query = query + " " + search.getOrderSort();
+    if (search.getOrder() != null) {
+      query = query + " ORDER BY " + search.getOrder().getColumn();
+      if (search.getSort() != null) {
+        query = query + " " + search.getSort();
       }
     }
 
-    Connection connection = database.getConnection();
-    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    try {
+      return jdbcTemplate.queryForObject(query, (ResultSet rs, int rowNum) -> {
+        rs.first();
+        return rs.getInt(1);
+      });
+    } catch (DataAccessException e) {
+      logger.error(query);
+      throw new DaoException(e);
+    }
+  }
 
-      ResultSet rs = stmt.executeQuery();
+  @Override
+  public int getTotal() {
+    logger.debug("ComputerDAO ---- getTotal");
+    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    return jdbcTemplate.queryForObject(TOTAL_QUERY, (ResultSet rs, int rowNum) -> {
       rs.first();
       return rs.getInt(1);
-    } catch (SQLException e) {
+    });
+  }
+
+  @Override
+  public void update(Computer computer) {
+    logger.debug("ComputerDAO ---- update");
+    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    Object[] args = { computer.getName(),
+        computer.getIntroduced() != null ? computer.getIntroduced() : null,
+        computer.getDiscontinued() != null ? computer.getDiscontinued() : null,
+        computer.getCompany() != null ? computer.getCompany().getId() : null, computer.getId() };
+    try {
+      jdbcTemplate.update(UPDATE_QUERY, args);
+    } catch (DataAccessException e) {
       throw new DaoException(e);
     }
   }

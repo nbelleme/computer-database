@@ -1,6 +1,15 @@
+
 <!DOCTYPE html>
 <html>
-<%@ include file="/WEB-INF/views/fragments/head.jsp"%>
+<head>
+<title>Computer Database</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+
+<link href="/ComputerDatabase/resources/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="/ComputerDatabase/resources/css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="/ComputerDatabase/resources/css/main.css" rel="stylesheet" media="screen">
+</head>
 <body>
 	<%@ include file="/WEB-INF/views/fragments/header.jsp"%>
 
@@ -12,10 +21,5 @@
 			</div>
 		</div>
 	</section>
-
-	<script src="../js/jquery.min.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
-	<script src="../js/dashboard.js"></script>
-
 </body>
 </html>

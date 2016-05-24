@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@include file="/WEB-INF/views/fragments/head.jsp"%>
 <body onload="checkDateOnLoad()">
@@ -19,7 +20,7 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
-									name="computerName" placeholder="Computer name"
+									name="name" placeholder="Computer name"
 									value="${computer.name}">
 							</div>
 							<div class="form-group">
@@ -38,7 +39,7 @@
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId" name="companyId">
+									class="form-control" id="companyId" name="company">
 									<c:forEach var="company" items="${companies}">
 										<option value="${company.id}"
 											${computer.idCompany == company.id ? 'selected' : '' }>
@@ -57,7 +58,8 @@
 			</div>
 		</div>
 	</section>
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/addComputer.js"></script>
+	
+	<spring:url value="/resources/js/addComputer.js" var="addComputerJS" />
+	<script type="text/javascript" src="${addComputerJS}"></script>
 </body>
 </html>
