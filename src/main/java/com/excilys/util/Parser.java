@@ -13,17 +13,17 @@ public class Parser {
     if (patternElementPage.matcher(param).matches()) {
       return Integer.parseInt(param);
     }
-    return 0;
+    throw new ParserException("Error parsing");
   }
 
-  public static long parseToLong(String param) {
+  public static Long parseToLong(String param) {
     if (param != null && param != "") {
       Pattern patternElementPage = Pattern.compile(REGEX_INT);
       if (patternElementPage.matcher(param).matches()) {
         return Long.parseLong(param);
       }
     }
-    return 0;
+    throw new ParserException("Error parsing");
   }
 
   public static LocalDate parseToLocalDate(String param) {
@@ -35,6 +35,6 @@ public class Parser {
       }
       return LocalDate.parse(param, DATE_FORMATTER);
     }
-    return null;
+    throw new ParserException("Error parsing");
   }
 }

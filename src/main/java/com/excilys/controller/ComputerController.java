@@ -1,13 +1,15 @@
 package com.excilys.controller;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +42,8 @@ public class ComputerController {
   private static final String DISCONTINUED_KEY = "discontinued";
   private static final String COMPANY_KEY = "company";
 
+  private static final String SELECTION_KEY = "selection";
+
   private static final String DASHBOARD_JSP = "dashboard";
   private static final String ADD_JSP = "/computer/add";
   private static final String EDIT_JSP = "/computer/edit";
@@ -61,7 +65,7 @@ public class ComputerController {
   @RequestMapping(value = "/view/all", method = RequestMethod.GET)
   public ModelAndView getViewAll(@RequestParam(value = "search", required = false) String search,
       @RequestParam(value = ORDER_BY_KEY, required = false, defaultValue = "id") String order,
-      @RequestParam(value = NB_ELEMENT_PAGE_KEY, required = false, defaultValue = "10") String paramNbElementPage,
+      @RequestParam(value = NB_ELEMENT_PAGE_KEY, required = false, defaultValue = "10") String paramPageSize,
       @RequestParam(value = PAGE_KEY, required = false, defaultValue = "1") String paramPageNumber,
       @RequestParam(value = SORT_KEY, required = false, defaultValue = "asc") String sort) {
 
@@ -70,15 +74,17 @@ public class ComputerController {
     SearchComputer searchComputer = new SearchComputer();
     searchComputer.setPage(page);
     searchComputer.setNameToSearch(search);
-    searchComputer.setSort(sort);
+    searchComputer.setSort(sort.toLowerCase());
     searchComputer.setOrder(order);
 
     int nbElementTotal = computerService.getNumberFindBySearch(searchComputer);
-    int nbElementPage = Parser.parseToInteger(paramNbElementPage);
+    int pageSize = Parser.parseToInteger(paramPageSize);
+    pageSize = pageSize != 0 ? pageSize : 10;
 
-    int nbPageTotal = (int) Math.ceil((double) nbElementTotal / nbElementPage);
+    int nbPageTotal = (int) Math.ceil((double) nbElementTotal / pageSize);
+    nbPageTotal = nbPageTotal != 0 ? nbPageTotal : 1;
     int pageNumber = Parser.parseToInteger(paramPageNumber);
-
+    pageNumber = pageNumber != 0 ? pageNumber : 1;
     if (pageNumber > nbPageTotal) {
       pageNumber = nbPageTotal;
     }
@@ -86,10 +92,9 @@ public class ComputerController {
     page.setNbElementTotal(nbElementTotal);
     page.setNbPageTotal(nbPageTotal);
     page.setNbCurrentPage(pageNumber);
-    page.setNbElementPage(nbElementPage);
+    page.setPageSize(pageSize);
 
-    List<Computer> computers = new ArrayList<Computer>();
-    computers = computerService.findBySearch(searchComputer);
+    List<Computer> computers = computerService.findBySearch(searchComputer);
 
     List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
     for (Computer computer : computers) {
@@ -103,42 +108,28 @@ public class ComputerController {
   }
 
   @RequestMapping(value = "/add", method = RequestMethod.GET)
-  public ModelAndView getAdd() {
+  public ModelAndView getAdd(ComputerDTO computerDTO) {
     ArrayList<Company> companies = (ArrayList<Company>) companyService.findAll();
     return new ModelAndView(ADD_JSP, "companies", companies);
   }
 
   @RequestMapping(value = "/add", method = RequestMethod.POST)
-  public ModelAndView postAdd(@RequestParam(value = NAME_KEY, required = true) String name,
-      @RequestParam(value = INTRODUCED_KEY, required = false) String paramIntroduced,
-      @RequestParam(value = DISCONTINUED_KEY, required = false) String paramDiscontinued,
-      @RequestParam(value = COMPANY_KEY, required = false) String paramCompany) {
+  public ModelAndView postAdd(@Valid ComputerDTO computerDTO, BindingResult bindingResults) {
 
-    LocalDate introducedDate = Parser.parseToLocalDate(paramIntroduced);
-    LocalDate discontinuedDate = Parser.parseToLocalDate(paramDiscontinued);
-
-    long idCompany = Parser.parseToLong(paramCompany);
-    Company company = null;
-    if (idCompany != 0) {
-      company = companyService.find(idCompany);
+    if (bindingResults.hasErrors()) {
+      return new ModelAndView(ADD_JSP);
     }
 
-    Computer computer = new Computer.Builder().name(name).introduced(introducedDate)
-        .discontinued(discontinuedDate).company(company).build();
-
+    Computer computer = computerDtoMapper.unmap(computerDTO);
     computerValidator.isValid(computer);
     computerService.add(computer);
-
-    return new ModelAndView("redirect:" + PATH_DASHBOARD);
+    return new ModelAndView("redirect:"+PATH_DASHBOARD);
   }
 
-  @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-  public ModelAndView getEdit(@PathVariable("id") String paramId) {
+  @RequestMapping(value = "/edit", method = RequestMethod.GET)
+  public ModelAndView getEdit(@RequestParam(value = "id", required=true) String paramId) {
 
     long id = Parser.parseToLong(paramId);
-    if (id == 0) {
-      return new ModelAndView("redirect:" + PATH_DASHBOARD);
-    }
     Computer computer = computerService.find(id);
     ComputerDTO computerDTO = computerDtoMapper.map(computer);
     List<Company> companies = companyService.findAll();
@@ -147,7 +138,7 @@ public class ComputerController {
     mapResponse.put("companies", companies);
     mapResponse.put("computer", computerDTO);
 
-    return new ModelAndView("/computer/edit", mapResponse);
+    return new ModelAndView(EDIT_JSP, mapResponse);
   }
 
   @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
@@ -162,6 +153,21 @@ public class ComputerController {
     computerValidator.isValid(computer);
     computerService.update(computer);
 
-    return new ModelAndView("redirect:" + PATH_DASHBOARD);
+    return new ModelAndView("redirect:"+PATH_DASHBOARD);
+  }
+
+  @RequestMapping(value = "/delete", method = RequestMethod.POST)
+  public ModelAndView postDelete(
+      @RequestParam(value = SELECTION_KEY, required = true) String selection) {
+
+    String[] ids = selection.split(",");
+    ArrayList<Computer> computers = new ArrayList<>();
+
+    for (int i = 0; i < ids.length; i++) {
+      long id = Parser.parseToLong(ids[i]);
+      computers.add(computerService.find(id));
+    }
+    computerService.deleteMultiple(computers);
+    return new ModelAndView("redirect:"+PATH_DASHBOARD);
   }
 }

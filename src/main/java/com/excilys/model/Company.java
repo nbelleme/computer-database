@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Company {
 
-  private long id;
+  private Long id;
   private String name;
 
   public static class Builder {
@@ -25,7 +25,7 @@ public class Company {
      *          id to be built
      * @return builder builder
      */
-    public Builder id(long id) {
+    public Builder id(Long id) {
       company.id = id;
       return this;
     }
@@ -46,8 +46,6 @@ public class Company {
    * Default constructor.
    */
   public Company() {
-    id = -1;
-    name = null;
   }
 
   /**
@@ -97,7 +95,7 @@ public class Company {
     return true;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
@@ -114,7 +112,7 @@ public class Company {
     return result;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

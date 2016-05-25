@@ -88,7 +88,7 @@
 							<td class="editMode"><input type="checkbox" name="cb"
 								id="${computer.name}_id" class="cb" value="${computer.id}"></td>
 							<td><a id="${computer.name}_name"
-								href="http://localhost:8080/ComputerDatabase/computer/edit/${computer.id}"
+								href="${pageContext.request.contextPath}/computer/edit?id=${computer.id}"
 								>${computer.name}</a></td>
 							<td>${computer.introduced }</td>
 							<td>${computer.discontinued}</td>

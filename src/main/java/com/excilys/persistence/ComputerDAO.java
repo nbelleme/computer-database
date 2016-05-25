@@ -14,13 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.mapper.ComputerMapperDB;
 import com.excilys.model.Computer;
-import com.excilys.validator.ComputerDTOValidator;
 import com.mysql.jdbc.Statement;
 
 @Repository
@@ -34,14 +34,9 @@ public class ComputerDAO implements DAO<Computer> {
   private static final String DELETE_QUERY = "DELETE FROM " + COMPUTER_TABLE + " WHERE id = ? ";
   private static final String FIND_QUERY = "SELECT * FROM " + COMPUTER_TABLE + "  LEFT JOIN "
       + COMPANY_TABLE + " ON computer.company_id = company.id WHERE computer.id = ?";
-  private static final String FIND_SEVERAL_QUERY = "SELECT * FROM " + COMPUTER_TABLE + " LEFT JOIN "
-      + COMPANY_TABLE + " ON computer.company_id = company.id " + " LIMIT ?,?";
   private static final String UPDATE_QUERY = "UPDATE " + COMPUTER_TABLE
       + " SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
   private static final String TOTAL_QUERY = "SELECT count(*) FROM " + COMPUTER_TABLE;
-  private static final String FIND_BY_NAME_OR_COMPANY = "SELECT * FROM " + COMPUTER_TABLE
-      + " LEFT JOIN " + COMPANY_TABLE + " ON computer.company_id = company.id "
-      + "WHERE computer.name LIKE ? or company.name LIKE ? ORDER BY %s %s LIMIT ?,?";
 
   private static final String FIND_SEARCH = "SELECT * FROM " + COMPUTER_TABLE + " LEFT JOIN "
       + COMPANY_TABLE + " ON computer.company_id = company.id ";
@@ -118,13 +113,11 @@ public class ComputerDAO implements DAO<Computer> {
       logger.error("ComputerDAO Exception ---- " + e.getMessage());
       throw new DaoException(e);
     }
-
   }
 
   public List<Computer> findBySearch(SearchComputer search) {
     logger.debug("ComputerDAO ---- findBySearch");
     String query = FIND_SEARCH;
-
     if (search.getNameToSearch() != null && search.getNameToSearch() != "") {
       query = query + " WHERE computer.name LIKE '" + search.getNameToSearch()
           + "%' OR company.name LIKE '" + search.getNameToSearch() + "%' ";
@@ -137,11 +130,10 @@ public class ComputerDAO implements DAO<Computer> {
     }
     query = query + " LIMIT ?, ?";
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    List<Computer> computers = new ArrayList<>();
     try {
-
-      Object[] args = { search.getPage().getFirsRow(), search.getPage().getNbElementPage() };
+      Object[] args = { search.getPage().getFirsRow(), search.getPage().getPageSize() };
       return jdbcTemplate.queryForObject(query, args, (ResultSet rs, int rowNum) -> {
-        List<Computer> computers = new ArrayList<>();
         rs.beforeFirst();
         while (rs.next()) {
           computers.add(mapper.unmap(rs));
@@ -149,6 +141,8 @@ public class ComputerDAO implements DAO<Computer> {
         return computers;
       });
 
+    } catch (EmptyResultDataAccessException e) {
+      return computers;
     } catch (DataAccessException e) {
       throw new DaoException(e);
     }
