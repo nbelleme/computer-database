@@ -1,13 +1,25 @@
 package com.excilys.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class ComputerDTO {
 
+  private static final String REGEX_DATE = "(^\\d{4}-\\d{2}-\\d{2}$)|(^$)";
+
   private String id;
+
+  @NotNull
+  @Size(min = 2)
   private String name;
+
+  @Pattern(regexp = REGEX_DATE)
   private String introduced;
+  @Pattern(regexp = REGEX_DATE)
   private String discontinued;
   private String idCompany;
   private String nameCompany;
@@ -74,5 +86,11 @@ public class ComputerDTO {
   public void setNameCompany(String companyName) {
     this.nameCompany = companyName;
   }
-
+  
+  @Override
+  public String toString() {
+    return "ComputerDTO [id=" + id + ", name=" + name + ", introduced=" + introduced
+        + ", discontinued=" + discontinued + ", idCompany=" + idCompany + ", nameCompany="
+        + nameCompany + "]";
+  }  
 }

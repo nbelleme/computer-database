@@ -1,7 +1,5 @@
 package com.excilys.persistence;
 
-import java.util.List;
-
 public interface DAO<T> {
 
   /**

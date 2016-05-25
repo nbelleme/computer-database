@@ -59,6 +59,13 @@ public class ComputerService {
     computerDAO.delete(computer);
   }
 
+  public void deleteMultiple(List<Computer> computers) {
+
+    for (Computer computer : computers) {
+      delete(computer);
+    }
+  }
+
   /**
    * @param id
    *          id of the entity to find

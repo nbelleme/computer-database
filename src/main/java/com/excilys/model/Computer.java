@@ -8,17 +8,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class Computer {
-  private long id;
+  private Long id;
   private String name;
   private LocalDate introduced;
   private LocalDate discontinued;
   private Company company;
 
-  /**
-   * Default constructor.
-   */
-  public Computer() {
-    id = -1;
+  private Computer() {
   }
 
   /**
@@ -34,6 +30,7 @@ public class Computer {
   }
 
   public static class Builder {
+
     private Computer computer = new Computer();
 
     /**
@@ -41,7 +38,7 @@ public class Computer {
      *          id to be built
      * @return builder builder
      */
-    public Builder id(long id) {
+    public Builder id(Long id) {
       computer.id = id;
       return this;
     }
@@ -96,11 +93,11 @@ public class Computer {
     }
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

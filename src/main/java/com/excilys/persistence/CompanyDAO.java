@@ -30,6 +30,8 @@ public class CompanyDAO implements DAO<Company> {
   private static final String FIND_ALL_QUERY = "SELECT * " + "FROM " + COMPANY_TABLE;
 
   public static final String DELETE_COMPANY = "DELETE FROM " + COMPANY_TABLE + " WHERE id = ?";
+ 
+  private boolean cache;
 
   Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 

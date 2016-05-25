@@ -7,20 +7,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class Page<T> {
 
-  private int nbElementPage;
+  private int pageSize;
   private int nbElementTotal;
   private int nbCurrentPage;
   private int nbPageTotal;
   private List<T> elements;
 
   private Page(Builder<T> builder) {
-    nbElementPage = builder.page.nbElementPage;
+    pageSize = builder.page.pageSize;
     nbElementTotal = builder.page.nbElementTotal;
     elements = builder.page.elements;
   }
 
   private Page() {
-    nbElementPage = 10;
+    pageSize = 10;
     nbElementTotal = -1;
     nbCurrentPage = 1;
   }
@@ -34,7 +34,7 @@ public class Page<T> {
     }
 
     public Builder<T> nbElementPage(int nbElementPage) {
-      page.nbElementPage = nbElementPage;
+      page.pageSize = nbElementPage;
       return this;
     }
 
@@ -54,15 +54,15 @@ public class Page<T> {
   }
 
   public int getFirsRow() {
-    return nbElementPage * (nbCurrentPage - 1);
+    return pageSize * (nbCurrentPage - 1);
   }
 
-  public int getNbElementPage() {
-    return nbElementPage;
+  public int getPageSize() {
+    return pageSize;
   }
 
-  public void setNbElementPage(int nbElementPage) {
-    this.nbElementPage = nbElementPage;
+  public void setPageSize(int nbElementPage) {
+    this.pageSize = nbElementPage;
   }
 
   public List<T> getElements() {

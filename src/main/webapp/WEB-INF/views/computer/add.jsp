@@ -32,12 +32,10 @@
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId" name="company">
+									class="form-control" id="companyId" name="idCompany">
 									<option value="0">--</option>
 									<c:forEach var="company" items="${companies}">
-										<option value="<c:out value='${company.id}'/>">
-											<c:out value="${company.name}" />
-										</option>
+										<option value="${company.id}">${company.name}</option>
 									</c:forEach>
 								</select>
 							</div>

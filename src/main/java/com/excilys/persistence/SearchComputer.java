@@ -1,7 +1,5 @@
 package com.excilys.persistence;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Component;
 
 import com.excilys.ui.Page;
@@ -12,10 +10,6 @@ public class SearchComputer {
   private String sort;
   private OrderBy order;
   private Page page;
-
-  private void orderBy(String param) {
-
-  }
 
   public String getNameToSearch() {
     return nameToSearch;
