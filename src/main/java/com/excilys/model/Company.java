@@ -3,10 +3,14 @@ package com.excilys.model;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Company {
+public class Company implements Comparable<Company> {
 
   private Long id;
   private String name;
+  
+  public Company(Long id){
+    this.id = id;
+  }
 
   public static class Builder {
     private Company company = new Company();
@@ -85,13 +89,7 @@ public class Company {
     if (id != other.id) {
       return false;
     }
-    if (name == null) {
-      if (other.name != null) {
-        return false;
-      }
-    } else if (!name.equals(other.name)) {
-      return false;
-    }
+
     return true;
   }
 
@@ -123,6 +121,11 @@ public class Company {
   @Override
   public String toString() {
     return "Company [id=" + id + ", name=" + name + "]";
+  }
+
+  @Override
+  public int compareTo(Company o) {
+    return o.name.compareTo(name);
   }
 
 }

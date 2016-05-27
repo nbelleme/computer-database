@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -77,7 +76,7 @@ public class ComputerController {
     searchComputer.setSort(sort.toLowerCase());
     searchComputer.setOrder(order);
 
-    int nbElementTotal = computerService.getNumberFindBySearch(searchComputer);
+    long nbElementTotal = computerService.getNumberFindBySearch(searchComputer);
     int pageSize = Parser.parseToInteger(paramPageSize);
     pageSize = pageSize != 0 ? pageSize : 10;
 
@@ -108,8 +107,8 @@ public class ComputerController {
   }
 
   @RequestMapping(value = "/add", method = RequestMethod.GET)
-  public ModelAndView getAdd(ComputerDTO computerDTO) {
-    ArrayList<Company> companies = (ArrayList<Company>) companyService.findAll();
+  public ModelAndView getAdd() {
+    List<Company> companies = companyService.findAll();
     return new ModelAndView(ADD_JSP, "companies", companies);
   }
 
@@ -119,15 +118,15 @@ public class ComputerController {
     if (bindingResults.hasErrors()) {
       return new ModelAndView(ADD_JSP);
     }
-
+    System.err.println(computerDTO.toString());
     Computer computer = computerDtoMapper.unmap(computerDTO);
     computerValidator.isValid(computer);
     computerService.add(computer);
-    return new ModelAndView("redirect:"+PATH_DASHBOARD);
+    return new ModelAndView("redirect:" + PATH_DASHBOARD);
   }
 
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
-  public ModelAndView getEdit(@RequestParam(value = "id", required=true) String paramId) {
+  public ModelAndView getEdit(@RequestParam(value = "id", required = true) String paramId) {
 
     long id = Parser.parseToLong(paramId);
     Computer computer = computerService.find(id);
@@ -153,7 +152,7 @@ public class ComputerController {
     computerValidator.isValid(computer);
     computerService.update(computer);
 
-    return new ModelAndView("redirect:"+PATH_DASHBOARD);
+    return new ModelAndView("redirect:" + PATH_DASHBOARD);
   }
 
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -168,6 +167,6 @@ public class ComputerController {
       computers.add(computerService.find(id));
     }
     computerService.deleteMultiple(computers);
-    return new ModelAndView("redirect:"+PATH_DASHBOARD);
+    return new ModelAndView("redirect:" + PATH_DASHBOARD);
   }
 }

@@ -10,8 +10,7 @@
 <!-- urls to css -->
 <spring:url value="/resources/css/bootstrap.min.css"
 	var="bootstrapMinCSS" />
-<spring:url value="/resources/css/font-awesome.css"
-	var="fontAwesomeCSS" />
+<spring:url value="/resources/css/font-awesome.css" var="fontAwesomeCSS" />
 <spring:url value="/resources/css/main.css" var="mainCSS" />
 
 <!-- Bootstrap -->

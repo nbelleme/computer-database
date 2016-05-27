@@ -11,7 +11,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.nbElementTotal}&nbsp;Computer${page.nbElementTotal > 1 ? 's' : ''}&nbsp;found</h1>
+			<h1 id="homeTitle">${page.nbElementTotal}&nbsp; <spring:message code="index.nbComputers"/></h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"

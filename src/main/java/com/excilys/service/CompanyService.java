@@ -84,7 +84,7 @@ public class CompanyService {
    */
   public List<Company> findAll() throws DaoException {
     try {
-      return companyDAO.findAll();
+      return companyDAO.findAll(1);
     } catch (DaoException e) {
       logger.debug(e.getMessage());
       throw new DaoException(e);

@@ -1,15 +1,20 @@
 package com.excilys.persistence;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
+import com.excilys.model.Company;
 import com.excilys.ui.Page;
 
 @Component
 public class SearchComputer {
-  private String nameToSearch;
+  private String nameToSearch = "";
   private String sort;
   private OrderBy order;
   private Page page;
+  private List<Company> companies;
 
   public String getNameToSearch() {
     return nameToSearch;
@@ -41,6 +46,28 @@ public class SearchComputer {
 
   public Page getPage() {
     return this.page;
+  }
+
+  public List<Company> getCompanyIds() {
+    return companies;
+  }
+
+  public void setCompanyIds(List<Company> companies) {
+    this.companies = companies;
+  }
+
+  public void setOrder(OrderBy order) {
+    this.order = order;
+  }
+
+  public String createQuery(String base) {
+    String query = base;
+
+    for (Company company : companies) {
+      query += " OR company_id = " + company.getId();
+    }
+
+    return query;
   }
 
 }
