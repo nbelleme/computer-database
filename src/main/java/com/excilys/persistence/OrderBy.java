@@ -3,7 +3,7 @@ package com.excilys.persistence;
 public enum OrderBy {
   ID("computer.id", "id"), NAME("computer.name", "name"), INTRODUCED("computer.introduced",
       "introduced"), DISCONTINUED("computer.discontinued",
-          "discontinued"), COMPANY("company.name", "company");
+          "discontinued"), COMPANY("company_id", "company");
 
   String column;
   String name;

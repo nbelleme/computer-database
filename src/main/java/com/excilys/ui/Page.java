@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class Page<T> {
 
   private int pageSize;
-  private int nbElementTotal;
+  private long nbElementTotal;
   private int nbCurrentPage;
   private int nbPageTotal;
   private List<T> elements;
@@ -73,11 +73,11 @@ public class Page<T> {
     this.elements = elements;
   }
 
-  public int getNbElementTotal() {
+  public long getNbElementTotal() {
     return nbElementTotal;
   }
 
-  public void setNbElementTotal(int nbElementTotal) {
+  public void setNbElementTotal(long nbElementTotal) {
     this.nbElementTotal = nbElementTotal;
   }
 

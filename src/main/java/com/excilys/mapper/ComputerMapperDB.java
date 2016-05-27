@@ -14,6 +14,8 @@ import com.excilys.model.Computer;
 import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
 
+import ch.qos.logback.classic.Logger;
+
 @Component
 @Scope("singleton")
 public class ComputerMapperDB implements Mapper<Computer> {
@@ -56,8 +58,10 @@ public class ComputerMapperDB implements Mapper<Computer> {
         : rs.getTimestamp(INTRODUCED).toLocalDateTime().toLocalDate();
     LocalDate discontinued = rs.getTimestamp(DISCONTINUED) == null ? null
         : rs.getTimestamp(DISCONTINUED).toLocalDateTime().toLocalDate();
-    Company company = new Company.Builder().id(rs.getLong(COMPANY_TABLE_ID))
-        .name(rs.getString(COMPANY_TABLE_NAME)).build();
+    Company company = null;
+    if ((Long) rs.getLong(COMPANY_ID) != 0) {
+      company = new Company((Long) rs.getLong(COMPANY_ID));
+    }
     return new Computer.Builder().id(rs.getLong(ID)).name(rs.getString(NAME)).introduced(introduced)
         .discontinued(discontinued).company(company).build();
   }

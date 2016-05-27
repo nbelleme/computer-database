@@ -26,7 +26,7 @@ import com.mysql.jdbc.Statement;
 @Repository
 @Scope("singleton")
 
-public class ComputerDAO implements DAO<Computer> {
+public class ComputerDAO {
   public static final String COMPUTER_TABLE = "computer";
   public static final String COMPANY_TABLE = "company";
   private static final String ADD_QUERY = "INSERT INTO " + COMPUTER_TABLE
@@ -38,8 +38,7 @@ public class ComputerDAO implements DAO<Computer> {
       + " SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
   private static final String TOTAL_QUERY = "SELECT count(*) FROM " + COMPUTER_TABLE;
 
-  private static final String FIND_SEARCH = "SELECT * FROM " + COMPUTER_TABLE + " LEFT JOIN "
-      + COMPANY_TABLE + " ON computer.company_id = company.id ";
+  private static final String FIND_SEARCH = "SELECT * FROM " + COMPUTER_TABLE;
 
   private static final String NUMBER_BY_NAME_OR_COMPANY = "SELECT count(computer.id) FROM "
       + COMPUTER_TABLE + " LEFT JOIN " + COMPANY_TABLE + " ON computer.company_id = company.id ";
@@ -50,13 +49,16 @@ public class ComputerDAO implements DAO<Computer> {
   @Autowired
   private ComputerMapperDB mapper;
   @Autowired
-  private Database database;
-  @Autowired
   private DataSource dataSource;
+
+  private boolean isCacheCountOk = false;
+  private long count = 0;
+
+  private boolean isCacheTotalOk = false;
+  private long total = 0;
 
   private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
-  @Override
   public long add(Computer computer) {
     logger.debug("ComputerDAO ---- add");
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -73,11 +75,13 @@ public class ComputerDAO implements DAO<Computer> {
     } else {
       throw new DaoException(new SQLException("Creating computer failed, no ID obtained."));
     }
+
+    isCacheCountOk = false;
+    isCacheTotalOk = false;
     return id;
 
   }
 
-  @Override
   public void delete(Computer computer) {
     logger.debug("ComputerDAO ---- delete");
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -86,20 +90,22 @@ public class ComputerDAO implements DAO<Computer> {
     } catch (DataAccessException e) {
       throw new DaoException(e);
     }
+
+    isCacheCountOk = false;
+    isCacheTotalOk = false;
   }
 
   public void deleteFromCompanyId(long id) {
-    logger.debug("ComputerDAO ---- deleteFromCompanyId");
-    Connection connection = database.getConnection();
-    try (PreparedStatement stmt = connection.prepareStatement(DELETE_WHERE_COMPANY);) {
-      stmt.setLong(1, id);
-      stmt.executeUpdate();
-    } catch (SQLException e) {
-      throw new DaoException(e);
-    }
+    // logger.debug("ComputerDAO ---- deleteFromCompanyId");
+    // Connection connection = database.getConnection();
+    // try (PreparedStatement stmt = connection.prepareStatement(DELETE_WHERE_COMPANY);) {
+    // stmt.setLong(1, id);
+    // stmt.executeUpdate();
+    // } catch (SQLException e) {
+    // throw new DaoException(e);
+    // }
   }
 
-  @Override
   public Computer find(long id) {
     logger.debug("ComputerDAO ---- find");
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -119,8 +125,8 @@ public class ComputerDAO implements DAO<Computer> {
     logger.debug("ComputerDAO ---- findBySearch");
     String query = FIND_SEARCH;
     if (search.getNameToSearch() != null && search.getNameToSearch() != "") {
-      query = query + " WHERE computer.name LIKE '" + search.getNameToSearch()
-          + "%' OR company.name LIKE '" + search.getNameToSearch() + "%' ";
+      query += " WHERE computer.name LIKE '" + search.getNameToSearch() + "%'";
+      query = search.createQuery(query);
     }
     if (search.getOrder() != null) {
       query = query + " ORDER BY " + search.getOrder().getColumn();
@@ -130,63 +136,76 @@ public class ComputerDAO implements DAO<Computer> {
     }
     query = query + " LIMIT ?, ?";
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-    List<Computer> computers = new ArrayList<>();
     try {
       Object[] args = { search.getPage().getFirsRow(), search.getPage().getPageSize() };
+      System.out.println(query);
       return jdbcTemplate.queryForObject(query, args, (ResultSet rs, int rowNum) -> {
+        List<Computer> temp = new ArrayList<>();
         rs.beforeFirst();
         while (rs.next()) {
-          computers.add(mapper.unmap(rs));
+          temp.add(mapper.unmap(rs));
         }
-        return computers;
+        return temp;
       });
-
     } catch (EmptyResultDataAccessException e) {
-      return computers;
+      return new ArrayList<>();
     } catch (DataAccessException e) {
       throw new DaoException(e);
     }
   }
 
-  public int getNumberFindBySearch(SearchComputer search) {
-    logger.debug("ComputerDAO ---- getNumberFindBySearch");
-    String query = NUMBER_BY_NAME_OR_COMPANY;
+  public long getNumberFindBySearch(SearchComputer search) {
+    if (!isCacheCountOk) {
+      logger.debug("ComputerDAO ---- getNumberFindBySearch from database");
+      String query = NUMBER_BY_NAME_OR_COMPANY;
 
-    if (search.getNameToSearch() != null && search.getNameToSearch() != "") {
-      query = query + " WHERE  computer.name LIKE '" + search.getNameToSearch()
-          + "%' OR company.name LIKE '" + search.getNameToSearch() + "%' ";
-    }
-
-    if (search.getOrder() != null) {
-      query = query + " ORDER BY " + search.getOrder().getColumn();
-      if (search.getSort() != null) {
-        query = query + " " + search.getSort();
+      if (search.getNameToSearch() != null && search.getNameToSearch() != "") {
+        query = query + " WHERE  computer.name LIKE '" + search.getNameToSearch()
+            + "%' OR company.name LIKE '" + search.getNameToSearch() + "%' ";
       }
+
+      if (search.getOrder() != null) {
+        query = query + " ORDER BY " + search.getOrder().getColumn();
+        if (search.getSort() != null) {
+          query = query + " " + search.getSort();
+        }
+      }
+
+      JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+      try {
+        count = jdbcTemplate.queryForObject(query, (ResultSet rs, int rowNum) -> {
+          rs.first();
+          return rs.getInt(1);
+        });
+      } catch (DataAccessException e) {
+        logger.error(query);
+        throw new DaoException(e);
+      }
+      isCacheCountOk = true;
+    } else {
+      logger.debug("ComputerDAO ---- getNumberFindBySearch from cache");
     }
 
-    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-    try {
-      return jdbcTemplate.queryForObject(query, (ResultSet rs, int rowNum) -> {
+    return count;
+
+  }
+
+  public long getTotal() {
+    if (!isCacheTotalOk) {
+      logger.debug("ComputerDAO ---- getTotal from database");
+      JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+      total = jdbcTemplate.queryForObject(TOTAL_QUERY, (ResultSet rs, int rowNum) -> {
         rs.first();
         return rs.getInt(1);
       });
-    } catch (DataAccessException e) {
-      logger.error(query);
-      throw new DaoException(e);
+      isCacheTotalOk = true;
+    } else {
+      logger.debug("ComputerDAO ---- getTotal from database");
     }
+
+    return total;
   }
 
-  @Override
-  public int getTotal() {
-    logger.debug("ComputerDAO ---- getTotal");
-    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-    return jdbcTemplate.queryForObject(TOTAL_QUERY, (ResultSet rs, int rowNum) -> {
-      rs.first();
-      return rs.getInt(1);
-    });
-  }
-
-  @Override
   public void update(Computer computer) {
     logger.debug("ComputerDAO ---- update");
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
