@@ -60,13 +60,20 @@ public class SearchComputer {
     this.order = order;
   }
 
-  public String createQuery(String base) {
-    String query = base;
+  public String createQuery() {
+    String query = "";
+    if (companies.size() != 0) {
+      query += " OR company_id IN (";
 
-    for (Company company : companies) {
-      query += " OR company_id = " + company.getId();
+      for (int i = 0; i < companies.size(); i++) {
+        query += " " + companies.get(i).getId();
+        if (i + 1 != companies.size()) {
+          query += ",";
+        }
+      }
+      query += ") ";
+
     }
-
     return query;
   }
 

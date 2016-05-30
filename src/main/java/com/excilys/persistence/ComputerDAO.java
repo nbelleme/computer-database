@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.mockito.internal.matchers.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.SocketUtils;
 
 import com.excilys.mapper.ComputerMapperDB;
 import com.excilys.model.Computer;
@@ -63,21 +65,30 @@ public class ComputerDAO {
     logger.debug("ComputerDAO ---- add");
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
     GeneratedKeyHolder generatedKeysHolder = new GeneratedKeyHolder();
-    long out = jdbcTemplate.update((Connection con) -> {
-      PreparedStatement stmt = con.prepareStatement(ADD_QUERY, Statement.RETURN_GENERATED_KEYS);
-      mapper.map(computer, stmt);
-      return stmt;
-    }, generatedKeysHolder);
+    long out = 0;
+    try {
+      out = jdbcTemplate.update((Connection con) -> {
+        PreparedStatement stmt = con.prepareStatement(ADD_QUERY, Statement.RETURN_GENERATED_KEYS);
+        mapper.map(computer, stmt);
+        return stmt;
+      }, generatedKeysHolder);
+    } catch (Exception e) {
+      logger.debug("Exception : " + e.getMessage());
+      throw new DaoException(e);
+    }
 
     long id;
     if (out != 0) {
       id = generatedKeysHolder.getKey().longValue();
     } else {
+      logger.debug("Computer not added");
       throw new DaoException(new SQLException("Creating computer failed, no ID obtained."));
     }
 
     isCacheCountOk = false;
     isCacheTotalOk = false;
+
+    logger.debug("Computer added " + computer.toString());
     return id;
 
   }
@@ -124,9 +135,13 @@ public class ComputerDAO {
   public List<Computer> findBySearch(SearchComputer search) {
     logger.debug("ComputerDAO ---- findBySearch");
     String query = FIND_SEARCH;
+    if(search.getOrder() != OrderBy.COMPANY && search.getOrder() != OrderBy.ID){
+      query += " force index("+search.getOrder().getName()+")";
+    }
+    
     if (search.getNameToSearch() != null && search.getNameToSearch() != "") {
       query += " WHERE computer.name LIKE '" + search.getNameToSearch() + "%'";
-      query = search.createQuery(query);
+      query += search.createQuery();
     }
     if (search.getOrder() != null) {
       query = query + " ORDER BY " + search.getOrder().getColumn();
@@ -138,7 +153,6 @@ public class ComputerDAO {
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
     try {
       Object[] args = { search.getPage().getFirsRow(), search.getPage().getPageSize() };
-      System.out.println(query);
       return jdbcTemplate.queryForObject(query, args, (ResultSet rs, int rowNum) -> {
         List<Computer> temp = new ArrayList<>();
         rs.beforeFirst();

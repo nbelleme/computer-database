@@ -94,7 +94,6 @@ public class CompanyDAO {
       try {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         String query = FIND_ALL_QUERY + " ORDER BY name ASC";
-        System.out.println(query);
         companies = jdbcTemplate.queryForObject(query, (ResultSet rs, int rowNum) -> {
           List<Company> temp = new ArrayList<>();
           rs.beforeFirst();
