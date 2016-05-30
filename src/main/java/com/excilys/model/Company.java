@@ -1,19 +1,27 @@
 package com.excilys.model;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Component
-public class Company implements Comparable<Company> {
+@Entity
+@Table(name = "company")
+public class Company {
 
+  @Id
   private Long id;
   private String name;
-  
-  public Company(Long id){
+
+  public Company(Long id) {
     this.id = id;
+  }
+  
+  public Company(){
+    
   }
 
   public static class Builder {
-    private Company company = new Company();
+    private Company company = new Company();;
 
     /**
      * Calls Company constructor with builder.
@@ -44,12 +52,6 @@ public class Company implements Comparable<Company> {
       return this;
     }
 
-  }
-
-  /**
-   * Default constructor.
-   */
-  public Company() {
   }
 
   /**
@@ -121,11 +123,6 @@ public class Company implements Comparable<Company> {
   @Override
   public String toString() {
     return "Company [id=" + id + ", name=" + name + "]";
-  }
-
-  @Override
-  public int compareTo(Company o) {
-    return o.name.compareTo(name);
   }
 
 }

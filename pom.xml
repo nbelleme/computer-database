@@ -25,9 +25,11 @@
 		<gatling-plugin.version>2.1.7</gatling-plugin.version>
 		<scala-maven-plugin.version>3.2.2</scala-maven-plugin.version>
 		<spring.version>4.2.6.RELEASE</spring.version>
+		<spring.orm.version>4.2.6.RELEASE</spring.orm.version>
 		<spring.jdbc.version>2.0.6</spring.jdbc.version>
-
-
+		<spring.jpa.version>1.10.1.RELEASE</spring.jpa.version>
+		<hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
+		<hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
 	</properties>
 
 	<dependencies>
@@ -132,7 +134,45 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>4.2.0.Final</version>
+			<version>${hibernate.validator.version}</version>
+		</dependency>
+
+		<!-- Spring JPA -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring.jpa.version}</version>
+		</dependency>
+
+		<!-- Hibernate JPA -->
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>${hibernate.jpa.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.orm.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.1.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.1.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
 		</dependency>
 
 	</dependencies>

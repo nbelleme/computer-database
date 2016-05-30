@@ -1,16 +1,18 @@
 package com.excilys.persistence;
 
 public enum OrderBy {
-  ID("computer.id", "id"), NAME("computer.name", "name"), INTRODUCED("computer.introduced",
-      "introduced"), DISCONTINUED("computer.discontinued",
-          "discontinued"), COMPANY("company_id", "company");
+  ID("computer.id", "id", "id"), NAME("computer.name", "name", "name"), INTRODUCED(
+      "computer.introduced", "introduced", "introduced"), DISCONTINUED("computer.discontinued",
+          "discontinued", "discontinued"), COMPANY("company_id", "company", "company_id");
 
   String column;
   String name;
+  String index;
 
-  OrderBy(String column, String name) {
+  OrderBy(String column, String name, String index) {
     this.name = name;
     this.column = column;
+    this.index = index;
   }
 
   public String getColumn() {
@@ -19,6 +21,10 @@ public enum OrderBy {
 
   public String getName() {
     return name;
+  }
+
+  public String getIndex() {
+    return index;
   }
 
   public static OrderBy getOrderBy(String param) {

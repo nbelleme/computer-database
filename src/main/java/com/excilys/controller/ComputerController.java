@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +21,8 @@ import com.excilys.dto.ComputerDTO;
 import com.excilys.mapper.ComputerDTOMapper;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
-import com.excilys.persistence.DaoException;
 import com.excilys.persistence.SearchComputer;
+import com.excilys.repositories.ComputerRepository;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 import com.excilys.ui.Page;
@@ -62,6 +64,9 @@ public class ComputerController {
   @Autowired
   private ComputerValidator computerValidator;
 
+  @Autowired
+  private ComputerRepository computerManager;
+
   @RequestMapping(value = "/view/all", method = RequestMethod.GET)
   public ModelAndView getViewAll(@RequestParam(value = "search", required = false) String search,
       @RequestParam(value = ORDER_BY_KEY, required = false, defaultValue = "id") String order,
@@ -69,6 +74,9 @@ public class ComputerController {
       @RequestParam(value = PAGE_KEY, required = false, defaultValue = "1") String paramPageNumber,
       @RequestParam(value = SORT_KEY, required = false, defaultValue = "asc") String sort) {
 
+    Pageable limit = new PageRequest(0, 10);
+    Company company = new Company(2L);
+    
     Page<ComputerDTO> page = new Page.Builder<ComputerDTO>().build();
     Map<String, Object> mapResponse = new HashMap<>();
     SearchComputer searchComputer = new SearchComputer();
