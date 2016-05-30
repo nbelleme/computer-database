@@ -19,6 +19,7 @@ import com.excilys.dto.ComputerDTO;
 import com.excilys.mapper.ComputerDTOMapper;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
+import com.excilys.persistence.DaoException;
 import com.excilys.persistence.SearchComputer;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
@@ -118,7 +119,6 @@ public class ComputerController {
     if (bindingResults.hasErrors()) {
       return new ModelAndView(ADD_JSP);
     }
-    System.err.println(computerDTO.toString());
     Computer computer = computerDtoMapper.unmap(computerDTO);
     computerValidator.isValid(computer);
     computerService.add(computer);

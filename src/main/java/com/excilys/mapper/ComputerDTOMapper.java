@@ -44,27 +44,11 @@ public class ComputerDTOMapper {
   }
 
   public Computer unmap(ComputerDTO computerDTO) {
-    Long id = null;
-    if (computerDTO.getId() != null) {
-      id = Parser.parseToLong(computerDTO.getId());
-    }
-
+    Long id = Parser.parseToLong(computerDTO.getId());
     String name = computerDTO.getName();
-
-    LocalDate introduced = null;
-    if (computerDTO.getIntroduced() != "" && computerDTO.getIntroduced() != null) {
-      introduced = Parser.parseToLocalDate(computerDTO.getIntroduced());
-    }
-
-    LocalDate discontinued = null;
-    if (computerDTO.getDiscontinued() != "" && computerDTO.getDiscontinued() != null) {
-      discontinued = Parser.parseToLocalDate(computerDTO.getDiscontinued());
-    }
-
-    Long idCompany = null;
-    if (computerDTO.getIdCompany() != "" && computerDTO.getIdCompany() != null) {
-      idCompany = Parser.parseToLong(computerDTO.getIdCompany());
-    }
+    LocalDate introduced = Parser.parseToLocalDate(computerDTO.getIntroduced());
+    LocalDate discontinued = Parser.parseToLocalDate(computerDTO.getDiscontinued());
+    Long idCompany = Parser.parseToLong(computerDTO.getIdCompany());
     Company company = new Company.Builder().id(idCompany).build();
 
     return new Computer.Builder().id(id).name(name).introduced(introduced)

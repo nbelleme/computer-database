@@ -8,12 +8,12 @@ public class Parser {
   private static final String REGEX_INT = "^[-]?\\d*$";
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-  public static int parseToInteger(String param) {
+  public static Integer parseToInteger(String param) {
     Pattern patternElementPage = Pattern.compile(REGEX_INT);
     if (patternElementPage.matcher(param).matches()) {
       return Integer.parseInt(param);
     }
-    throw new ParserException("Error parsing");
+    return null;
   }
 
   public static Long parseToLong(String param) {
@@ -23,11 +23,11 @@ public class Parser {
         return Long.parseLong(param);
       }
     }
-    throw new ParserException("Error parsing");
+    return null;
   }
 
   public static LocalDate parseToLocalDate(String param) {
-    if (param != "") {
+    if (param != "" && param != null) {
       if (param.contains("/")) {
         param = param.replace("/", "");
       } else {
@@ -35,6 +35,6 @@ public class Parser {
       }
       return LocalDate.parse(param, DATE_FORMATTER);
     }
-    throw new ParserException("Error parsing");
+    return null;
   }
 }

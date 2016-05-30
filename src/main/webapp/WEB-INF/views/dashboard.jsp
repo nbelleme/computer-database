@@ -11,7 +11,9 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.nbElementTotal}&nbsp; <spring:message code="index.nbComputers"/></h1>
+			<h1 id="homeTitle">${page.nbElementTotal}&nbsp;
+				<spring:message code="index.nbComputers" />
+			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"
@@ -85,11 +87,10 @@
 				<tbody id="results">
 					<c:forEach var="computer" items="${page.elements}">
 						<tr>
-							<td class="editMode"><input type="checkbox" name="cb"
-								id="${computer.name}_id" class="cb" value="${computer.id}"></td>
+							<td class="editMode"><input id="${computer.name}_id"
+								type="checkbox" name="cb" class="cb" value="${computer.id}"></td>
 							<td><a id="${computer.name}_name"
-								href="${pageContext.request.contextPath}/computer/edit?id=${computer.id}"
-								>${computer.name}</a></td>
+								href="${pageContext.request.contextPath}/computer/edit?id=${computer.id}">${computer.name}</a></td>
 							<td>${computer.introduced }</td>
 							<td>${computer.discontinued}</td>
 							<td>${computer.nameCompany}</td>
