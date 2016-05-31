@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Page<T> {
+public class MyPage<T> {
 
   private int pageSize;
   private long nbElementTotal;
@@ -13,20 +13,20 @@ public class Page<T> {
   private int nbPageTotal;
   private List<T> elements;
 
-  private Page(Builder<T> builder) {
+  private MyPage(Builder<T> builder) {
     pageSize = builder.page.pageSize;
     nbElementTotal = builder.page.nbElementTotal;
     elements = builder.page.elements;
   }
 
-  private Page() {
+  private MyPage() {
     pageSize = 10;
     nbElementTotal = -1;
     nbCurrentPage = 1;
   }
 
   public static class Builder<T> {
-    private Page<T> page = new Page<T>();
+    private MyPage<T> page = new MyPage<T>();
 
     public Builder<T> nbPage(int nbPage) {
       page.nbCurrentPage = nbPage;
@@ -48,8 +48,8 @@ public class Page<T> {
       return this;
     }
 
-    public Page<T> build() {
-      return new Page<T>(this);
+    public MyPage<T> build() {
+      return new MyPage<T>(this);
     }
   }
 

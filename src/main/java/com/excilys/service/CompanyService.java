@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.model.Company;
 import com.excilys.persistence.CompanyDAO;
-import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
+import com.excilys.repository.CompanyRepository;
 
 /**
  * @author nbelleme
@@ -23,8 +23,11 @@ public class CompanyService {
 
   @Autowired
   private CompanyDAO companyDAO;
+//  @Autowired
+//  private ComputerDAO computerDAO;
+
   @Autowired
-  private ComputerDAO computerDAO;
+  private CompanyRepository companyManager;
 
   private Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
@@ -51,7 +54,7 @@ public class CompanyService {
   @Transactional
   public void delete(Company company) {
     if (company != null) {
-      computerDAO.deleteFromCompanyId(company.getId());
+//      computerDAO.deleteFromCompanyId(company.getId());
       companyDAO.delete(company);
     }
 
@@ -83,12 +86,7 @@ public class CompanyService {
    *           DaoException
    */
   public List<Company> findAll() throws DaoException {
-    try {
-      return companyDAO.findAll(1);
-    } catch (DaoException e) {
-      logger.debug(e.getMessage());
-      throw new DaoException(e);
-    }
+    return companyManager.findAll();
   }
 
   /**

@@ -1,19 +1,18 @@
 package com.excilys.persistence;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
 import com.excilys.model.Company;
-import com.excilys.ui.Page;
+import com.excilys.ui.MyPage;
 
 @Component
 public class SearchComputer {
   private String nameToSearch = "";
   private String sort;
-  private OrderBy order;
-  private Page page;
+  private ComputerColumns order;
+  private MyPage page;
   private List<Company> companies;
 
   public String getNameToSearch() {
@@ -24,12 +23,12 @@ public class SearchComputer {
     this.nameToSearch = name;
   }
 
-  public OrderBy getOrder() {
+  public ComputerColumns getOrder() {
     return order;
   }
 
   public void setOrder(String orderBy) {
-    this.order = OrderBy.getOrderBy(orderBy);
+    this.order = ComputerColumns.fromString(orderBy);
   }
 
   public String getSort() {
@@ -40,11 +39,11 @@ public class SearchComputer {
     this.sort = sort;
   }
 
-  public void setPage(Page page) {
+  public void setPage(MyPage page) {
     this.page = page;
   }
 
-  public Page getPage() {
+  public MyPage getPage() {
     return this.page;
   }
 
@@ -56,7 +55,7 @@ public class SearchComputer {
     this.companies = companies;
   }
 
-  public void setOrder(OrderBy order) {
+  public void setOrder(ComputerColumns order) {
     this.order = order;
   }
 

@@ -1,21 +1,18 @@
 package com.excilys.service;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
-import com.excilys.persistence.CompanyDAO;
-import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
-import com.excilys.persistence.SearchComputer;
+import com.excilys.repository.ComputerRepository;
 import com.excilys.validator.ComputerValidator;
 
 @Service
@@ -24,22 +21,19 @@ public class ComputerService {
 
   @Autowired
   private ComputerValidator computerValidator;
+  // @Autowired
+  // private ComputerDAO computerDAO;
   @Autowired
-  private ComputerDAO computerDAO;
-  @Autowired
-  private CompanyDAO companyDAO;
+  private ComputerRepository computerManager;
 
   /**
    * @param computer
    *          computer to add
    * @return computer computer added
-   * @throws DaoException
-   *           DaoException
+   * @throws Exception
    */
-  public Computer add(Computer computer) throws DaoException {
-    long id = computerDAO.add(computer);
-    computer.setId(id);
-    return computer;
+  public Computer save(Computer computer) {
+    return computerManager.save(computer);
   }
 
   /**
@@ -51,7 +45,7 @@ public class ComputerService {
   public void update(Computer computer) {
     computerValidator.isIdValid(computer.getId());
     computerValidator.isValid(computer);
-    computerDAO.update(computer);
+     computerManager.save(computer);
   }
 
   /**
@@ -63,7 +57,7 @@ public class ComputerService {
   public void delete(Computer computer) {
     computerValidator.isIdValid(computer.getId());
     computerValidator.isValid(computer);
-    computerDAO.delete(computer);
+    computerManager.delete(computer);
   }
 
   public void deleteMultiple(List<Computer> computers) {
@@ -76,41 +70,23 @@ public class ComputerService {
    * @param id
    *          id of the entity to find
    * @return Computer computer found
-   * @throws DaoException
-   *           DaoException
    */
-  public Computer find(long id) throws DaoException {
-    try {
-      return computerDAO.find(id);
-    } catch (DaoException e) {
-      logger.debug(e.getMessage());
-      throw new DaoException(e);
+  public Computer find(Long id) {
+    return computerManager.findOne(id);
+  }
+
+  public Page<Computer> findAll(Pageable search) {
+    logger.debug("test");
+    return computerManager.findAll(search);
+  }
+
+  public Page<Computer> findByNameOrCompany(String string, Company company, Pageable page){
+    if (string == null) {
+      string = "";
     }
-  }
-
-  public long getTotal() {
-    return computerDAO.getTotal();
-  }
-
-  public List<Computer> findBySearch(SearchComputer search) {
-    logger.debug("ComputerService --- findBySearch");
-    int valueOrder = search.getSort().toLowerCase().equals("asc") ? 1 : -1;
-    List<Company> companies = companyDAO.findByName(search.getNameToSearch(), valueOrder);
-    search.setCompanyIds(companies);
-    List<Computer> computers = computerDAO.findBySearch(search);
-
-    for (Computer computer : computers) {
-      if (computer.getCompany() != null) {
-        Company company = companyDAO.find(computer.getCompany().getId());
-        computer.setCompany(company);
-      }
+    if(company.getName() == null){
+      company.setName("");
     }
-
-    return computers;
+    return computerManager.findByNameStartingWithOrCompanyNameStartingWith(string, company.getName(), page);
   }
-
-  public long getNumberFindBySearch(SearchComputer search) {
-    return computerDAO.getNumberFindBySearch(search);
-  }
-
 }

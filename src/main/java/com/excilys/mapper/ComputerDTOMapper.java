@@ -49,7 +49,10 @@ public class ComputerDTOMapper {
     LocalDate introduced = Parser.parseToLocalDate(computerDTO.getIntroduced());
     LocalDate discontinued = Parser.parseToLocalDate(computerDTO.getDiscontinued());
     Long idCompany = Parser.parseToLong(computerDTO.getIdCompany());
-    Company company = new Company.Builder().id(idCompany).build();
+    Company company = null;
+    if(computerDTO.getIdCompany() != "" && computerDTO.getIdCompany() != null){
+      company = new Company.Builder().id(idCompany).build();
+    }
 
     return new Computer.Builder().id(id).name(name).introduced(introduced)
         .discontinued(discontinued).company(company).build();

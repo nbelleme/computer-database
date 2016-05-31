@@ -11,7 +11,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.nbElementTotal}&nbsp;
+			<h1 id="homeTitle">${total}&nbsp;
 				<spring:message code="index.nbComputers" />
 			</h1>
 			<div id="actions" class="form-horizontal">
@@ -85,7 +85,7 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach var="computer" items="${page.elements}">
+					<c:forEach var="computer" items="${computers}">
 						<tr>
 							<td class="editMode"><input id="${computer.name}_id"
 								type="checkbox" name="cb" class="cb" value="${computer.id}"></td>
@@ -101,7 +101,7 @@
 		</div>
 	</section>
 
-	<p:footer page="${page }" />
+	<%-- 		<p:footer page="${page }" /> --%>
 
 	<spring:url value="/resources/js/jquery.min.js" var="jqueryJS" />
 	<spring:url value="/resources/js/bootstrap.min.js" var="bootstrapMinJS" />
