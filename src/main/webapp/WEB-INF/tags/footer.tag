@@ -3,7 +3,7 @@
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags"%>
 <%@ attribute name="current" required="false"%>
 <%@ attribute name="count" required="false"%>
-<%@ attribute name="page" required="true" type="com.excilys.ui.Page"%>
+<%@ attribute name="page" required="true" type="com.excilys.ui.MyPage"%>
 
 <footer class="navbar-fixed-bottom">
 	<div class="container text-center">

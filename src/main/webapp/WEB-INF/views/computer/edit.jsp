@@ -13,7 +13,7 @@
 						id:${computer.id}</div>
 					<h1>Edit Computer : ${computer.name}</h1>
 
-					<form action="#" method="POST">
+					<form action="${pageContext.request.contextPath}/computer/edit" method="POST">
 						<input id="id" type="hidden" value="${computer.id}" name="id" />
 
 						<fieldset>
