@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
+import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
 import com.excilys.repository.ComputerRepository;
 import com.excilys.validator.ComputerValidator;
@@ -21,8 +22,8 @@ public class ComputerService {
 
   @Autowired
   private ComputerValidator computerValidator;
-  // @Autowired
-  // private ComputerDAO computerDAO;
+  @Autowired
+  private ComputerDAO computerDAO;
   @Autowired
   private ComputerRepository computerManager;
 
@@ -45,7 +46,7 @@ public class ComputerService {
   public void update(Computer computer) {
     computerValidator.isIdValid(computer.getId());
     computerValidator.isValid(computer);
-     computerManager.save(computer);
+    computerManager.save(computer);
   }
 
   /**
@@ -57,7 +58,7 @@ public class ComputerService {
   public void delete(Computer computer) {
     computerValidator.isIdValid(computer.getId());
     computerValidator.isValid(computer);
-    computerManager.delete(computer);
+    computerDAO.delete(computer);
   }
 
   public void deleteMultiple(List<Computer> computers) {
@@ -72,21 +73,21 @@ public class ComputerService {
    * @return Computer computer found
    */
   public Computer find(Long id) {
-    return computerManager.findOne(id);
+    return computerDAO.find(id);
   }
 
   public Page<Computer> findAll(Pageable search) {
     logger.debug("test");
-    return computerManager.findAll(search);
+    return computerDAO.findAll(search);
   }
 
-  public Page<Computer> findByNameOrCompany(String string, Company company, Pageable page){
+  public Page<Computer> findByNameOrCompany(String string, Company company, Pageable page) {
     if (string == null) {
       string = "";
     }
-    if(company.getName() == null){
+    if (company.getName() == null) {
       company.setName("");
     }
-    return computerManager.findByNameStartingWithOrCompanyNameStartingWith(string, company.getName(), page);
+    return computerDAO.findByNameOrCompany(string, company, page);
   }
 }
