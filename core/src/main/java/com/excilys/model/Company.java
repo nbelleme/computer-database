@@ -1,133 +1,125 @@
 package com.excilys.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "company")
 public class Company {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
-  @Column(name = "name")
-  private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column(name = "name")
+    private String name;
 
-  public Company(Long id) {
-    this.id = id;
-  }
-  
-  public Company(){
-    
-  }
+    public Company(Long id) {
+        this.id = id;
+    }
 
-  public static class Builder {
-    private Company company = new Company();;
+    public Company() {
+
+    }
+
+    public static class Builder {
+        private Company company = new Company();
+        ;
+
+        /**
+         * Calls Company constructor with builder.
+         *
+         * @return company company built
+         */
+        public Company build() {
+            return new Company(this);
+        }
+
+        /**
+         * @param id id to be built
+         * @return builder builder
+         */
+        public Builder id(Long id) {
+            company.id = id;
+            return this;
+        }
+
+        /**
+         * @param name name to be build
+         * @return builder builder
+         */
+        public Builder name(String name) {
+            company.name = name;
+            return this;
+        }
+
+    }
 
     /**
-     * Calls Company constructor with builder.
+     * Builder constructor.
      *
-     * @return company company built
+     * @param builder builder
      */
-    public Company build() {
-      return new Company(this);
+    public Company(Builder builder) {
+        id = builder.company.id;
+        name = builder.company.name;
     }
 
     /**
-     * @param id
-     *          id to be built
-     * @return builder builder
+     * Construct by copy.
+     *
+     * @param company company that needs to be copied
      */
-    public Builder id(Long id) {
-      company.id = id;
-      return this;
+    public Company(Company company) {
+        id = company.id;
+        name = company.name;
     }
 
-    /**
-     * @param name
-     *          name to be build
-     * @return builder builder
-     */
-    public Builder name(String name) {
-      company.name = name;
-      return this;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Company other = (Company) obj;
+        if (id != other.id) {
+            return false;
+        }
+
+        return true;
     }
 
-  }
-
-  /**
-   * Builder constructor.
-   *
-   * @param builder
-   *          builder
-   */
-  public Company(Builder builder) {
-    id = builder.company.id;
-    name = builder.company.name;
-  }
-
-  /**
-   * Construct by copy.
-   *
-   * @param company
-   *          company that needs to be copied
-   */
-  public Company(Company company) {
-    id = company.id;
-    name = company.name;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    Company other = (Company) obj;
-    if (id != other.id) {
-      return false;
+    public Long getId() {
+        return id;
     }
 
-    return true;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public Long getId() {
-    return id;
-  }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = (prime * result) + (int) (id ^ (id >>> 32));
+        result = (prime * result) + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = (prime * result) + (int) (id ^ (id >>> 32));
-    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
-    return result;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  @Override
-  public String toString() {
-    return "Company [id=" + id + ", name=" + name + "]";
-  }
+    @Override
+    public String toString() {
+        return "Company [id=" + id + ", name=" + name + "]";
+    }
 
 }
