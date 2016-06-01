@@ -1,6 +1,11 @@
 package com.excilys.service;
 
-import java.util.List;
+import com.excilys.model.Company;
+import com.excilys.model.Computer;
+import com.excilys.persistence.ComputerDAO;
+import com.excilys.persistence.DaoException;
+import com.excilys.repository.ComputerRepository;
+import com.excilys.validator.ComputerValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,12 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.excilys.model.Company;
-import com.excilys.model.Computer;
-import com.excilys.persistence.ComputerDAO;
-import com.excilys.persistence.DaoException;
-import com.excilys.repository.ComputerRepository;
-import com.excilys.validator.ComputerValidator;
+import java.util.List;
 
 @Service
 public class ComputerService {
@@ -77,14 +77,10 @@ public class ComputerService {
   }
 
   public Page<Computer> findAll(Pageable search) {
-    logger.debug("test");
     return computerDAO.findAll(search);
   }
 
   public Page<Computer> findByNameOrCompany(String string, Company company, Pageable page) {
-    if (string == null) {
-      string = "";
-    }
     if (company.getName() == null) {
       company.setName("");
     }

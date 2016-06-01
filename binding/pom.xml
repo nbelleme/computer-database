@@ -24,21 +24,9 @@
 
 	<dependencies>
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>${spring.data.jpa}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>   
-        <dependency>
             <groupId>com.excilys.computerdatabase</groupId>
             <artifactId>core</artifactId>
             <version>${core}</version>
-        </dependency>   
-        
+        </dependency>
 	</dependencies>
 </project>
