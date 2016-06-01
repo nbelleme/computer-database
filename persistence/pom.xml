@@ -1,0 +1,50 @@
+	<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- parent coordinates -->
+    <parent>
+        <groupId>com.excilys.computerdatabase</groupId>
+        <artifactId>ComputerDatabase</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <!-- project coordinates -->
+    <groupId>com.excilys.computerdatabase</groupId>
+    <artifactId>persistence</artifactId>
+    <version>1.0</version>
+
+	<packaging>jar</packaging>
+
+	<properties>
+        <spring.context>4.2.6.RELEASE</spring.context>
+        <spring.data.jpa>1.1.0.RELEASE</spring.data.jpa>
+        <core>1.0</core>
+        <binding>1.0</binding>
+	</properties>
+
+	<dependencies>
+        <dependency>
+            <groupId>com.excilys.computerdatabase</groupId>
+            <artifactId>core</artifactId>
+            <version>${core}</version>
+        </dependency>        
+        <dependency>
+            <groupId>com.excilys.computerdatabase</groupId>
+            <artifactId>binding</artifactId>
+            <version>${binding}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring.data.jpa}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.context}</version>
+        </dependency>
+
+	</dependencies>
+</project>

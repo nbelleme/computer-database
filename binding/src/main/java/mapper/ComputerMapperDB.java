@@ -11,14 +11,12 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
-import com.excilys.persistence.CompanyDAO;
 
 @Component
 @Scope("singleton")
 public class ComputerMapperDB implements Mapper<Computer> {
 
   public static final String COMPUTER_TABLE = "";
-  public static final String COMPANY_TABLE = CompanyDAO.COMPANY_TABLE;
   public static final String ID = "computer.id";
   public static final String NAME = "name";
   public static final String INTRODUCED = "introduced";

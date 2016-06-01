@@ -6,157 +6,46 @@
 	<artifactId>ComputerDatabase</artifactId>
 	<version>1.0</version>
 	<name>Computer Database project for Excilys formation</name>
+	<packaging>pom</packaging>
 
-	<properties>
+    <modules>
+    	<module>core</module>
+    	<module>persistence</module>
+    	<module>binding</module>
+    	<module>webapp</module>
+    </modules>	
+
+	<properties>		
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
-		<junit.version>4.8</junit.version>
-		<sl4j.version>1.7.21</sl4j.version>
-		<mysql.connector.version>5.1.38</mysql.connector.version>
-		<logback.core.version>1.1.7</logback.core.version>
-		<logback.classic.version>1.1.7</logback.classic.version>
-		<mockito.version>1.9.5</mockito.version>
-		<servlet.api.version>2.5</servlet.api.version>
-		<jstl.version>1.2</jstl.version>
-		<jsp.api.version>2.0</jsp.api.version>
-		<hikaricp.version>2.4.5</hikaricp.version>
-		<gatling.version>2.1.7</gatling.version>
-		<gatling-plugin.version>2.1.7</gatling-plugin.version>
-		<scala-maven-plugin.version>3.2.2</scala-maven-plugin.version>
-		<spring.version>4.2.6.RELEASE</spring.version>
-		<spring.orm.version>4.2.6.RELEASE</spring.orm.version>
-		<spring.jdbc.version>2.0.6</spring.jdbc.version>
-		<spring.jpa.version>1.10.1.RELEASE</spring.jpa.version>
-		<hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
-		<hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
+		<spring.core>4.2.6.RELEASE</spring.core>
+		<slf4j.api>1.7.21</slf4j.api>
+		<logback.classic>1.1.7</logback.classic>
+		<javax.api>7.0</javax.api>
+		<spring.context>4.2.6.RELEASE</spring.context>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>${jstl.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>${jsp.api.version}</version>
-		</dependency>
-
-		<!-- HickariCP -->
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>${hikaricp.version}</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<!-- Spring Web -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<exclusions>
-				<exclusion>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<!-- Spring JUnit -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<!-- Hibernate Validator -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${hibernate.validator.version}</version>
-		</dependency>
-
-		<!-- Spring JPA -->
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-			<version>${spring.jpa.version}</version>
-		</dependency>
-
-		<!-- Hibernate JPA -->
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.1-api</artifactId>
-			<version>${hibernate.jpa.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${spring.orm.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-java8</artifactId>
-			<version>5.1.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>5.1.0.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>7.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>4.2.6.RELEASE</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.21</version>
+			<version>${slf4j.api}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.7.21</version>
-		</dependency>
-
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.1.7</version>
+			<version>${logback.classic}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
-
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>${javax.api}</version>
+		</dependency>
 	</dependencies>
-	<packaging>war</packaging>
-
 </project>
