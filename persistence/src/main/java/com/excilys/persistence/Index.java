@@ -7,7 +7,7 @@ public enum Index {
 
   private String index;
 
-  private Index(String index) {
+  Index(String index) {
     this.index = index;
   }
 
