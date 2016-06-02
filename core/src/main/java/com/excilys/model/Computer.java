@@ -22,11 +22,10 @@ public class Computer {
     private LocalDate introduced;
     private LocalDate discontinued;
     @ManyToOne
-    @JoinColumn(nullable = true)
+    @JoinColumn
     private Company company;
 
     public Computer() {
-
     }
 
     /**

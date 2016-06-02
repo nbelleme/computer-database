@@ -25,6 +25,9 @@
         <module name="binding" />
         <module name="core" />
         <module name="persistence" />
+        <module name="security" />
+        <module name="service" />
+        <module name="test" />
         <module name="webapp" />
       </profile>
     </annotationProcessing>
@@ -33,6 +36,9 @@
       <module name="ComputerDatabase" target="1.8" />
       <module name="core" target="1.8" />
       <module name="persistence" target="1.8" />
+      <module name="security" target="1.8" />
+      <module name="service" target="1.8" />
+      <module name="test" target="1.8" />
       <module name="webapp" target="1.8" />
     </bytecodeTargetLevel>
   </component>

@@ -9,6 +9,8 @@ import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 import com.excilys.util.Parser;
 import com.excilys.validator.ComputerValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -65,8 +67,10 @@ public class ComputerController {
     @Autowired
     private ComputerValidator computerValidator;
 
+    private Logger logger = LoggerFactory.getLogger(ComputerController.class);
+
     @RequestMapping(value = "/view/all", method = RequestMethod.GET)
-    public ModelAndView getViewAll(@RequestParam(value = SEARCH_KEY, required = false, defaultValue = "") String search,
+    public ModelAndView getViewAll(@RequestParam(value = SEARCH_KEY, required = false) String search,
                                    @RequestParam(value = ORDER_BY_KEY, required = false, defaultValue = "id") String paramOrder,
                                    @RequestParam(value = NB_ELEMENT_PAGE_KEY, required = false, defaultValue = "10") String paramPageSize,
                                    @RequestParam(value = PAGE_KEY, required = false, defaultValue = "0") String paramPageNumber,
@@ -85,12 +89,11 @@ public class ComputerController {
         Pageable limit = new PageRequest(firstRow, pageSize, sortRequest);
         Company company = new Company.Builder().name(search).build();
         Page<Computer> computers;
-        if (search == null || search == "") {
+        if (search != null && search != "") {
             computers = computerService.findByNameOrCompany(search, company, limit);
         } else {
             computers = computerService.findAll(limit);
         }
-
         List<ComputerDTO> computersDTO = new ArrayList<>();
         for (Computer computer : computers) {
             computersDTO.add(computerDtoMapper.map(computer));
@@ -168,4 +171,10 @@ public class ComputerController {
         computerService.deleteMultiple(computers);
         return new ModelAndView("redirect:" + PATH_DASHBOARD);
     }
+
+    @RequestMapping(name = "/errors/403")
+    public String handle403(){
+        return "errors/403";
+    }
+
 }
