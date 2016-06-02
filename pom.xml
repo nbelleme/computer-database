@@ -11,14 +11,16 @@
     <modules>
     	<module>core</module>
     	<module>persistence</module>
+    	<module>service</module>
     	<module>binding</module>
     	<module>webapp</module>
-    </modules>	
+		<module>security</module>
+	</modules>
 
 	<properties>
-        <checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+        <checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
 		<spring.core>4.2.6.RELEASE</spring.core>
 		<slf4j.api>1.7.21</slf4j.api>
 		<logback.classic>1.1.7</logback.classic>

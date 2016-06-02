@@ -43,7 +43,7 @@
 		destroy-method="close">
 		<constructor-arg ref="hikariConfig" />
 	</bean>
-	
+
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" />
 
 	<bean id="jpaVendorAdapter"

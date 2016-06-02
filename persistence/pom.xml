@@ -20,11 +20,11 @@
     <properties>
         <core>1.0</core>
         <binding>1.0</binding>
-        <hibernate.entitymanager>5.1.0.Final</hibernate.entitymanager>
-        <hikari>2.4.6</hikari>
         <spring.beans>4.2.6.RELEASE</spring.beans>
         <spring.data.jpa>1.1.0.RELEASE</spring.data.jpa>
-        <spring.orm>4.2.6.RELEASE</spring.orm>
+        <hibernate.java8>5.1.0.Final</hibernate.java8>
+        <hibernate.validator>5.2.4.Final</hibernate.validator>
+        <hikari>2.4.6</hikari>
     </properties>
 
     <dependencies>
@@ -62,23 +62,23 @@
             <artifactId>spring-beans</artifactId>
             <version>${spring.beans}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-java8</artifactId>
+            <version>${hibernate.java8}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator}</version>
+        </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>${hikari}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${spring.orm}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.entitymanager}</version>
-        </dependency>
-
 
     </dependencies>
 </project>
