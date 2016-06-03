@@ -2,6 +2,7 @@ package com.excilys.service;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
+import com.excilys.persistence.CompanyDAO;
 import com.excilys.persistence.ComputerDAO;
 import com.excilys.persistence.DaoException;
 import com.excilys.repository.ComputerRepository;
@@ -24,9 +25,11 @@ public class ComputerService {
     @Autowired
     private ComputerDAO computerDAO;
     @Autowired
+    private CompanyDAO companyDAO;
+    @Autowired
     private ComputerRepository computerManager;
 
-    public ComputerService(){
+    public ComputerService() {
 
     }
 

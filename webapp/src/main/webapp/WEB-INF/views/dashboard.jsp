@@ -7,13 +7,7 @@
 <%@ include file="/WEB-INF/views/fragments/head.jsp" %>
 <body>
 
-<header class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <a class="navbar-brand"
-           href="${pageContext.request.contextPath}/computer/view/all"><spring:message
-                code="header.title"/></a>
-    </div>
-</header>
+<%@include file="/WEB-INF/views/fragments/header.jsp" %>
 
 <section id="main">
     <div class="container">

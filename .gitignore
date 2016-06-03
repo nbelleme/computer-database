@@ -128,3 +128,4 @@ fabric.properties
 ComputerDatabase.log
 
 
+/nohup.out

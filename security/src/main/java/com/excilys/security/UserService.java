@@ -31,12 +31,6 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         try {
             com.excilys.model.user.User user = userRepository.findByUsername(s);
-            System.out.println(user.toString());
-            System.out.println(user.toString());
-
-            System.out.println(user.getRole().toString());
-            System.out.println(user.getRole().toString());
-
 
             List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
             return buildUserForAuthentication(user, authorities);

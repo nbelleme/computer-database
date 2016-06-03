@@ -6,6 +6,7 @@ import com.excilys.persistence.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +29,8 @@ public class CompanyService {
      * @param company company needed to be added
      * @return inserted company id
      */
-    public long add(Company company) {
-        try {
-            return companyDAO.add(company);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
+    public Company add(Company company) {
+        return companyDAO.add(company);
     }
 
     /**
@@ -42,43 +38,13 @@ public class CompanyService {
      */
     @Transactional
     public void delete(Company company) {
-        if (company != null) {
-//      computerDAO.deleteFromCompanyId(company.getId());
-            companyDAO.delete(company);
-        }
-
-    }
-
-    /**
-     * @param id id of the company looked for
-     * @return company company found
-     */
-    public Company find(long id) {
-        try {
-            return companyDAO.find(id);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
+        companyDAO.delete(company);
     }
 
     /**
      * @return List<Computer> list of entity retrieved
      */
     public List<Company> findAll() {
-        return companyDAO.findAll(1);
+        return companyDAO.findAll();
     }
-
-    /**
-     * @param company company need to be updated
-     */
-    public void update(Company company) {
-        try {
-            companyDAO.update(company);
-        } catch (DaoException e) {
-            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
-    }
-
 }
