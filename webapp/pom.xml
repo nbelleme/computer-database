@@ -24,6 +24,7 @@
         <spring.webmvc>4.2.6.RELEASE</spring.webmvc>
         <jstl.version>1.2</jstl.version>
         <jsp.api.version>2.0</jsp.api.version>
+        <jackson.core>2.7.4</jackson.core>
     </properties>
 
     <dependencies>
@@ -75,5 +76,12 @@
             <artifactId>spring-web</artifactId>
             <version>${spring.webmvc}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.core}</version>
+        </dependency>
+
     </dependencies>
 </project>

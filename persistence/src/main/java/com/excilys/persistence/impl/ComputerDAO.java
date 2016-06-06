@@ -1,4 +1,4 @@
-package com.excilys.persistence;
+package com.excilys.persistence.impl;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
@@ -30,6 +30,10 @@ public class ComputerDAO {
     public Page<Computer> findAll(Pageable search) {
         logger.info("ComputerDAO ---- findAll");
         return computerManager.findAll(search);
+    }
+
+    public List<Computer> findAll(){
+        return computerManager.findAll();
     }
 
     public void delete(Computer computer) {

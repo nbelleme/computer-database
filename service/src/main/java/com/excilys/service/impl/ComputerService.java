@@ -1,9 +1,10 @@
-package com.excilys.service;
+package com.excilys.service.impl;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
-import com.excilys.persistence.ComputerDAO;
+import com.excilys.persistence.impl.ComputerDAO;
 import com.excilys.repository.ComputerRepository;
+import com.excilys.service.IComputerService;
 import com.excilys.validator.ComputerValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class ComputerService implements IComputerService {
     private ComputerDAO computerDAO;
     @Autowired
     private ComputerRepository computerManager;
-    
+
     @Override
     public Computer save(Computer computer) {
         return computerManager.save(computer);
@@ -70,5 +71,10 @@ public class ComputerService implements IComputerService {
     @Override
     public List<Computer> findByCompany(Company company) {
         return computerDAO.findByCompany(company);
+    }
+
+    @Override
+    public List<Computer> findAll(){
+        return computerDAO.findAll();
     }
 }

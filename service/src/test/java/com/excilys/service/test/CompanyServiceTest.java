@@ -1,8 +1,8 @@
 package com.excilys.service.test;
 
 import com.excilys.model.Computer;
-import com.excilys.service.CompanyService;
-import com.excilys.service.ComputerService;
+import com.excilys.service.impl.CompanyService;
+import com.excilys.service.impl.ComputerService;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;

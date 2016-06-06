@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface ICompanyService {
 
-    long add(Company company);
+    Company add(Company company);
 
     void delete(Company company);
 
@@ -16,5 +16,5 @@ public interface ICompanyService {
 
     List<Company> findAll();
 
-    void update(Company company);
+    Company update(Company company);
 }

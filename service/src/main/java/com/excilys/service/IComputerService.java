@@ -21,6 +21,8 @@ public interface IComputerService {
 
     Computer find(Long id);
 
+    List<Computer> findAll();
+
     Page<Computer> findAll(Pageable search);
 
     Page<Computer> findByNameOrCompany(String string, Company company, Pageable page);
