@@ -17,17 +17,14 @@ import java.util.List;
  */
 @Service
 @Scope("singleton")
-public class CompanyService {
+public class CompanyService implements ICompanyService {
 
     @Autowired
     private CompanyDAO companyDAO;
 
     private Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
-    /**
-     * @param company company needed to be added
-     * @return inserted company id
-     */
+    @Override
     public long add(Company company) {
         try {
             return companyDAO.add(company);
@@ -37,22 +34,15 @@ public class CompanyService {
         }
     }
 
-    /**
-     * @param company company need to be deleted
-     */
+    @Override
     @Transactional
     public void delete(Company company) {
-        if (company != null) {
+            //FIXME
 //      computerDAO.deleteFromCompanyId(company.getId());
             companyDAO.delete(company);
-        }
-
     }
 
-    /**
-     * @param id id of the company looked for
-     * @return company company found
-     */
+    @Override
     public Company find(long id) {
         try {
             return companyDAO.find(id);
@@ -62,16 +52,12 @@ public class CompanyService {
         }
     }
 
-    /**
-     * @return List<Computer> list of entity retrieved
-     */
+    @Override
     public List<Company> findAll() {
         return companyDAO.findAll(1);
     }
 
-    /**
-     * @param company company need to be updated
-     */
+    @Override
     public void update(Company company) {
         try {
             companyDAO.update(company);
