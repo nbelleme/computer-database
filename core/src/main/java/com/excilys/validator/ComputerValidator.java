@@ -14,8 +14,8 @@ public class ComputerValidator {
 
     private Logger logger = LoggerFactory.getLogger(ComputerValidator.class);
 
-    public void isIdValid(long id) {
-        if (id <= 0) {
+    public void assertIdValid(Long id) {
+        if (id != null || id <= 0) {
             logger.error("Error Computer Validator : id invalid");
             throw new ValidatorException("Error Computer Validator : id invalid");
         }
@@ -26,7 +26,7 @@ public class ComputerValidator {
      *
      * @param name value to test
      */
-    public void isNameValid(String name) {
+    public void assertNameValid(String name) {
         if (name == "" || name == null) {
             logger.error("Error Computer Validator : name invalid");
             throw new ValidatorException("Error Computer Validator : name invalid : " + name);
@@ -38,7 +38,7 @@ public class ComputerValidator {
      *
      * @param date value to test
      */
-    public void isDateConvertibleToTimestamp(LocalDate date) {
+    public void assertDateConvertibleToTimestamp(LocalDate date) {
         if (date.isBefore(LocalDate.MIN) || date.isAfter(LocalDate.MAX)) {
             logger.error("Error Computer Validator : date invalid");
             throw new ValidatorException("Error Computer Validator : date invalid");
@@ -52,7 +52,7 @@ public class ComputerValidator {
      * @param date1 first date.
      * @param date2 last date.
      */
-    public void isDatesValid(LocalDate date1, LocalDate date2) {
+    public void assertDatesValid(LocalDate date1, LocalDate date2) {
         if (date1 == null && date2 != null) {
             throw new ValidatorException(
                     "Error Computer Validator : date1 is null but date2 is not null");
@@ -71,15 +71,16 @@ public class ComputerValidator {
      *
      * @param computer computer to test
      */
-    public void isValid(Computer computer) {
-        isNameValid(computer.getName());
+    public void assertValid(Computer computer) {
+        assertIdValid(computer.getId());
+        assertNameValid(computer.getName());
         if (computer.getIntroduced() != null) {
-            isDateConvertibleToTimestamp(computer.getIntroduced());
+            assertDateConvertibleToTimestamp(computer.getIntroduced());
         }
         if (computer.getDiscontinued() != null) {
-            isDateConvertibleToTimestamp(computer.getDiscontinued());
+            assertDateConvertibleToTimestamp(computer.getDiscontinued());
         }
-        isDatesValid(computer.getIntroduced(), computer.getDiscontinued());
+        assertDatesValid(computer.getIntroduced(), computer.getDiscontinued());
     }
 
 }

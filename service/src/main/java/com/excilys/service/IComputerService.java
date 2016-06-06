@@ -4,9 +4,11 @@ import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface IComputerService {
 
     Computer save(Computer computer);
@@ -22,4 +24,6 @@ public interface IComputerService {
     Page<Computer> findAll(Pageable search);
 
     Page<Computer> findByNameOrCompany(String string, Company company, Pageable page);
+
+    List<Computer> findByCompany(Company company);
 }

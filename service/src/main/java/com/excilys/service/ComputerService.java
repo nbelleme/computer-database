@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ComputerService implements IComputerService{
+public class ComputerService implements IComputerService {
     private Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
     @Autowired
@@ -24,7 +24,7 @@ public class ComputerService implements IComputerService{
     private ComputerDAO computerDAO;
     @Autowired
     private ComputerRepository computerManager;
-
+    
     @Override
     public Computer save(Computer computer) {
         return computerManager.save(computer);
@@ -32,15 +32,13 @@ public class ComputerService implements IComputerService{
 
     @Override
     public void delete(Computer computer) {
-        computerValidator.isIdValid(computer.getId());
-        computerValidator.isValid(computer);
+        computerValidator.assertValid(computer);
         computerDAO.delete(computer);
     }
 
     @Override
     public void update(Computer computer) {
-        computerValidator.isIdValid(computer.getId());
-        computerValidator.isValid(computer);
+        computerValidator.assertValid(computer);
         computerManager.save(computer);
     }
 
@@ -67,5 +65,10 @@ public class ComputerService implements IComputerService{
             company.setName("");
         }
         return computerDAO.findByNameOrCompany(string, company, page);
+    }
+
+    @Override
+    public List<Computer> findByCompany(Company company) {
+        return computerDAO.findByCompany(company);
     }
 }

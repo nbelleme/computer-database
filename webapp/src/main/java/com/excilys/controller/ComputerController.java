@@ -5,8 +5,8 @@ import com.excilys.mapper.ComputerDTOMapper;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.persistence.ComputerColumns;
-import com.excilys.service.CompanyService;
-import com.excilys.service.ComputerService;
+import com.excilys.service.ICompanyService;
+import com.excilys.service.IComputerService;
 import com.excilys.util.Parser;
 import com.excilys.validator.ComputerValidator;
 import org.slf4j.Logger;
@@ -56,10 +56,10 @@ public class ComputerController {
     private static final String PATH_DASHBOARD = "/computer/view/all";
 
     @Autowired
-    private ComputerService computerService;
+    private IComputerService computerService;
 
     @Autowired
-    private CompanyService companyService;
+    private ICompanyService companyService;
 
     @Autowired
     private ComputerDTOMapper computerDtoMapper;
@@ -123,7 +123,7 @@ public class ComputerController {
             return new ModelAndView(ADD_JSP);
         }
         Computer computer = computerDtoMapper.unmap(computerDTO);
-        computerValidator.isValid(computer);
+        computerValidator.assertValid(computer);
         computerService.save(computer);
         return new ModelAndView("redirect:" + PATH_DASHBOARD);
     }
@@ -151,7 +151,7 @@ public class ComputerController {
                                  @RequestParam(value = COMPANY_KEY, required = false) String companyId) {
         ComputerDTO computerDTO = new ComputerDTO(id, name, introduced, discontinued, companyId, "");
         Computer computer = computerDtoMapper.unmap(computerDTO);
-        computerValidator.isValid(computer);
+        computerValidator.assertValid(computer);
         computerService.save(computer);
 
         return new ModelAndView("redirect:" + PATH_DASHBOARD);
@@ -173,7 +173,7 @@ public class ComputerController {
     }
 
     @RequestMapping(name = "/errors/403")
-    public String handle403(){
+    public String handle403() {
         return "errors/403";
     }
 

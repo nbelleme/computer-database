@@ -6,17 +6,12 @@ import com.excilys.persistence.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * @author nbelleme
- */
 @Service
-@Scope("singleton")
 public class CompanyService implements ICompanyService {
 
     @Autowired
@@ -37,9 +32,9 @@ public class CompanyService implements ICompanyService {
     @Override
     @Transactional
     public void delete(Company company) {
-            //FIXME
+        //FIXME
 //      computerDAO.deleteFromCompanyId(company.getId());
-            companyDAO.delete(company);
+        companyDAO.delete(company);
     }
 
     @Override

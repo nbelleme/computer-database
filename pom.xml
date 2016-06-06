@@ -1,58 +1,71 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
   http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.excilys.computerdatabase</groupId>
-	<artifactId>ComputerDatabase</artifactId>
-	<version>1.0</version>
-	<name>Computer Database project for Excilys formation</name>
-	<packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.excilys.computerdatabase</groupId>
+    <artifactId>ComputerDatabase</artifactId>
+    <version>1.0</version>
+    <name>Computer Database project for Excilys formation</name>
+    <packaging>pom</packaging>
 
     <modules>
-    	<module>core</module>
-    	<module>persistence</module>
-    	<module>service</module>
-    	<module>binding</module>
-    	<module>webapp</module>
-		<module>security</module>
-	</modules>
+        <module>core</module>
+        <module>persistence</module>
+        <module>service</module>
+        <module>binding</module>
+        <module>webapp</module>
+        <module>security</module>
+    </modules>
 
-	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
-		<spring.core>4.2.6.RELEASE</spring.core>
-		<slf4j.api>1.7.21</slf4j.api>
-		<logback.classic>1.1.7</logback.classic>
-		<javax.api>7.0</javax.api>
-	</properties>
+        <spring.core>4.2.6.RELEASE</spring.core>
+        <slf4j.api>1.7.21</slf4j.api>
+        <logback.classic>1.1.7</logback.classic>
+        <javax.api>7.0</javax.api>
+        <spring.test>4.2.6.RELEASE</spring.test>
+        <junit>4.12</junit>
+    </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.core}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.api}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback.classic}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>${javax.api}</version>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.core}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.api}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.classic}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>${javax.api}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.test}</version>
+        </dependency>
+    </dependencies>
 </project>

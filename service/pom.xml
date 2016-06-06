@@ -21,8 +21,8 @@
         <core>1.0</core>
         <binding>1.0</binding>
         <persistence>1.0</persistence>
+        
         <hibernate.entitymanager>5.1.0.Final</hibernate.entitymanager>
-
         <spring.beans>4.2.6.RELEASE</spring.beans>
         <spring.data.jpa>1.1.0.RELEASE</spring.data.jpa>
         <spring.orm>4.2.6.RELEASE</spring.orm>
