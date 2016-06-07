@@ -11,21 +11,26 @@
     </parent>
 
     <!-- project coordinates -->
-    <groupId>com.excilys.computerdatabase</groupId>
     <artifactId>core</artifactId>
     <version>1.0</version>
 
     <packaging>jar</packaging>
 
     <properties>
-        <spring.context>4.2.6.RELEASE</spring.context>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring.context}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <spring.security.version>4.1.0.RELEASE</spring.security.version>
     </properties>
 
     <artifactId>security</artifactId>
@@ -18,25 +17,22 @@
         <dependency>
             <groupId>com.excilys.computerdatabase</groupId>
             <artifactId>persistence</artifactId>
-            <version>1.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${spring.security.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${spring.security.version}</version>
         </dependency>
 
         <!-- Spring Security JSP Taglib -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring.security.version}</version>
         </dependency>
     </dependencies>
 </project>

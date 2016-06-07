@@ -11,43 +11,30 @@
     </parent>
 
     <!-- project coordinates -->
-    <groupId>com.excilys.computerdatabase</groupId>
     <artifactId>service</artifactId>
     <version>1.0</version>
 
     <packaging>jar</packaging>
 
     <properties>
-        <core>1.0</core>
-        <binding>1.0</binding>
-        <persistence>1.0</persistence>
-        
-        <hibernate.entitymanager>5.1.0.Final</hibernate.entitymanager>
-        <spring.beans>4.2.6.RELEASE</spring.beans>
-        <spring.data.jpa>1.1.0.RELEASE</spring.data.jpa>
-        <spring.orm>4.2.6.RELEASE</spring.orm>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.excilys.computerdatabase</groupId>
             <artifactId>core</artifactId>
-            <version>${core}</version>
         </dependency>
         <dependency>
             <groupId>com.excilys.computerdatabase</groupId>
             <artifactId>persistence</artifactId>
-            <version>${persistence}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>${spring.orm}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.entitymanager}</version>
         </dependency>
     </dependencies>
 </project>
