@@ -1,9 +1,10 @@
-package com.excilys.mapper;
+package com.excilys.binding.mapper.company;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.excilys.binding.mapper.Mapper;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

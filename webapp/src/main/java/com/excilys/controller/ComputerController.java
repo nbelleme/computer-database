@@ -1,7 +1,7 @@
 package com.excilys.controller;
 
 import com.excilys.dto.ComputerDTO;
-import com.excilys.mapper.ComputerDTOMapper;
+import com.excilys.binding.mapper.computer.ComputerDTOMapper;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.persistence.ComputerColumns;

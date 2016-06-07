@@ -1,4 +1,4 @@
-package com.excilys.mapper;
+package com.excilys.binding.mapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

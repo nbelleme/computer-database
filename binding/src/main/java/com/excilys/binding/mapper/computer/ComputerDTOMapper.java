@@ -1,4 +1,4 @@
-package com.excilys.mapper;
+package com.excilys.binding.mapper.computer;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;

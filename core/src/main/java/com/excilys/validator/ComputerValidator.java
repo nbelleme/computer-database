@@ -22,7 +22,7 @@ public class ComputerValidator {
     }
 
     /**
-     * Throws exception if name length is superior to 0 and if name is not null.
+     * Throws ValidatorException if name length is superior to 0 and if name is not null.
      *
      * @param name value to test
      */
@@ -34,7 +34,7 @@ public class ComputerValidator {
     }
 
     /**
-     * Throws exception if date is between timestamp's limits.
+     * Throws ValidatorException if date is between timestamp's limits.
      *
      * @param date value to test
      */
@@ -46,7 +46,8 @@ public class ComputerValidator {
     }
 
     /**
-     * Throws exception if date1 is after date2. Throws exception if date2 is not null but date1 is
+     * Throws ValidatorException if date1 is after date2.
+     * Throws ValidatorException if date2 is not null but date1 is
      * null.
      *
      * @param date1 first date.
