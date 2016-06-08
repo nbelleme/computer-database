@@ -5,14 +5,13 @@
     <parent>
         <artifactId>ComputerDatabase</artifactId>
         <groupId>com.excilys.computerdatabase</groupId>
-        <version>1.0</version>
+        <version>${version}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <properties>
-    </properties>
 
     <artifactId>security</artifactId>
+    <version>${version}</version>
     <dependencies>
         <dependency>
             <groupId>com.excilys.computerdatabase</groupId>
