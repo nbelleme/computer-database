@@ -30,14 +30,8 @@ public class UserService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         try {
+            logger.info("UserService ---- loadUserByUsername("+s+")");
             com.excilys.model.user.User user = userRepository.findByUsername(s);
-            System.out.println(user.toString());
-            System.out.println(user.toString());
-
-            System.out.println(user.getRole().toString());
-            System.out.println(user.getRole().toString());
-
-
             List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
             return buildUserForAuthentication(user, authorities);
         } catch (Exception e) {

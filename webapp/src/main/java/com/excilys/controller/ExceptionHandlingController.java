@@ -16,6 +16,7 @@ public class ExceptionHandlingController {
     logger.debug(ex.getMessage());
     return "errors/404";
   }
+
   // @ExceptionHandler(Exception.class)
   // public ModelAndView handleAllException(Exception ex) {
   // return new ModelAndView("errors/500", "message", ex.getMessage());

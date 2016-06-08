@@ -17,6 +17,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +37,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/computer")
 public class ComputerController {
+
+    private static final String USER_KEY = "user";
 
     private static final String ORDER_BY_KEY = "orderBy";
     private static final String SORT_KEY = "orderSort";
@@ -70,11 +75,18 @@ public class ComputerController {
     private Logger logger = LoggerFactory.getLogger(ComputerController.class);
 
     @RequestMapping(value = "/view/all", method = RequestMethod.GET)
+    @PreAuthorize("permitAll")
     public ModelAndView getViewAll(@RequestParam(value = SEARCH_KEY, required = false) String search,
                                    @RequestParam(value = ORDER_BY_KEY, required = false, defaultValue = "id") String paramOrder,
                                    @RequestParam(value = NB_ELEMENT_PAGE_KEY, required = false, defaultValue = "10") String paramPageSize,
                                    @RequestParam(value = PAGE_KEY, required = false, defaultValue = "0") String paramPageNumber,
                                    @RequestParam(value = SORT_KEY, required = false, defaultValue = "asc") String sort) {
+
+        Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = null;
+        if (object.getClass() != String.class) {
+            user = (User) object;
+        }
 
         String order = ComputerColumns.fromString(paramOrder).getName();
         Direction direction = Sort.Direction.ASC;
@@ -101,6 +113,7 @@ public class ComputerController {
 
         Map<String, Object> mapResponse = new HashMap<>();
 
+        mapResponse.put(USER_KEY, user);
         mapResponse.put(ORDER_BY_KEY, order);
         mapResponse.put(SORT_KEY, sort);
         mapResponse.put(SEARCH_KEY, search);
@@ -171,10 +184,4 @@ public class ComputerController {
         computerService.deleteMultiple(computers);
         return new ModelAndView("redirect:" + PATH_DASHBOARD);
     }
-
-    @RequestMapping(name = "/errors/403")
-    public String handle403() {
-        return "errors/403";
-    }
-
 }
