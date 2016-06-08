@@ -75,7 +75,6 @@ public class ComputerController {
     private Logger logger = LoggerFactory.getLogger(ComputerController.class);
 
     @RequestMapping(value = "/view/all", method = RequestMethod.GET)
-    @PreAuthorize("permitAll")
     public ModelAndView getViewAll(@RequestParam(value = SEARCH_KEY, required = false) String search,
                                    @RequestParam(value = ORDER_BY_KEY, required = false, defaultValue = "id") String paramOrder,
                                    @RequestParam(value = NB_ELEMENT_PAGE_KEY, required = false, defaultValue = "10") String paramPageSize,

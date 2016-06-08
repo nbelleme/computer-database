@@ -15,7 +15,7 @@ public class ComputerValidator {
     private Logger logger = LoggerFactory.getLogger(ComputerValidator.class);
 
     public void assertIdValid(Long id) {
-        if (id != null || id <= 0) {
+        if (id <= 0) {
             logger.error("Error Computer Validator : id invalid");
             throw new ValidatorException("Error Computer Validator : id invalid");
         }
@@ -73,7 +73,9 @@ public class ComputerValidator {
      * @param computer computer to test
      */
     public void assertValid(Computer computer) {
-        assertIdValid(computer.getId());
+        if (computer.getId() != null) {
+            assertIdValid(computer.getId());
+        }
         assertNameValid(computer.getName());
         if (computer.getIntroduced() != null) {
             assertDateConvertibleToTimestamp(computer.getIntroduced());

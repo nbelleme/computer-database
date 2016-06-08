@@ -57,6 +57,7 @@
     <form id="deleteForm"
           action="${pageContext.request.contextPath}/computer/delete"
           method="POST">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" class="form-control"/>
         <input type="hidden" name="selection" value="">
     </form>
 
