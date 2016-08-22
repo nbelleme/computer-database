@@ -2,6 +2,7 @@ package com.excilys.persistence.impl;
 
 import com.excilys.model.Company;
 import com.excilys.persistence.DaoException;
+import com.excilys.persistence.ICompanyDAO;
 import com.excilys.repository.CompanyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class CompanyDAO {
+public class CompanyDAO implements ICompanyDAO{
     Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
     @Autowired
@@ -30,8 +31,14 @@ public class CompanyDAO {
         return companyRepository.findOne(id);
     }
 
+    @Override
     public List<Company> findAll() {
         return companyRepository.findAll();
+    }
+
+    @Override
+    public int getTotal() {
+        return 0;
     }
 
     public Company update(Company company) {

@@ -2,6 +2,7 @@ package com.excilys.service.impl;
 
 import com.excilys.model.Company;
 import com.excilys.persistence.DaoException;
+import com.excilys.persistence.ICompanyDAO;
 import com.excilys.persistence.impl.CompanyDAO;
 import com.excilys.service.ICompanyService;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import java.util.List;
 public class CompanyService implements ICompanyService {
 
     @Autowired
-    private CompanyDAO companyDAO;
+    private ICompanyDAO companyDAO;
 
     private Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
