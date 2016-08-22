@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.excilys.computerdatabase</groupId>
     <artifactId>ComputerDatabase</artifactId>
-    <version>${version}</version>
+    <version>2.0</version>
     <name>Computer Database project for Excilys formation</name>
     <packaging>pom</packaging>
 
@@ -18,7 +18,7 @@
     </modules>
 
     <properties>
-        <version>2.0.RELEASE</version>
+        <version>2.0</version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
@@ -30,7 +30,7 @@
         <binding>${version}</binding>
 
         <jackson>2.7.4</jackson>
-        <jackson.core>2.7.4</jackson.core>
+        <jackson.core>2.8.1</jackson.core>
 
         <spring>4.2.6.RELEASE</spring>
         <spring.beans>${spring}</spring.beans>

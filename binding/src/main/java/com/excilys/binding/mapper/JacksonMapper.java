@@ -1,16 +1,15 @@
 package com.excilys.binding.mapper;
 
+
 import com.excilys.binding.exception.MapperException;
-import com.excilys.model.Company;
-import com.excilys.model.Computer;
+import com.excilys.model.ICompany;
+import com.excilys.model.IComputer;
 import com.excilys.util.MyPage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
-;
 
 @Component
 public class JacksonMapper {
@@ -27,7 +26,7 @@ public class JacksonMapper {
 
     }
 
-    public static String computersToJson(MyPage<Computer> computers) {
+    public static String computersToJson(MyPage<IComputer> computers) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             String jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(computers);
@@ -46,22 +45,22 @@ public class JacksonMapper {
         }
     }
 
-    public static MyPage<Computer> jsonToComputers(String json) {
+    public static MyPage<IComputer> jsonToComputers(String json) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
         try {
-            return mapper.readValue(json, new TypeReference<MyPage<Computer>>() {
+            return mapper.readValue(json, new TypeReference<MyPage<IComputer>>() {
             });
         } catch (Exception e) {
             throw new MapperException("Error computersToJson ", e);
         }
     }
 
-    public static List<Company> jsonToCompanies(String json) {
+    public static List<ICompany> jsonToCompanies(String json) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
         try {
-            return mapper.readValue(json, new TypeReference<List<Company>>() {
+            return mapper.readValue(json, new TypeReference<List<ICompany>>() {
             });
         } catch (Exception e) {
             throw new MapperException("Error computersToJson ", e);

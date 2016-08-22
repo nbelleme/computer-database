@@ -3,7 +3,6 @@ package com.excilys.service.impl;
 import com.excilys.model.Company;
 import com.excilys.persistence.DaoException;
 import com.excilys.persistence.ICompanyDAO;
-import com.excilys.persistence.impl.CompanyDAO;
 import com.excilys.service.ICompanyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +28,6 @@ public class CompanyService implements ICompanyService {
     @Override
     @Transactional
     public void delete(Company company) {
-        //FIXME
-//      computerDAO.deleteFromCompanyId(company.getId());
         companyDAO.delete(company);
     }
 

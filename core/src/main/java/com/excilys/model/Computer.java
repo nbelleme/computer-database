@@ -15,9 +15,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
+
 @Entity
 @Table(name = "computer")
-public class Computer {
+public class Computer implements IComputer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -107,42 +108,52 @@ public class Computer {
         }
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public LocalDate getIntroduced() {
         return introduced;
     }
 
+    @Override
     public void setIntroduced(LocalDate introduced) {
         this.introduced = introduced;
     }
 
+    @Override
     public LocalDate getDiscontinued() {
         return discontinued;
     }
 
+    @Override
     public void setDiscontinued(LocalDate discontinued) {
         this.discontinued = discontinued;
     }
 
+    @Override
     public Company getCompany() {
         return company;
     }
 
+    @Override
     public void setCompany(Company company) {
         this.company = company;
     }

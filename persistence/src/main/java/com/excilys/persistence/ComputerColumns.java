@@ -15,10 +15,6 @@ public enum ComputerColumns {
     this.index = index;
   }
 
-  public String getColumn() {
-    return column;
-  }
-
   public String getName() {
     return name;
   }

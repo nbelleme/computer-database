@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "company")
-public class Company {
+public class Company implements ICompany {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -92,10 +92,12 @@ public class Company {
         return true;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -109,10 +111,12 @@ public class Company {
         return result;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
