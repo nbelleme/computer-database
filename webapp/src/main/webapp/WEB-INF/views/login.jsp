@@ -45,7 +45,7 @@
                             <input id="password" class="form-control" type='password' name='password'/>
                         </div>
                     </div>
-                    <input type="hidden" name="${_csrf.parameterName}"
+                    <input id="_csrf" type="hidden" name="${_csrf.parameterName}"
                            value="${_csrf.token}"/>
                     <input class="btn btn-primary col-sm-offset-5 col-sm-2" name="submit" type="submit"
                            value="<spring:message code="submit"/>"/>

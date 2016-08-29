@@ -124,6 +124,7 @@ public class ComputerController {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView getAdd() {
         List<Company> companies = companyService.findAll();
+        logger.info("IM IN");
         return new ModelAndView(ADD_JSP, "companies", companies);
     }
 
